@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--==============无参注入==============-->
+
+    <!--<bean id="user" class="com.kuang.pojo.User">
+        <property name="name" value="cjc"/>
+    </bean>-->
+
+    <!--==============有参注入==============-->
+
+    <!--1.下标注入-->
+    <!--<bean id="user" class="com.kuang.pojo.User">
+        <constructor-arg index="0" value="cjc1"/>
+    </bean>-->
+
+    <!--2.根据类型注入（不建议使用）-->
+    <!--<bean id="user" class="com.kuang.pojo.User">
+        <constructor-arg type="java.lang.String" value="cjc2"/>
+    </bean>-->
+
+    <!--3.通过参数名注入-->
+    <bean id="user" class="com.kuang.pojo.User">
+        <constructor-arg name="name" value="cjc3"/>
+    </bean>
+
+    <!--
+    id:bean的唯一标识符，也就是相当于我们的对象名
+    class：bean对象所对应的全限定名：包名+类型
+    name：也是别名 相比alias，name更高级，可以取多个别名
+    -->
+    <bean id="userT" class="com.kuang.pojo.UserT" name="t,t1;t2 t3">
+        <property name="name" value="UserT"/>
+    </bean>
+    
+    <alias name="user" alias="alias1"/>
+
+</beans>

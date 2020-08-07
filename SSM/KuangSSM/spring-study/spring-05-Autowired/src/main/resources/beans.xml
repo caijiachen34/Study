@@ -1,0 +1,16 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="dog" class="com.kuang.pojo.User.Dog"/>
+    <bean id="cat" class="com.kuang.pojo.User.Cat"/>
+
+    <!--byname:会自动在容器上下文中查找，和自己对象set方法后面相对应的beanid
+    -->
+    <bean id="people" class="com.kuang.pojo.User.People" autowire="byName">
+        <property name="name" value="cjc"/>
+    </bean>
+
+</beans>
