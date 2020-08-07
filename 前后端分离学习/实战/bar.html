@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Page Title</title>
+    <script src="echarts/echarts.min.js"></script>
+    <script src="jquery-3.5.1.js"></script>
+  </head>
+  <body>
+    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+    <div id="main" style="width: 600px; height: 400px;"></div>
+    <script type="text/javascript">
+      $(function () {
+        $.ajax({
+          url: "http://localhost:8080/barVO",
+          type: "POST",
+          success: function (data) {
+            console.log(data);
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById("main"));
+            // 指定图表的配置项和数据
+            var option = {
+              xAxis: {
+                type: "category",
+                data: data.name,
+              },
+              yAxis: {
+                type: "value",
+              },
+              series: [
+                {
+                  data: data.counts,
+                  type: "bar",
+                },
+              ],
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+          },
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "status": 0,
+  "msg": "用户名和密码正确",
+  "data": {
+    "member_id": 35,
+    "uname": "testjinlin",
+    "password": "v50wRk3eA7gLBuaua1bnrg==",
+    "email": "172253630@qq.com",
+    "sex": 0,
+    "mobile": "",
+    "regtime": 1548601158000,
+    "lastlogin": null,
+    "image": "",
+    "memberAddresses": null
+  }
+}

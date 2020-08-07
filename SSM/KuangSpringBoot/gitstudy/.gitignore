@@ -1,0 +1,55 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**
+!**/src/test/**
+*.class
+*.log
+*.lock
+
+# Pacage Files #
+*.jar
+*.war
+*.ear
+target/
+
+#idea
+.idea/
+*.iml
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+*.iml
+*.ipr
+*.iws
+.idea
+.classpath
+.project
+.settings/
+bin/
+bin/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+### VS Code ###
+.vscode/
+
+*.log
+tmp/
+
+#rebel
+*.rebel.xml*

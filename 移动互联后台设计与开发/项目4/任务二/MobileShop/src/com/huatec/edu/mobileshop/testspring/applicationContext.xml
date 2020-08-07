@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans 
+	xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"  
+	xmlns:jee="http://www.springframework.org/schema/jee" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+	
+	<!-- 使用构造器实例化 -->
+	<bean id="brand" 
+	 class="com.huatec.edu.mobileshop.entity.brief.BriefBrand">
+		<!-- 给属性赋值 -->
+		<!-- <property name="name" value="哇哈哈"/> -->
+		<property name="name">
+			<value>哇哈哈</value>
+		</property>
+		<property name="logo" value="哇哈哈logo"/>
+	</bean>
+	
+	<!-- 使用静态工厂方法实例化 -->
+	<bean id="brand1" 
+	class="com.huatec.edu.mobileshop.testspring.BrandFactory" 
+	factory-method="createBrand" >
+		<property name="name" value="六神"/>
+		<property name="logo" value="六神logo"/>
+	</bean>
+	
+	<!-- 使用实例化工厂方法实例化 -->
+	<bean id="brandFactory" 
+	class="com.huatec.edu.mobileshop.testspring.BrandFactory"/>
+	<!-- factory-bean属性指向工厂Bean对象 -->
+	<bean id="brand2" 
+	factory-bean="brandFactory" 
+	factory-method="createBrand1">
+		<property name="name" value="迪奥"/>
+		<property name="logo" value="迪奥logo"/>
+	</bean>
+	
+	<bean id="brand3" 
+	class="com.huatec.edu.mobileshop.entity.brief.BriefBrand">
+	<!-- 给属性赋值:构造器注入 -->
+		<constructor-arg index="0" value="雅诗兰黛"/>
+		<constructor-arg index="1" value="雅诗兰黛logo"/>
+	</bean>
+	
+	<!-- Bean注入 -->
+	<bean id="address1" 
+	class="com.huatec.edu.mobileshop.testspring.ioc.Address">
+		<property name="mobile" value="13812345678"/>
+		<property name="address" value="深圳市龙岗区"/>
+	</bean>
+	<bean id="memberInfo" 
+	class="com.huatec.edu.mobileshop.testspring.ioc.MemberInfo">
+		<!-- 基本值注入 -->
+		<property name="name" value="黄蓉"/>
+		<!-- Bean对象注入 ，使用ref属性关联需注入的对象-->
+		<property name="address" ref="address1"/>
+		<!-- List集合注入 -->
+		<property name="loveBrands">
+			<list>
+				<value>三只松鼠</value>
+				<value>美之源</value>
+				<value>汇源</value>
+			</list>
+		</property>
+		<!-- set集合注入 -->
+		<property name="loveGoods">
+			<set>
+				<value>三只松鼠坚果</value>
+				<value>美之源果粒橙原味</value>
+				<value>汇源果汁苹果汁</value>
+			</set>
+		</property>
+		<!-- Map集合注入 -->
+		<property name="comment">
+			<map>
+				<entry key="三只松鼠坚果" value="很好吃"/>
+				<entry key="美之源果粒橙原味" value="很好喝"/>
+				<entry key="汇源果汁苹果汁" value="很好喝"/>
+			</map>
+		</property>
+		<!-- Properties集合注入 -->
+		<property name="dbinfo">
+			<props>
+				<prop key="username">Tom</prop>
+				<prop key="password">12345</prop>
+			</props>
+		</property>
+	</bean>
+
+	<context:component-scan 
+	base-package="com.huatec.edu.mobileshop.testspring"/>
+	
+	<!-- 开启AOP注解 @Aspect(切面),@Before,@After -->
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	
+</beans>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ 
+<mapper namespace="com.huatec.edu.ca.dao.CatPaymentDao">
+	<!-- 缓存配置-->
+	<cache eviction="LRU" flushInterval="30000" size="512" readOnly="true"/>
+	
+	<select id="findByUserName" parameterType="string" 
+	resultType="com.huatec.edu.ca.entity.CatPayment">
+		select * from catpayment where username=#{username}
+	</select>
+	
+</mapper>

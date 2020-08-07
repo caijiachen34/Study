@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.administrator.mobileshop01">
+
+    <!--允许获取当前WiFi接入状态以及wlan热点信息-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!--允许程序访问网络连接产生网络流量-->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!--允许获取网络信息状态，如当前网络连接是否有效-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!--允许读取外部存储设备权限-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+<!--    引用Application,可以在项目启动时优先被启动-->
+    <application
+        android:name=".common.MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
+        android:theme="@style/AppTheme"
+        android:appComponentFactory="0"
+        tools:replace="android:appComponentFactory">
+        <!--launchMode="singleTask 有且只只允许该activity有一个实例存在
+            screenOrientation="portrait":强制竖屏-->
+        <activity
+            android:launchMode="singleTask"
+            android:name=".activity.SplashActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.MainActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+
+        <activity android:name=".activity.AdActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+
+        <activity
+            android:name=".activity.GoodsActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
+        </activity>
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
+        </activity>
+        <activity
+            android:name=".activity.ChangePWDActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
+        </activity>
+        <activity
+            android:name=".activity.FindPWDActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
+        </activity>
+        <activity
+        android:name=".activity.RegisterActivity"
+        android:screenOrientation="portrait"
+        tools:ignore="LockedOrientationActivity">
+        </activity>
+
+        <activity
+            android:name=".activity.GoodsListActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
+        </activity>
+    </application>
+
+</manifest>

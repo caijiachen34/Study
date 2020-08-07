@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>iframe页面无刷新</title>
+
+    <script>
+        function go() {
+            var url = document.getElementById("url").value;
+            document.getElementById("iframe1").src= url;
+        }
+    </script>
+</head>
+<body>
+
+<div>
+    <p>请输入地址：</p>
+    <p>
+        <input type="text" id="url" value="">
+        <input type="button" value="提交" onclick="go()">
+    </p>
+</div>
+
+<div>
+    <iframe id="iframe1" style="width: 100%;height: 500px"></iframe>
+</div>
+
+</body>
+</html>

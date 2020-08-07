@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>测试restful api</title>
+		<script  src="js/jquery.min.js"></script>
+		<script type="text/javascript">
+		$(document).ready(function(){
+			$("#testGet").click(function(){
+				var id=2
+				$.ajax({
+					url:"http://localhost:8080/SpringRestful"
+					 +"/hello/person/"+id,
+					//通过type来判断调用哪个方法
+					type:"get",
+					dataType:"json",
+					success:function(result){
+						alert("获取人员信息成功");
+						$("#showPerson").show();
+						$("#person_id").html(result.id);
+						$("#name").html(result.name);
+						$("#age").html(result.age);
+					},
+					error:function(){
+						alert("testGet异常");
+					}
+				}); 
+			});
+			
+			$("#testDelete").click(function(){
+				var id=2
+				$("#showPerson").hide();
+				$.ajax({
+					url:"http://localhost:8080/SpringRestful"
+					 +"/hello/person/"+id,
+					//调用delete方法
+					type:"delete",
+					dataType:"json",
+					success:function(result){
+						alert("删除人员信息成功");
+						$("#show").html(result.msg);
+					},
+					error:function(){
+						alert("testDelete异常");
+					}
+				}); 
+			});
+			
+			$("#testPost").click(function(){
+				$("#showPerson").hide();
+				$.ajax({
+					url:"http://localhost:8080/SpringRestful"
+					 +"/hello/person",
+					//调用post方法
+					type:"post",
+					data:{"id":2,"name":"李四","age":23},
+					dataType:"json",
+					success:function(result){
+						alert("新增人员信息成功");
+						$("#show").html(result.msg);
+					},
+					error:function(){
+						alert("testPost异常");
+					}
+				});
+			});
+			
+			$("#testPut").click(function(){
+				$("#showPerson").hide();
+				$.ajax({
+					url:"http://localhost:8080/SpringRestful"
+					 +"/hello/person",
+					//调用put方法
+					type:"post",
+					//需要在web.xml中进行配置
+					//传参时加：_method:"PUT" 将对应后台的put请求方法
+					data:{_method:"PUT","id":2,"name":"王五","age":24},
+					dataType:"json",
+					success:function(result){
+						alert("更新人员信息成功");
+						$("#show").html(result.msg);
+					},
+					error:function(){
+						alert("testPut异常");
+					}
+				});
+			});
+			
+		});
+		</script>
+	</head>
+	<body>
+		<button id="testGet">测试Get</button>	
+		<button id="testDelete">测试Delete</button>
+		<button id="testPost">测试Post</button>
+		<button id="testPut">测试Put</button>	
+		<p id="show"></p>
+		<ul id="showPerson" style="display:none;">
+			<li id="person_id"></li>
+			<li id="name"></li>
+			<li id="age"></li>
+		</ul>
+	</body>
+</html>

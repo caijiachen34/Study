@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".activity.GoodsListActivity">
+    <!--搜索栏-->
+    <include
+        android:id="@+id/common_title_2"
+        layout="@layout/common_header" />
+    <!--商品排序栏-->
+    <LinearLayout
+        android:id="@+id/goodslist_orderby"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/goods_list_sort_bg"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/goodslist_orderby_sales"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/goodslist_orderby_sales_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/sales"
+                android:textColor="@color/light"
+                android:textSize="@dimen/goods_list_sort_font_size" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/goodslist_orderby_grade"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/goodslist_orderby_grade_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/grade"
+                android:textColor="@color/light"
+                android:textSize="@dimen/goods_list_sort_font_size" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/goodslist_orderby_price"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/goodslist_orderby_price_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/price"
+                android:textColor="@color/light"
+                android:textSize="@dimen/goods_list_sort_font_size" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/goodslist_orderby_price_text"
+                android:contentDescription="价格"
+                android:src="@drawable/sort_button_price_none" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/goodslist_orderby_newgoods"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/goodslist_orderby_newgoods_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/newgoods"
+                android:textColor="@color/light"
+                android:textSize="@dimen/goods_list_sort_font_size" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/goodslist_swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/goodslist_recycleview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:fadingEdge="none"
+            android:focusable="false"
+            android:paddingLeft="11dp"
+            android:paddingTop="10dp"
+            android:paddingRight="11dp"
+            android:scrollbars="none"
+            app:fastScrollEnabled="false"></android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <TextView
+        android:id="@+id/goodslist_nodata"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/nodata"
+        android:visibility="gone" />
+</LinearLayout>
