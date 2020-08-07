@@ -1,6 +1,6 @@
 # Git学习
 
-### 1.常用的Linux命令
+## 1.常用的Linux命令
 
 ```
 1) cd: 改变目录
@@ -40,7 +40,7 @@ git config --global user.email "xxx@xx.com" #邮箱
 
 
 
-### 2.Git基本理论（核心）
+## 2.Git基本理论（核心）
 
 >工作区域
 
@@ -60,7 +60,7 @@ Git本地有三个工作区域：工作目录（Working Directory），暂存区
 
 
 
-### 3.具体步骤
+## 3.具体步骤
 
 #### 1.本地仓库搭建
 
@@ -109,7 +109,7 @@ git status
 
 
 
-#### 3.忽略文件
+## 3.忽略文件
 
 >忽略文件
 
@@ -140,7 +140,7 @@ doc/*.txt    #会忽略 doc/notes.txt 但不包括 doc/server/arch.txt
 
 
 
-### 4.使用码云,github
+## 4.使用码云,github
 
 #### 1.设置本机绑定SSH公钥
 
@@ -160,7 +160,7 @@ ssh-keygen -t rsa
 
 ![image-20200807183749259](git学习.assets/image-20200807183749259.png)
 
-### 5.Git分支
+## 5.Git分支
 
 分支在GIT中相对较难，分支就是科幻电影里面的平行宇宙，如果两个平行宇宙互不干扰，那对现在的你也没啥影响。不过，在某个时间点，两个平行宇宙合并了，我们就需要处理一些问题
 
@@ -196,7 +196,7 @@ $ git branch -dr [remote/branch]
 
 
 
-### 6.回滚造成数据丢失
+## 6.回滚造成数据丢失
 
 ```
 可以通过reflog来进行恢复，前提是丢失的分支或commit信息没有被git gc清除
@@ -212,7 +212,99 @@ $ git branch -dr [remote/branch]
 
 
 
-### 7.Git常用命令
+## 7.一个项目push到多个仓库
+
+#### 方法一：
+
+使用 `git remote add`命令
+
+- 1.1# 如下命令查看远程仓库的情况，可以看到只有一个叫 origin的远程仓库。
+
+```
+git remote
+```
+
+
+
+```undefined
+origin
+git remote -v
+```
+
+
+
+```cpp
+origin  http://zhangxiaoning@47.93.247.175:10101/r/wdy_android.git (fetch)
+origin  http://zhangxiaoning@47.93.247.175:10101/r/wdy_android.git (push)
+```
+
+- 1.2# 使用如下命令再添加一个远程仓库（这里以码云为例）
+
+```
+git remote add oschina https://gitee.com/qqjd/wdy_android.git
+```
+
+- 1.3# 再次查看远程仓库的情况，可以看到已经有两个远程仓库了。然后再使用相应的命令 push 到对应的仓库就行了。这种方法的缺点是每次要 push 两次。
+
+```
+git remote
+```
+
+
+
+```undefined
+origin
+oschina
+git remote -v
+```
+
+
+
+```cpp
+origin  http://zhangxiaoning@47.93.247.175:10101/r/wdy_android.git (fetch)
+origin  http://zhangxiaoning@47.93.247.175:10101/r/wdy_android.git (push)
+oschina https://gitee.com/qqjd/wdy_android.git (fetch)
+oschina https://gitee.com/qqjd/wdy_android.git (push)
+```
+
+
+
+#### 方法二：
+
+使用 git remote set-url 命令
+ 2.1# 删除方法一的 oschina 远程仓库。
+
+git remote rm oschina
+ 2.2# 使用如下命令添加远程仓库。
+
+git remote set-url --add github https://git.oschina.net/zxbetter/test.git
+ 2.3# 查看远程仓库情况。可以看到 github 远程仓库有两个 push 地址。这种方法的好处是每次只需要 push 一次就行了。
+
+git remote -v
+ github  https://github.com/zxbetter/test.git (fetch)
+ github  https://github.com/zxbetter/test.git (push)
+ github  https://git.oschina.net/zxbetter/test.git (push)
+
+
+
+#### 方法三：
+
+修改配置文件
+ 打开 .git/config 找到 [remote "github"]，添加对应的 url 即可，效果如下。这种方法其实和方法二是一样的。
+
+[remote "github"]
+ url = https://github.com/zxbetter/test.git
+ fetch = +refs/heads/*:refs/remotes/github/*
+ url = https://git.oschina.net/zxbetter/test.git
+ 关于 git pull
+ 方法二和三在 push 的时候比较方便。但是在 pull 的时候只能从方法三中的第一个 url 地址拉取代码。而方法一则不存在这种问题（可能要解决冲突）。
+ 所以，如果只进行 push 操作，推荐方法二和三，如果也要进行 pull 操作，推荐方法一。
+
+http://www.voidcn.com/article/p-cuamptba-bny.html
+
+
+
+## Git常用命令
 
 #### 仓库
 
@@ -524,7 +616,9 @@ $ git archive
 
 
 
-### 8.Git教学
+## Git教学
+
+
 
 [码云](https://gitee.com/all-about-git)
 
