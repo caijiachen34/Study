@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/button_go2second"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="跳转到第二个界面"
+        android:textSize="30sp"/>
+
+    <Button
+        android:id="@+id/button_go2secondObject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="传对象到另外一个界面"
+        android:textSize="30sp"/>
+
+    <Button
+        android:id="@+id/button_go2login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="注册小实例"
+        android:textSize="30sp"/>
+
+    <Button
+        android:id="@+id/button_go2dial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="打电话给10086"
+        android:textSize="30sp"/>
+
+    <Button
+        android:id="@+id/button_go2message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发短信给10086"
+        android:textSize="30sp"/>
+
+</LinearLayout>

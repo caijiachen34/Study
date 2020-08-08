@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/et_pay_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:maxLines="1"
+        android:hint="请输入充值金额"/>
+
+    <Button
+        android:id="@+id/btn_pay2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="确定充值"/>
+
+    <Button
+        android:id="@+id/btn_pay_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="取消充值"/>
+
+
+</LinearLayout>
