@@ -594,7 +594,45 @@ Intent intent = new Intent(this,SecondActivity.class);
 
 #### 4.协议的形式来传数据
 
+##### 示例1，通过隐式意图来传送数据(调用系统电话)
+
+```
+/* android6.0危险权限需要进行申请
+* PackageManager.PERMISSION_GRANTED为有权限，PackageManager.PERMISSION_DENIED为无权限
+*
+* 步骤：
+* 若电话无权限,则通过ActivityCompat.requestPermissions申请权限，若有权限，则实现相关方法
+* 调用完requestPermissions后弹出权限对话框，询问是否允许权限
+* 再调用onRequestPermissionsResult
+* 若同意了权限则会将权限加入再调用onRequestPermissionsResult方法的grantResults中
+* 若同意权限则实现相关业务，反之提示需要权限
+*  */
+```
+
+
+
 ```java
+    //点击按钮
+	mbuttongo2dial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(MainActivity.this,
+                        Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(MainActivity.this,new
+                            String[]{Manifest.permission.CALL_PHONE},1);
+                }else {
+                    handlerIntent2Dial();
+                }
+
+            }
+        });
+```
+
+
+
+```java
+	/* 打电话给10086 */
+    private void handlerIntent2Dial() {
         Intent intent = new Intent();
         //intent.setAction("android.intent.action.CALL");
         //上面可以写成下面这种
@@ -604,12 +642,33 @@ Intent intent = new Intent(this,SecondActivity.class);
         Uri uri = Uri.parse("tel:10086");
         intent.setData(uri);
         startActivity(intent);
-
+    }
 ```
 
 
 
-5.示例，通过隐式意图来传送数据(模拟发短信)
+```java
+@Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case 1:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    handlerIntent2Dial();
+                }else {
+                    Toast.makeText(this,"请先允许权限",Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+        }
+    }
+```
+
+
+
+
+
+##### 示例2，通过隐式意图来传送数据(模拟发短信)
 
 Activity过滤器:
 
@@ -671,6 +730,10 @@ Intent封装数据的大小限制:1M
 
 
 ### 七.数据回传
+
+##### 实例1：充值界面
+
+数据回传需要使用到requestCode和resultCode,重写onActivityResult方法来回调
 
 示例：点击跳转到充值界面，打开充值界面，输入金额点金确定充值或者返回金额
 
@@ -817,3 +880,172 @@ public class PayActivity extends AppCompatActivity {
 
 }
 ```
+
+#### 
+
+##### 实例2：相机调用及相机照片的返回
+
+```java
+public class MainActivity extends AppCompatActivity {
+
+    private static final int REQUEST_CODE = 1;
+    private ImageView resultContainer;
+    private ImageView takephotobtn;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        initView();
+        initListener();
+    }
+
+
+    private void initView() {
+        resultContainer = findViewById(R.id.iv_photo_result);
+        takephotobtn = findViewById(R.id.take_photo);
+    }
+
+    private void initListener() {
+        takephotobtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(MainActivity.this,
+                        Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(MainActivity.this,
+                            new String[]{Manifest.permission.CAMERA},1);
+                }else {
+                    handlertakephoto();
+                }
+
+            }
+        });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                handlertakephoto();
+            }else {
+                Toast.makeText(this,"请先允许权限",Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void handlertakephoto() {
+        //拍照按钮点击后跳转到相机界面
+        //startActivityForResult
+        Intent intent = new Intent();
+        intent.setAction("android.media.action.IMAGE_CAPTURE");
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+
+
+
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK && data!=null) {
+                //说明成功返回
+                Bitmap result = data.getParcelableExtra("data");
+                if (result != null) {
+                    resultContainer.setImageBitmap(result);
+                }
+
+            }else if (resultCode == Activity.RESULT_CANCELED){
+                //取消或者失败
+                Toast.makeText(this,"您取消了拍照",Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    }
+}
+```
+
+
+
+## 七.生命周期
+
+##### 1.生命周期
+
+生命周期:被创建—->被开始—>被可视—–>被暂停—–>被停止——>被销毁
+
+![image-20200810120117406](四大组件Activity.assets/image-20200810120117406.png)
+
+`1.onCreate：onCreate这个方法会在Activity启动的时候被调用。集成自Activity的类，实现了onCreate方法，必须要调用 super.onCreate(savedInstanceState)这个方法，否则会抛出异常。`
+
+`2.onStart:这个方法会在onCreate方法以后调用，或者会在onRestart这个方法调用以后被调用`
+
+![image-20200810120503737](四大组件Activity.assets/image-20200810120503737.png)
+
+`3.onResume:获得焦点时，这个方法会在onRestoreInstanceState方法或者onRestart方法或者onPause这个方法以后被调用。`
+
+`4.onPause:失去焦点时,它会在当前Activity进入后台但又没被杀死的时候会被调用`
+
+`5.onStop:界面不可见时，停止的回调，这个方法一般是执行完onPause,要退出了，则会调用。假设说，顶部有一个透明的Activity，则不会调用当前的onStop方法，但会调用到onPause方法`
+
+`6.onDestroy:活动销毁时`
+
+##### 2.横竖屏对生命周期的影响
+
+```
+横竖屏时生命周期的变化:打开应用，竖屏—>横屏
+D/MainActivity: onCreate:
+D/MainActivity: onStart:
+D/MainActivity: onResume:
+D/MainActivity: onPause:
+D/MainActivity: onStop:
+D/MainActivity: onDestroy:
+D/MainActivity: onCreate:
+D/MainActivity: onStart:
+D/MainActivity: onResume:
+
+如上可知竖屏切换成横屏的时候，Activity会销毁，并重新创建
+横屏切换成竖屏时Activity也会销毁，并重新创建
+实际开发的场景：
+1.游戏开发
+2.视频播放器
+3.其他场景
+横竖屏切换的时候，activity的生命周期发生变化
+如何解决？
+1.禁止旋转，指定方向(大多用于游戏)
+android:screenOrientation="landscape" 横屏
+android:screenOrientation="portrait"  竖屏
+2.对配置不敏感(大多用于视频app)
+android:configChanges="keyboardHidden|screenSize|orientation"
+
+```
+
+
+
+##### 3.任务栈和启动模式
+
+```
+任务栈：先进后出
+队列：先进后出
+
+1.standard模式：android:launchMode="standard"
+创建新的任务，置于栈顶。当我们返回的时候，就是销毁当前任务，也就是出栈
+创建了多少个，就点多少次返回
+使用场景：大多数场景，如果不配置，默认就是用此模式
+2.singleTop模式: android:launchMode="singleTop"
+如果栈顶已经是当前任务了，就不会创建新任务
+使用场景：一般来说，为保证只有一个任务，而不被创建多个，所有就需要这种模式
+比如我们的浏览器书签，应用通知推送
+3.singleTask模式: android:launchMode="singleTask"
+如果要创建的任务没有，就会创建任务，并且放在栈顶
+如果要创建的任务已经存在，就会把这个任务以上的任务全部移除，
+使得当前任务成为最顶部的任务
+使用场景:当任务占的资源比较大时，就使用singleTask
+4.singleInstance模式: android:launchMode="singleInstance"
+singleInstance的特点：前面三种启动模式，都在同一个任务栈，
+但是singleInstance很特别，他是独立一个任务栈
+使用场景：在整个系统中只有一个唯一实例。
+```
+
