@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <Button
+        android:onClick="startClick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="启动服务"/>
+
+    <Button
+        android:onClick="stopClick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="停止服务"/>
+
+    <Button
+        android:onClick="bindService"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="绑定服务"/>
+
+    <Button
+        android:onClick="unBindService"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="解绑服务"/>
+
+    <Button
+        android:onClick="startThreadService"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="启动多线程服务"/>
+
+</LinearLayout>

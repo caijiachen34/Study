@@ -1,0 +1,67 @@
+package com.cjc.recyclerviewtest.adapters;
+
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.cjc.recyclerviewtest.R;
+import com.cjc.recyclerviewtest.beans.ItemBean;
+
+import java.util.List;
+
+/**
+ * Created by CC
+ **/
+public class GridViewAdapter extends RecyclerView.Adapter<GridViewAdapter.InnerHolder> {
+
+    private final List<ItemBean> mData;
+
+    public GridViewAdapter(List<ItemBean> data) {
+        this.mData = data;
+    }
+
+    @NonNull
+    @Override
+    public InnerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = View.inflate(parent.getContext(), R.layout.item_grid_view, null);
+        return new InnerHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull InnerHolder holder, int position) {
+        holder.setData(mData.get(position));
+    }
+
+    @Override
+    public int getItemCount() {
+        //返回条目个数
+        if (mData != null) {
+            return mData.size();
+        }
+        return 0;
+    }
+
+    public class InnerHolder extends RecyclerView.ViewHolder {
+
+        private TextView gird_view_title;
+        private ImageView gird_view_icon;
+
+        public InnerHolder(@NonNull View itemView) {
+            super(itemView);
+            gird_view_title = itemView.findViewById(R.id.gird_view_title);
+            gird_view_icon = itemView.findViewById(R.id.gird_view_icon);
+        }
+
+        //设置数据
+        public void setData(ItemBean itemBean) {
+            gird_view_title.setText(itemBean.title);
+            gird_view_icon.setImageResource(itemBean.icon);
+        }
+    }
+}

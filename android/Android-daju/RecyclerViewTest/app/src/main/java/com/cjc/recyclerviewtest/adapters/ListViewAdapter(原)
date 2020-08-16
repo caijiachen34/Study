@@ -1,0 +1,74 @@
+package com.cjc.recyclerviewtest.adapters;
+
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.cjc.recyclerviewtest.R;
+import com.cjc.recyclerviewtest.beans.ItemBean;
+
+import java.util.List;
+
+/**
+ * Created by CC
+ **/
+public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.InnerHolder> {
+
+    private final List<ItemBean> mData;
+
+    //构造方法从外部传输数据
+    public ListViewAdapter(List<ItemBean> data){
+        this.mData = data;
+    }
+
+    //创建内部Holder,即创建一个可以复用的item
+    @NonNull
+    @Override
+    public InnerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        //传进去的view就是条目的界面
+        //两个步骤
+        //1.拿到VIew
+        //2.创建InnerHolder
+        View view = View.inflate(parent.getContext(), R.layout.item_list_view, null);
+        return new InnerHolder(view);
+    }
+
+    //这个方法用来绑定holder，一般来设置数据
+    @Override
+    public void onBindViewHolder(@NonNull InnerHolder holder, int position) {
+        holder.setData(mData.get(position));
+    }
+
+    //返回条目个数
+    @Override
+    public int getItemCount() {
+        if (mData != null) {
+            return mData.size();
+        }
+        return 0;
+    }
+
+    public class InnerHolder extends RecyclerView.ViewHolder {
+
+        private ImageView micon;
+        private TextView mtitle;
+
+        public InnerHolder(@NonNull View itemView) {
+            super(itemView);
+
+            //找到条目控件
+            micon = itemView.findViewById(R.id.icon);
+            mtitle = itemView.findViewById(R.id.title);
+        }
+
+        //用于设置数据
+        public void setData(ItemBean itemBean) {
+            micon.setImageResource(itemBean.icon);
+            mtitle.setText(itemBean.title);
+        }
+    }
+}
