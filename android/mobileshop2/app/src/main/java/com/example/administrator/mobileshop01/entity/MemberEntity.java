@@ -7,7 +7,7 @@ public class MemberEntity {
     private int sex;
     private String mobil;
     private Object regtime;
-    private Object  lastlogin;
+    private Object lastlogin;
     private String image;
     private Object memberAddress;
 
