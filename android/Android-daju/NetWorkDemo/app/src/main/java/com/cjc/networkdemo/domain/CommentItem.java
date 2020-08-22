@@ -5,6 +5,14 @@ package com.cjc.networkdemo.domain;
  **/
 public class CommentItem {
 
+    @Override
+    public String toString() {
+        return "CommentItem{" +
+                "articleId='" + articleId + '\'' +
+                ", commentContent='" + commentContent + '\'' +
+                '}';
+    }
+
     /**
      * articleId : 234123
      * commentContent : 这是评论内容

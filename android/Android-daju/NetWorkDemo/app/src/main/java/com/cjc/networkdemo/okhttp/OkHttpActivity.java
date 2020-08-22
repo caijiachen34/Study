@@ -1,4 +1,4 @@
-package com.cjc.networkdemo;
+package com.cjc.networkdemo.okhttp;
 
 import android.Manifest;
 import android.app.Activity;
@@ -15,6 +15,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cjc.networkdemo.Constants;
+import com.cjc.networkdemo.R;
 import com.cjc.networkdemo.okhttp.adapters.GetTextAdapter2;
 import com.cjc.networkdemo.domain.CommentItem;
 import com.cjc.networkdemo.domain.GetTextItem;

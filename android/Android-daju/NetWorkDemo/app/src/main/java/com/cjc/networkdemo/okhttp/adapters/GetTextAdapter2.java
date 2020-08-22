@@ -1,4 +1,4 @@
-package com.cjc.networkdemo.adapters;
+package com.cjc.networkdemo.okhttp.adapters;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.cjc.networkdemo.Constants;
 import com.cjc.networkdemo.R;
 import com.cjc.networkdemo.domain.GetTextItem;
 
@@ -38,7 +39,7 @@ public class GetTextAdapter2 extends RecyclerView.Adapter<GetTextAdapter2.InnerH
     public void onBindViewHolder(@NonNull InnerHolder holder, int position) {
         View itemView = holder.itemView;
         GetTextItem.DataBean dataBean = mData.get(position);
-        Glide.with(itemView.getContext()).load("http://192.168.2.143:9102" + dataBean.getCover()).into(holder.image);
+        Glide.with(itemView.getContext()).load(Constants.BASE_URL + dataBean.getCover()).into(holder.image);
         holder.writer.setText("作者" + dataBean.getUserName());
         holder.title.setText(dataBean.getTitle());
         holder.count.setText("数量" + dataBean.getViewCount());

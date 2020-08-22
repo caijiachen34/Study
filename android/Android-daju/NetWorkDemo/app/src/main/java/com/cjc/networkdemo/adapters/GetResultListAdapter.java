@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.cjc.networkdemo.Constants;
 import com.cjc.networkdemo.R;
 import com.cjc.networkdemo.domain.GetTextItem;
 
@@ -39,7 +40,7 @@ public class GetResultListAdapter extends RecyclerView.Adapter<GetResultListAdap
         titleTv.setText(dataBean.getTitle());
 
         ImageView cover = itemView.findViewById(R.id.iv_item);
-        Glide.with(itemView.getContext()).load("http://192.168.2.143:9102" + mData.get(position).getCover()).into(cover);
+        Glide.with(itemView.getContext()).load(Constants.BASE_URL + mData.get(position).getCover()).into(cover);
 
         TextView writer = itemView.findViewById(R.id.tv_item_writer);
         writer.setText("作者:" + dataBean.getUserName());

@@ -10,6 +10,34 @@
         android:textAllCaps="false"
         android:text="getRequest"/>
 
+    <Button
+        android:onClick="postComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="postComment"/>
+
+    <Button
+        android:onClick="postFile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="postFile"/>
+
+    <Button
+        android:onClick="postFiles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="postFiles"/>
+
+    <Button
+        android:onClick="downFile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="downFile"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/result_list_okhttp"
         android:layout_width="match_parent"

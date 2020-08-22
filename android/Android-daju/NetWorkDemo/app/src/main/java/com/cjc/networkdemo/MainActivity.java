@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try {
                     //URL url = new URL("http://10.0.2.2:9102/get/text");
-                    URL url = new URL("http://192.168.2.143:9102/get/text");
+                    URL url = new URL(Constants.BASE_URL + "/get/text");
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setConnectTimeout(10000);
                     connection.setRequestMethod("GET");

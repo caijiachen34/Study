@@ -594,7 +594,7 @@ Intent intent = new Intent(this,SecondActivity.class);
 
 #### 4.协议的形式来传数据
 
-##### 示例1，通过隐式意图来传送数据(调用系统电话)
+##### 示例1，(危险权限获取)通过隐式意图来传送数据(调用系统电话)
 
 ```
 /* android6.0危险权限需要进行申请
@@ -1049,3 +1049,14 @@ singleInstance的特点：前面三种启动模式，都在同一个任务栈，
 使用场景：在整个系统中只有一个唯一实例。
 ```
 
+
+
+
+
+
+
+>代码参考：阳光沙滩-程序猿拉大锯
+
+[阳光沙滩](https://www.sunofbeach.net/)
+
+[程序猿拉大锯的bilibili空间](https://space.bilibili.com/44272436)
