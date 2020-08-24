@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <Button
+        android:onClick="createMethod"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="createMethod"/>
+
+    <Button
+        android:onClick="createMethod2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="createMethod2"/>
+
+    <Button
+        android:onClick="formMethod"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="fromMethod"/>
+
+    <Button
+        android:onClick="intervalMethod"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="intervalMethod"/>
+
+    <Button
+        android:onClick="justMethod"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="justMethod"/>
+
+    <Button
+        android:onClick="rangeMethod"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="rangeMethod"/>
+
+    <Button
+        android:onClick="filterMethod"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="filterMethod"/>
+
+
+
+
+
+
+
+</LinearLayout>
