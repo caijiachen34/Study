@@ -87,8 +87,8 @@ public class LoginResult {
         private String email;
         private int sex;
         private String mobile;
-        private long regtime;
-        private long lastlogin;
+        private String regtime;
+        private String lastlogin;
         private String image;
         private Object memberAddresses;
 
@@ -140,19 +140,19 @@ public class LoginResult {
             this.mobile = mobile;
         }
 
-        public long getRegtime() {
+        public String getRegtime() {
             return regtime;
         }
 
-        public void setRegtime(long regtime) {
+        public void setRegtime(String regtime) {
             this.regtime = regtime;
         }
 
-        public long getLastlogin() {
+        public String getLastlogin() {
             return lastlogin;
         }
 
-        public void setLastlogin(long lastlogin) {
+        public void setLastlogin(String lastlogin) {
             this.lastlogin = lastlogin;
         }
 

@@ -29,7 +29,7 @@ public class MemberPresenter extends HttpMethods {
      */
     public static void login(Subscriber<MemberEntity> subscriber, String username, String password) {
         Observable observable = memberService.login(username, password)
-                .map(new HttpResultFunc<MemberEntity>());//创建观察者
+                .map(new HttpResultFunc<MemberEntity>());
         toSubscribe(observable, subscriber);//订阅
     }
 

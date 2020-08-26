@@ -25,11 +25,11 @@ import rx.Subscriber;
  **/
 public class LoginUtils {
     private static final String TAG = "LoginUtils";
-    private Retrofit client;
-
-    public LoginUtils(){
-        client = new Retrofit.Builder().baseUrl("http://baidu.com").build();
-    }
+//    private Retrofit client;
+//
+//    public LoginUtils(){
+//        client = new Retrofit.Builder().baseUrl("http://baidu.com").build();
+//    }
 
     public Observable<String> login(String username,String password){
         return Observable.create(new Observable.OnSubscribe<String>() {
@@ -45,12 +45,17 @@ public class LoginUtils {
                             Log.d(TAG, "code: " + code);
                             if (code == HttpURLConnection.HTTP_OK) {
                                 Log.d(TAG, "onResponse: " + response.body());
+                                if (response.body().getData() != null) {
+                                Log.d(TAG, "email: " + response.body().getData().getEmail());
+
+                                }
                             }
                         }
 
                         @Override
                         public void onFailure(Call<LoginResult> call, Throwable t) {
-                            Log.d(TAG, "onFailure: " + t.getMessage());
+                            Log.d(TAG, "onFailure: " + call.toString());
+                            Log.d(TAG, "onFailure: " + t.toString());
                         }
                     });
 

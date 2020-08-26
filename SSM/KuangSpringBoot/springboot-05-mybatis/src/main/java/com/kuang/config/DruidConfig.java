@@ -36,7 +36,7 @@ public class DruidConfig {
 
         //增加配置,key是固定的
         initParameters.put("loginUsername","admin");
-        initParameters.put("loginPassword","123456");
+        initParameters.put("loginPassword","admin");
 
         //允许谁可以访问
         initParameters.put("allow","");

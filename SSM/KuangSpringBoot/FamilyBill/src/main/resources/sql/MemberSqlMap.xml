@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cjc.familybill.dao.MemberDao">
+    <!-- 缓存配置-->
+    <cache eviction="LRU" flushInterval="30000" size="512" readOnly="true"/>
+    <!-- 动态查询，用于代替findByEmail、findByName -->
+    <select id="dynamicFind" parameterType="map"
+            resultType="com.cjc.familybill.entity.Member">
+        select * from fb_member
+        <where>
+            <if test="uname!=null">
+                uname=#{uname}
+            </if>
+            <if test="email!=null">
+                and email=#{email}
+            </if>
+            <if test="mobile!=null">
+                and mobile=#{mobile}
+            </if>
+        </where>
+    </select>
+    <!-- 根据id查询 -->
+    <select id="findById" parameterType="int"
+            resultType="com.cjc.familybill.entity.Member">
+        select * from fb_member where member_id=#{member_id}
+    </select>
+    <!-- 根据email查询 -->
+    <select id="findByEmail" parameterType="string"
+            resultType="com.cjc.familybill.entity.Member">
+        select * from fb_member where email=#{email}
+    </select>
+    <!-- 根据email查询 -->
+    <select id="findByMobile" parameterType="string"
+            resultType="com.cjc.familybill.entity.Member">
+        select * from fb_member where mobile=#{mobile}
+    </select>
+    <!-- 根据uname查询 -->
+    <select id="findByName" parameterType="string"
+            resultType="com.cjc.familybill.entity.Member">
+        select * from fb_member where uname=#{uname}
+    </select>
+
+    <!-- insert元素,在此元素内写增加的sql语句， parameterType：参数类型-->
+    <insert id="save" parameterType="com.cjc.familybill.entity.Member"
+            useGeneratedKeys="true" keyProperty="member_id" >
+        insert into fb_member
+        (member_id,uname,password,email,sex,mobile,regtime,lastlogin,image)
+        values(#{member_id},#{uname},#{password},#{email},#{sex},#{mobile},
+               #{regtime},#{lastlogin},#{image})
+    </insert>
+
+    <!-- select元素，在此元素内写查询语句,resultType:结果类型 -->
+    <select id="findAll" resultType="com.cjc.familybill.entity.Member">
+        select * from fb_member
+    </select>
+
+    <!-- update元素，在此元素内写更新语句 -->
+    <update id="updatePwdById" parameterType="map">
+        update fb_member
+        set password=#{password}
+        where member_id=#{member_id}
+    </update>
+
+    <!-- delete元素，在此元素内写删除语句 -->
+    <delete id="deleteById" parameterType="int">
+        delete from fb_member where member_id=#{member_id}
+    </delete>
+
+    <!-- 情景二的动态sql -->
+    <update id="dynamicUpdate"
+            parameterType="com.cjc.familybill.entity.Member">
+        update fb_member
+        <set>
+            <if test="uname!=null">
+                uname=#{uname},
+            </if>
+            <if test="password!=null">
+                password=#{password},
+            </if>
+            <if test="sex!=null">
+                sex=#{sex},
+            </if>
+            <if test="mobile!=null">
+                mobile=#{mobile},
+            </if>
+            <if test="image!=null">
+                image=#{image},
+            </if>
+            <if test="lastlogin!=null">
+                lastlogin=#{lastlogin}
+            </if>
+        </set>
+        where member_id=#{member_id}
+    </update>
+
+
+</mapper>

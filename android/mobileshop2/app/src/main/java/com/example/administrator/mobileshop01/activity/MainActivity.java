@@ -44,9 +44,9 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FragmentTransaction transaction= getSupportFragmentManager().beginTransaction();
-        navigationFragment=new NavigationFragment();
-        transaction.add(R.id.main_fragment,navigationFragment);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        navigationFragment = new NavigationFragment();
+        transaction.add(R.id.main_fragment, navigationFragment);
         transaction.commit();
 
         /**
@@ -75,7 +75,7 @@ public class MainActivity extends BaseActivity {
         /**
          * 使用公共封装类
          */
-        MemberPresenter.register(new Subscriber< MemberEntity >() {
+        MemberPresenter.register(new Subscriber<MemberEntity>() {
             @Override
             public void onCompleted() {
 
@@ -90,25 +90,23 @@ public class MainActivity extends BaseActivity {
             public void onNext(MemberEntity memberEntity) {
 
             }
-        },"cjc","cjc89684550","caijiachen34@1126.com");
+        }, "cjc", "cjc89684550", "caijiachen34@1126.com");
 
         /**
          * 使用带加载动画的订阅者
          */
-        MemberPresenter.login(new ProgressDialogSubscriber< MemberEntity >(this) {
+        MemberPresenter.login(new ProgressDialogSubscriber<MemberEntity>(this) {
             @Override
             public void onNext(MemberEntity memberEntity) {
-            Log.i("=====","success===="+memberEntity.toString());
+                Log.i("=====", "success====" + memberEntity.toString());
             }
-        },"cjc","cjc89684550");
+        }, "cjc", "cjc89684550");
 
     }
 
 
-
-
-    public void changeTab(int tab){
-        switch (tab){
+    public void changeTab(int tab) {
+        switch (tab) {
             case 1:
                 this.navigationFragment.setTabSelection(R.id.tab_item_home);
                 break;
@@ -135,7 +133,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (navigationFragment.currentId!=R.id.tab_item_home){
+        if (navigationFragment.currentId != R.id.tab_item_home) {
             changeTab(1);
             return;
         }
@@ -150,7 +148,6 @@ public class MainActivity extends BaseActivity {
      */
 
 
-
     /**
      *Retrofit rxjava联合封装
      * 1.依赖引入
@@ -160,7 +157,6 @@ public class MainActivity extends BaseActivity {
      * 5.使用公共方法
      * 6.封装一个带有加载进度的订阅者
      */
-
 
 
     /**
@@ -180,44 +176,42 @@ public class MainActivity extends BaseActivity {
      * 4.测试框架的功能
      */
     //Retrofit可能与okhttp冲突，先注释okttp
-    public void testRetrofitGet1(){
+    public void testRetrofitGet1() {
         //创建客户端
-        Retrofit retrofit=new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL) //设置访问地址
                 .addConverterFactory(GsonConverterFactory.create()) //设置解析方式为Gson
                 .build();
-        GoodsService goodsService =retrofit.create(GoodsService.class);
-        Call<JsonResult>task= goodsService.getJson("keji","f3c68b23dc99865f20120175607e2adc");
+        GoodsService goodsService = retrofit.create(GoodsService.class);
+        Call<JsonResult> task = goodsService.getJson("keji", "f3c68b23dc99865f20120175607e2adc");
 
         task.enqueue(new Callback<JsonResult>() {
             @Override
             public void onResponse(Call<JsonResult> call, Response<JsonResult> response) {
-                Log.d("====","get1===="+response.code());
-                Log.d("====","get1====="+response.body());
+                Log.d("====", "get1====" + response.code());
+                Log.d("====", "get1=====" + response.body());
             }
 
             @Override
             public void onFailure(Call<JsonResult> call, Throwable t) {
-                Log.i("===========","get===========请求失败");
+                Log.i("===========", "get===========请求失败");
             }
         });
     }
 
 
-
-
     //Retrofit可能与okhttp冲突，先注释okttp
-    public void testRetrofitGet2(){
+    public void testRetrofitGet2() {
         //创建客户端
-        Retrofit retrofit=new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL) //设置访问地址
                 .addConverterFactory(GsonConverterFactory.create()) //设置解析方式为Gson
                 .build();
-        GoodsService goodsService =retrofit.create(GoodsService.class);
-        Map<String,String>params=new HashMap<>();
-        params.put("type","keji");
-        params.put("key","f3c68b23dc99865f20120175607e2adc");
-        Call<JsonResultGet>task= goodsService.getJson2(params);
+        GoodsService goodsService = retrofit.create(GoodsService.class);
+        Map<String, String> params = new HashMap<>();
+        params.put("type", "keji");
+        params.put("key", "f3c68b23dc99865f20120175607e2adc");
+        Call<JsonResultGet> task = goodsService.getJson2(params);
         //Call<JsonResult>task =api.getJson("keji","f3c68b23dc99865f20120175607e2adc");
 
         task.enqueue(new Callback<JsonResultGet>() {
@@ -226,8 +220,8 @@ public class MainActivity extends BaseActivity {
 
 
                 //JsonResult<JsonResult> body = response.body();
-                Log.d("====","get2===="+response.code());
-                Log.d("====","get2====="+response.body());
+                Log.d("====", "get2====" + response.code());
+                Log.d("====", "get2=====" + response.body());
                 //List<JsonResult>list=response.body();
 //                if(list!=null&&list.size()>0){
 //                    String title=list.get(0).toString();
@@ -240,7 +234,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<JsonResultGet> call, Throwable t) {
-                Log.i("===========","get===========请求失败");
+                Log.i("===========", "get===========请求失败");
             }
         });
     }
@@ -248,80 +242,76 @@ public class MainActivity extends BaseActivity {
 
     private void testRetrofitPost1() {
         //String url="/toutiao/index?type=shishang&key=f3c68b23dc99865f20120175607e2adc";
-        Retrofit retrofit=new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL) //设置访问地址
                 .addConverterFactory(GsonConverterFactory.create()) //设置解析方式为Gson
                 .build();
-        GoodsService goodsService =retrofit.create(GoodsService.class);
-        Map<String,String>params=new HashMap<>();
-        params.put("type","shishang");
-        params.put("key","f3c68b23dc99865f20120175607e2adc");
-        Call<JsonResultPost>task= goodsService.postJson(params);
+        GoodsService goodsService = retrofit.create(GoodsService.class);
+        Map<String, String> params = new HashMap<>();
+        params.put("type", "shishang");
+        params.put("key", "f3c68b23dc99865f20120175607e2adc");
+        Call<JsonResultPost> task = goodsService.postJson(params);
         task.enqueue(new Callback<JsonResultPost>() {
             @Override
             public void onResponse(Call<JsonResultPost> call, Response<JsonResultPost> response) {
-                Log.d("====","post===="+response.code());
-                Log.d("====","post====="+response.body());
+                Log.d("====", "post====" + response.code());
+                Log.d("====", "post=====" + response.body());
             }
 
             @Override
             public void onFailure(Call<JsonResultPost> call, Throwable t) {
-                Log.i("===========","post===========请求失败");
+                Log.i("===========", "post===========请求失败");
             }
         });
     }
 
 
     private void testRetrofitPost2() {//url post
-        Retrofit retrofit=new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL) //设置访问地址
                 .addConverterFactory(GsonConverterFactory.create()) //设置解析方式为Gson
                 .build();
-        GoodsService goodsService =retrofit.create(GoodsService.class);
-        String url="/toutiao/index?type=shishang&key=f3c68b23dc99865f20120175607e2adc";
-        Call<PostWithUrl>task= goodsService.PostWithUrl(url);
+        GoodsService goodsService = retrofit.create(GoodsService.class);
+        String url = "/toutiao/index?type=shishang&key=f3c68b23dc99865f20120175607e2adc";
+        Call<PostWithUrl> task = goodsService.PostWithUrl(url);
         task.enqueue(new Callback<PostWithUrl>() {
             @Override
             public void onResponse(Call<PostWithUrl> call, Response<PostWithUrl> response) {
-                Log.d("====","post2===="+response.code());
-                Log.d("====","post2====="+response.body());
+                Log.d("====", "post2====" + response.code());
+                Log.d("====", "post2=====" + response.body());
             }
 
             @Override
             public void onFailure(Call<PostWithUrl> call, Throwable t) {
-                Log.i("===========","post2===========请求失败");
+                Log.i("===========", "post2===========请求失败");
             }
         });
     }
 
 
-
-
     private void testRetrofitPost3() {
-        Retrofit retrofit=new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL) //设置访问地址
                 .addConverterFactory(GsonConverterFactory.create()) //设置解析方式为Gson
                 .build();
-        GoodsService goodsService =retrofit.create(GoodsService.class);
-        Map<String,String>params=new HashMap<>();
-        params.put("type","shishang");
-        params.put("key","f3c68b23dc99865f20120175607e2adc");
-        Call<JsonResultPost>task= goodsService.postJson(params);
+        GoodsService goodsService = retrofit.create(GoodsService.class);
+        Map<String, String> params = new HashMap<>();
+        params.put("type", "shishang");
+        params.put("key", "f3c68b23dc99865f20120175607e2adc");
+        Call<JsonResultPost> task = goodsService.postJson(params);
         task.enqueue(new Callback<JsonResultPost>() {
             @Override
             public void onResponse(Call<JsonResultPost> call, Response<JsonResultPost> response) {
-                Log.d("====","post3===="+response.code());
-                Log.d("====","post3====="+response.body());
+                Log.d("====", "post3====" + response.code());
+                Log.d("====", "post3=====" + response.body());
             }
 
             @Override
             public void onFailure(Call<JsonResultPost> call, Throwable t) {
-                Log.i("===========","post===========请求失败");
+                Log.i("===========", "post===========请求失败");
             }
         });
     }
-
-
 
 
     /**
@@ -334,14 +324,15 @@ public class MainActivity extends BaseActivity {
 
     /**
      * 将json数据转化为对象
+     *
      * @param jsonString
      */
-    public void testJson(String jsonString){
-        JsonObject jsonObject=new JsonParser().parse(jsonString).getAsJsonObject();
-        Gson gson=new Gson();
-        Person p=gson.fromJson(jsonObject.get("data"),Person.class);
-        Log.i("===对象","===="+p.toString());
-        Log.i("===对象","===="+Tools.getAssetsFile(this,"testjson1.txt"));
+    public void testJson(String jsonString) {
+        JsonObject jsonObject = new JsonParser().parse(jsonString).getAsJsonObject();
+        Gson gson = new Gson();
+        Person p = gson.fromJson(jsonObject.get("data"), Person.class);
+        Log.i("===对象", "====" + p.toString());
+        Log.i("===对象", "====" + Tools.getAssetsFile(this, "testjson1.txt"));
 
 
     }
@@ -349,15 +340,16 @@ public class MainActivity extends BaseActivity {
     /**
      * 将数据转化成List
      */
-    public void testJsonArr(String jsonstr){
-        JsonObject jsonObject=new JsonParser().parse(jsonstr).getAsJsonObject();
-        Gson gson=new Gson();
-        List<Person> personList=gson.fromJson(jsonObject.getAsJsonArray("data"),new TypeToken<List<Person>>(){}.getType());
+    public void testJsonArr(String jsonstr) {
+        JsonObject jsonObject = new JsonParser().parse(jsonstr).getAsJsonObject();
+        Gson gson = new Gson();
+        List<Person> personList = gson.fromJson(jsonObject.getAsJsonArray("data"), new TypeToken<List<Person>>() {
+        }.getType());
         /**
          * 测试是否转换正确
          */
-        for(int i=0;i<personList.size();i++){
-            Log.i("====哈哈哈哈哈哈哈哈哈哈哈哈哈",i+"===="+personList.get(i).toString());
+        for (int i = 0; i < personList.size(); i++) {
+            Log.i("====哈哈哈哈哈哈哈哈哈哈哈哈哈", i + "====" + personList.get(i).toString());
         }
     }
 
@@ -365,10 +357,10 @@ public class MainActivity extends BaseActivity {
      * 如果我们只要取出一个JSON数据中的某一个字段
      */
 
-    public void testJsonOneData(String jsonStr){
-        JsonObject jsonObject=new JsonParser().parse(jsonStr).getAsJsonObject();
-        String name=jsonObject.get("data").getAsJsonObject().get("name").getAsString();
-        Log.i("==========","===只输出了name字段的数据==="+name);
+    public void testJsonOneData(String jsonStr) {
+        JsonObject jsonObject = new JsonParser().parse(jsonStr).getAsJsonObject();
+        String name = jsonObject.get("data").getAsJsonObject().get("name").getAsString();
+        Log.i("==========", "===只输出了name字段的数据===" + name);
     }
 
 

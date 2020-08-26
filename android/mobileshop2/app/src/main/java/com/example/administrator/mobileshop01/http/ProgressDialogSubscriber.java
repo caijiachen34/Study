@@ -16,11 +16,18 @@ import rx.Subscriber;
  * @param <T>
  */
 public abstract class ProgressDialogSubscriber<T> extends Subscriber<T> {
+
+    private static final String TAG = "ProgressDialog";
     private Context mContext;
     private ProgressDialog mDialog;
 
     public ProgressDialogSubscriber(Context context){
         this.mContext=context;
+    }
+
+    @Override
+    public void onNext(T t) {
+        Log.i(TAG, "onNext: " + t);
     }
 
     @Override

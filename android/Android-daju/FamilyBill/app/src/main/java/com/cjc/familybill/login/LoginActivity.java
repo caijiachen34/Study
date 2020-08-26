@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -22,7 +23,15 @@ import androidx.annotation.Nullable;
 
 import com.cjc.familybill.R;
 import com.cjc.familybill.activitys.MainActivity;
+import com.cjc.familybill.entity.MemberEntity;
+import com.cjc.familybill.http.ProgressDialogSubscriber;
+import com.cjc.familybill.http.loginutils.LoginUtils;
+import com.cjc.familybill.http.presenter.MemberPresenter;
 import com.cjc.familybill.utils.MD5Util;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by CC
@@ -31,8 +40,8 @@ public class LoginActivity extends Activity {
 
     private TextView tv_go2register; //点击注册
     private Button btn_login; //登录按钮
-    private EditText et_user_name,et_user_pwd; //用户名密码控件
-    private String username,pwd,spPwd; //用户名密码控件的获取值
+    private EditText et_user_name, et_user_pwd; //用户名密码控件
+    private String username, pwd, spPwd; //用户名密码控件的获取值
     private CheckBox cb_remember_me; //记住密码
     private TextView tv_main_title;
     private RelativeLayout rl_title_bar;
@@ -44,13 +53,19 @@ public class LoginActivity extends Activity {
     private final String USER_PWD = "USER_PWD";
     private final String IS_CHECKED = "IS_CHECKED";
 
+    private LoginUtils loginUtils;
+    private static final String TAG = "LoginActivity";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_login);
+        //loginUtils = new LoginUtils();
         IsChecked = loadStatus();
         init();
+        initData();
         initListener();
+
     }
 
     private void init() {
@@ -80,7 +95,7 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivityForResult(intent,1);
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -88,41 +103,16 @@ public class LoginActivity extends Activity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                username = et_user_name.getText().toString().trim();
-                pwd = et_user_pwd.getText().toString().trim();
-                String md5Pwd = MD5Util.MD5(pwd);
-                spPwd = readPwd(username);
-                if (TextUtils.isEmpty(username)) {
-                    Toast.makeText(LoginActivity.this,"请输入用户名",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (TextUtils.isEmpty(pwd)) {
-                    Toast.makeText(LoginActivity.this,"请输入密码",Toast.LENGTH_SHORT).show();
-                    return;
-                }else if (md5Pwd.equals(spPwd)){
-                    Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
-                    //把登录状态和登录的用户名保存到SharedPreferences里面
-                    saveLoginStatus(true,username);
-                    //登录成功后通过Intent把登录成功的状态传递到MainActivity.java中
-                    Intent data = new Intent();
-                    data.putExtra("isLogin",true);
-                    setResult(RESULT_OK,data); //setResult为OK，关闭当前页面
-                    LoginActivity.this.finish();
-                    //登录成功跳转
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    return;
-                }else if ((!TextUtils.isEmpty(spPwd)&& !md5Pwd.equals(spPwd))){
-                    Toast.makeText(LoginActivity.this,"用户名或密码错误",Toast.LENGTH_SHORT).show();
-                    return;
-                }else {
-                    Toast.makeText(LoginActivity.this,"此用户不存在",Toast.LENGTH_SHORT).show();
-                }
+                login();
             }
+
+
         });
+
 
         //记住账户
         //1.记住用户名
-        cb_remember_me.addTextChangedListener(new TextWatcher() {
+        et_user_name.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -139,12 +129,12 @@ public class LoginActivity extends Activity {
                 if (IsChecked) {
                     if (sps == null) {
                         //获取config文件
-                        getApplicationContext().getSharedPreferences("config", Context.MODE_PRIVATE);
+                        sps=getApplicationContext().getSharedPreferences("config", Context.MODE_PRIVATE);
                     }
                     //实例化SharedPreferences的编辑者对象
                     SharedPreferences.Editor editor = sps.edit();
                     //存储用户名数据
-                    editor.putString(USER_NAME,et_user_name.getText().toString());
+                    editor.putString(USER_NAME, et_user_name.getText().toString().trim());
                     editor.commit();
                 }
             }
@@ -167,13 +157,13 @@ public class LoginActivity extends Activity {
             public void afterTextChanged(Editable s) {
                 if (IsChecked) {
                     if (sps == null) {
-                        sps = getApplication().getSharedPreferences("config",Context.MODE_PRIVATE);
+                        sps = getApplication().getSharedPreferences("config", Context.MODE_PRIVATE);
                     }
 
                     //实例化SharedPreferences的编辑者对象
                     SharedPreferences.Editor editor = sps.edit();
                     //存储用户名数据
-                    editor.putString(USER_PWD,et_user_pwd.getText().toString());
+                    editor.putString(USER_PWD, et_user_pwd.getText().toString());
                     editor.commit();
                 }
             }
@@ -184,27 +174,27 @@ public class LoginActivity extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 IsChecked = isChecked;
-                if (isChecked) {
+                    if (isChecked) {
                     if (sps == null) {
-                        sps = getApplicationContext().getSharedPreferences("config",Context.MODE_PRIVATE);
+                        sps = getApplicationContext().getSharedPreferences("config", Context.MODE_PRIVATE);
                     }
                     //实例化编辑对象
                     SharedPreferences.Editor editor = sps.edit();
                     //存储数据
-                    editor.putString(USER_NAME,et_user_name.getText().toString());
-                    editor.putString(USER_PWD,et_user_pwd.getText().toString());
+                    editor.putString(USER_NAME, et_user_name.getText().toString().trim());
+                    editor.putString(USER_PWD, et_user_pwd.getText().toString().trim());
                     //记住密码，下次读取
-                    editor.putBoolean(IS_CHECKED,isChecked);
+                    editor.putBoolean(IS_CHECKED, isChecked);
                     //Toast.makeText(LoginActivity.this,"记住密码",Toast.LENGTH_SHORT).show();
                     editor.commit();
-                }else {
+                } else {
                     //取消记住密码
                     SharedPreferences.Editor editor = sps.edit();
                     //存储数据
-                    editor.putString(USER_NAME,null);
-                    editor.putString(USER_PWD,null);
+                    editor.putString(USER_NAME, null);
+                    editor.putString(USER_PWD, null);
                     //记住密码状态
-                    editor.putBoolean(IS_CHECKED,isChecked);
+                    editor.putBoolean(IS_CHECKED, isChecked);
                     //Toast.makeText(LoginActivity.this,"取消记住密码",Toast.LENGTH_SHORT).show();
                     editor.commit();
                 }
@@ -212,13 +202,13 @@ public class LoginActivity extends Activity {
         });
     }
 
-    private void saveLoginStatus(boolean status,String username) {
+    private void saveLoginStatus(boolean status, String username) {
         this.mUsername = username;
         //loginInfo表示文件名
         SharedPreferences sp = getSharedPreferences("loginInfo", MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putBoolean("isLogin",status);
-        editor.putString("loginUserName",username);
+        editor.putBoolean("isLogin", status);
+        editor.putString("loginUserName", username);
         editor.commit();
     }
 
@@ -236,17 +226,17 @@ public class LoginActivity extends Activity {
         }
     }
 
-    private void initData(){
-        if (sps != null) {
+    private void initData() {
+        if (sps == null) {
             sps = getApplicationContext().getSharedPreferences("config", Context.MODE_PRIVATE);
         }
-        et_user_name.setText(sps.getString(USER_NAME,""));
-        et_user_pwd.setText(sps.getString(USER_PWD,""));
-        IsChecked = sps.getBoolean(IS_CHECKED,false);
+        et_user_name.setText(sps.getString(USER_NAME, ""));
+        et_user_pwd.setText(sps.getString(USER_PWD, ""));
+        IsChecked = sps.getBoolean(IS_CHECKED, false);
         cb_remember_me.setChecked(IsChecked);
     }
 
-    public static String getmUserName(){
+    public static String getmUserName() {
         return mUsername;
     }
 
@@ -256,10 +246,69 @@ public class LoginActivity extends Activity {
         return pwd;
     }
 
-    private boolean loadStatus(){
+    private boolean loadStatus() {
         SharedPreferences sp = getSharedPreferences("config", MODE_PRIVATE);
-        boolean status = sp.getBoolean(IS_CHECKED,false);
+        boolean status = sp.getBoolean(IS_CHECKED, false);
         return status;
+    }
+
+    private void login() {
+        String md5Pwd;
+        username = et_user_name.getText().toString().trim();
+        pwd = et_user_pwd.getText().toString().trim();
+        md5Pwd = MD5Util.MD5(pwd);
+        spPwd = readPwd(username);
+
+        //判空
+        if (TextUtils.isEmpty(username)) {
+            Toast.makeText(LoginActivity.this, "请输入用户名", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (TextUtils.isEmpty(pwd)) {
+            Toast.makeText(LoginActivity.this, "请输入密码", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        MemberPresenter.login(new ProgressDialogSubscriber<MemberEntity>(this) {
+
+            @Override
+            public void onNext(MemberEntity memberEntity) {
+                if (username.equals(memberEntity.getUname())) {
+                    Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                    //把登录状态和登录的用户名保存到SharedPreferences里面
+                    saveLoginStatus(true, username);
+                    //登录成功后通过Intent把登录成功的状态传递到MainActivity.java中
+                    Intent data = new Intent();
+                    data.putExtra("isLogin", true);
+                    setResult(RESULT_OK, data); //setResult为OK，关闭当前页面
+                    LoginActivity.this.finish();
+                    //登录成功跳转
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    return;
+                }
+
+            }
+        }, username, pwd);
+
+
+//        if (md5Pwd.equals(spPwd)){
+//                    Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
+//                    //把登录状态和登录的用户名保存到SharedPreferences里面
+//                    saveLoginStatus(true,username);
+//                    //登录成功后通过Intent把登录成功的状态传递到MainActivity.java中
+//                    Intent data = new Intent();
+//                    data.putExtra("isLogin",true);
+//                    setResult(RESULT_OK,data); //setResult为OK，关闭当前页面
+//                    LoginActivity.this.finish();
+//                    //登录成功跳转
+//                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//                    return;
+//        }else if ((!TextUtils.isEmpty(spPwd)&& !md5Pwd.equals(spPwd))){
+//            Toast.makeText(LoginActivity.this,"用户名或密码错误",Toast.LENGTH_SHORT).show();
+//            return;
+//        }else {
+//            Toast.makeText(LoginActivity.this,"此用户不存在",Toast.LENGTH_SHORT).show();
+//        }
     }
 
 }
