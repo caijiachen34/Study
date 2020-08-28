@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -33,5 +34,19 @@ public class MemberController {
         return result;
     }
 
+
+    @ResponseBody
+    @PostMapping("/login2")
+    public Result login2(String input,String password){
+        Result result=memberService.checkLogin2(input, password);
+        return result;
+    }
+
+    @ResponseBody
+    @PostMapping("/check")
+    public Result checkIsUsed(String input){
+        Result result=memberService.checkIsUsed(input);
+        return result;
+    }
 
 }

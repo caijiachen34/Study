@@ -1,7 +1,10 @@
 package com.cjc.familybill.service;
 
 import com.cjc.familybill.util.Result;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 
 public interface MemberService {
@@ -21,4 +24,7 @@ public interface MemberService {
     public Result updateImage(int memberId, String img, String url);
     //根据用户名/邮箱/电话号进行登录
     public Result checkLogin2(String input,String password);
+    //查询用户名/邮箱/手机号是否已注册
+    public Result checkIsUsed(String input);
+
 }

@@ -31,7 +31,20 @@ public interface MemberService {
             @Field("mobile") String mobile
     );
 
+    //登录接口
     @FormUrlEncoded
     @POST("member/login")
     Observable<HttpResult<MemberEntity>> login(@Field("uname") String username, @Field("password") String password);
+
+    //检查手机/邮箱是否已注册
+    @FormUrlEncoded
+    @POST("member/check")
+    Observable<HttpResult<MemberEntity>> check(@Field("input") String input);
+
+    @FormUrlEncoded
+    @POST("member/login2")
+    Observable<HttpResult<MemberEntity>> checkEmailIsUsed(@Field("input") String input, @Field("password") String password);
+
+
+
 }

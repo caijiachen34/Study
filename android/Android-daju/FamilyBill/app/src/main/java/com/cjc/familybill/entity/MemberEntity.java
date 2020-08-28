@@ -2,9 +2,7 @@ package com.cjc.familybill.entity;
 
 import android.content.Intent;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
 
 /**
  * Created by CC

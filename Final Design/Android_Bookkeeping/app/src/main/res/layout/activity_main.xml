@@ -13,14 +13,13 @@
         android:background="@android:color/white"
         android:orientation="vertical">
 
-        <include layout="@layout/main_title_bar"/>
+        <include layout="@layout/main_title_bar" />
 
         <FrameLayout
             android:id="@+id/main_body"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/white">
-        </FrameLayout>
+            android:background="@android:color/white"></FrameLayout>
     </LinearLayout>
     <LinearLayout
         android:baselineAligned="false"

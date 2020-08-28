@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,6 +19,7 @@ import com.example.my0510.util.AnalysisUtils;
 
 public class MyInfoView {
 
+    private static final String TAG = "MyInfoView";
     public ImageView iv_head_icon;
     private LinearLayout ll_head;
     private RelativeLayout rl_setting;
@@ -30,6 +32,7 @@ public class MyInfoView {
         mContext = context;
         //为以后将Layout转换为view时用
         mInflater = LayoutInflater.from(mContext);
+        Log.d(TAG, "MyInfoView: " + context);
     }
 
 

@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Main-Class: com.cjc.familybill.FamilybillApplication
+Class-Path: spring-expression-5.2.6.RELEASE.jar tomcat-embed-core-9.0.35
+ .jar spring-core-5.2.6.RELEASE.jar spring-jcl-5.2.6.RELEASE.jar druid-1
+ .1.23.jar logback-core-1.2.3.jar jakarta.el-3.0.3.jar spring-webmvc-5.2
+ .6.RELEASE.jar lombok-1.18.12.jar spring-web-5.2.6.RELEASE.jar logback-
+ classic-1.2.3.jar slf4j-api-1.7.30.jar thymeleaf-extras-java8time-3.0.4
+ .RELEASE.jar log4j-api-2.13.2.jar thymeleaf-3.0.11.RELEASE.jar mysql-co
+ nnector-java-8.0.20.jar spring-aop-5.2.6.RELEASE.jar jackson-core-2.11.
+ 0.jar log4j-to-slf4j-2.13.2.jar snakeyaml-1.26.jar spring-boot-autoconf
+ igure-2.3.0.RELEASE.jar jackson-module-parameter-names-2.11.0.jar jakar
+ ta.annotation-api-1.3.5.jar spring-boot-starter-logging-2.3.0.RELEASE.j
+ ar spring-boot-starter-json-2.3.0.RELEASE.jar jackson-datatype-jdk8-2.1
+ 1.0.jar thymeleaf-spring5-3.0.11.RELEASE.jar mybatis-spring-boot-autoco
+ nfigure-2.1.2.jar jackson-annotations-2.11.0.jar spring-boot-starter-jd
+ bc-2.3.0.RELEASE.jar jackson-datatype-jsr310-2.11.0.jar spring-boot-sta
+ rter-2.3.0.RELEASE.jar mybatis-3.5.4.jar jackson-databind-2.11.0.jar sp
+ ring-jdbc-5.2.6.RELEASE.jar spring-tx-5.2.6.RELEASE.jar mybatis-spring-
+ 2.0.4.jar spring-context-5.2.6.RELEASE.jar log4j-1.2.12.jar attoparser-
+ 2.0.5.RELEASE.jar spring-beans-5.2.6.RELEASE.jar jul-to-slf4j-1.7.30.ja
+ r spring-boot-starter-thymeleaf-2.3.0.RELEASE.jar spring-boot-starter-w
+ eb-2.3.0.RELEASE.jar unbescape-1.1.6.RELEASE.jar spring-boot-2.3.0.RELE
+ ASE.jar tomcat-embed-websocket-9.0.35.jar spring-boot-starter-tomcat-2.
+ 3.0.RELEASE.jar mybatis-spring-boot-starter-2.1.2.jar HikariCP-3.4.5.ja
+ r
+

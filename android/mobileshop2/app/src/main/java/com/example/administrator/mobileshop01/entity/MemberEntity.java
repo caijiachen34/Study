@@ -5,7 +5,7 @@ public class MemberEntity {
     private String uname;
     private String email;
     private int sex;
-    private String mobil;
+    private String mobile;
     private Object regtime;
     private Object lastlogin;
     private String image;
@@ -18,7 +18,7 @@ public class MemberEntity {
                 ", uname='" + uname + '\'' +
                 ", email='" + email + '\'' +
                 ", sex=" + sex +
-                ", mobil='" + mobil + '\'' +
+                ", mobile='" + mobile + '\'' +
                 ", regtime=" + regtime +
                 ", lastlogin=" + lastlogin +
                 ", image='" + image + '\'' +
@@ -58,12 +58,12 @@ public class MemberEntity {
         this.sex = sex;
     }
 
-    public String getMobil() {
-        return mobil;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setMobil(String mobil) {
-        this.mobil = mobil;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public Object getRegtime() {

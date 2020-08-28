@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -23,15 +22,12 @@ import androidx.annotation.Nullable;
 
 import com.cjc.familybill.R;
 import com.cjc.familybill.activitys.MainActivity;
-import com.cjc.familybill.entity.MemberEntity;
+import com.cjc.familybill.activitys.MainActivity1;
+import com.cjc.familybill.entity.HttpResult;
 import com.cjc.familybill.http.ProgressDialogSubscriber;
 import com.cjc.familybill.http.loginutils.LoginUtils;
 import com.cjc.familybill.http.presenter.MemberPresenter;
 import com.cjc.familybill.utils.MD5Util;
-
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by CC
@@ -55,6 +51,9 @@ public class LoginActivity extends Activity {
 
     private LoginUtils loginUtils;
     private static final String TAG = "LoginActivity";
+
+    //请求码
+    private final int REQUEST_CODE_REGISTER = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,7 +94,7 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivityForResult(intent, 1);
+                startActivityForResult(intent, REQUEST_CODE_REGISTER);
             }
         });
 
@@ -103,7 +102,7 @@ public class LoginActivity extends Activity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login();
+                handlerLogin();
             }
 
 
@@ -215,15 +214,19 @@ public class LoginActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null) {
-            //接收注册界面传过来的用户名
-            data.getStringExtra("username");
-            if (!TextUtils.isEmpty(username)) {
-                et_user_name.setText(username);
-                //设置光标的位置
-                et_user_name.setSelection(username.length());
+        if (requestCode== REQUEST_CODE_REGISTER) {
+            if (data != null) {
+                //接收注册界面传过来的用户名
+                String username = data.getStringExtra("username");
+                if (!TextUtils.isEmpty(username)) {
+                    et_user_name.setText(username);
+                    et_user_pwd.setText("");
+                    //设置光标的位置
+                    et_user_name.setSelection(username.length());
+                }
             }
         }
+
     }
 
     private void initData() {
@@ -252,7 +255,7 @@ public class LoginActivity extends Activity {
         return status;
     }
 
-    private void login() {
+    private void handlerLogin() {
         String md5Pwd;
         username = et_user_name.getText().toString().trim();
         pwd = et_user_pwd.getText().toString().trim();
@@ -269,23 +272,44 @@ public class LoginActivity extends Activity {
             return;
         }
 
-        MemberPresenter.login(new ProgressDialogSubscriber<MemberEntity>(this) {
+        MemberPresenter.login(new ProgressDialogSubscriber<HttpResult>(this) {
 
             @Override
-            public void onNext(MemberEntity memberEntity) {
-                if (username.equals(memberEntity.getUname())) {
-                    Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
-                    //把登录状态和登录的用户名保存到SharedPreferences里面
-                    saveLoginStatus(true, username);
-                    //登录成功后通过Intent把登录成功的状态传递到MainActivity.java中
-                    Intent data = new Intent();
-                    data.putExtra("isLogin", true);
-                    setResult(RESULT_OK, data); //setResult为OK，关闭当前页面
-                    LoginActivity.this.finish();
-                    //登录成功跳转
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            public void onNext(HttpResult httpResult) {
+//                if (username.equals(memberEntity.getUname())) {
+//                    Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+//                    //把登录状态和登录的用户名保存到SharedPreferences里面
+//                    saveLoginStatus(true, username);
+//                    //登录成功后通过Intent把登录成功的状态传递到MainActivity.java中
+//                    Intent data = new Intent();
+//                    data.putExtra("isLogin", true);
+//                    setResult(RESULT_OK, data); //setResult为OK，关闭当前页面
+//                    LoginActivity.this.finish();
+//                    //登录成功跳转
+//                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//                    return;
+//                }
+
+                String msg = httpResult.getMsg();
+                if (msg.contains("此用户不存在")) {
+                    Toast.makeText(LoginActivity.this, "用户名不存在", Toast.LENGTH_SHORT).show();
                     return;
+                }else if (msg.contains("密码错误")){
+                    Toast.makeText(LoginActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
+                    return;
+                }else {
+                        Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                        //把登录状态和登录的用户名保存到SharedPreferences里面
+                        saveLoginStatus(true, username);
+                        //登录成功后通过Intent把登录成功的状态传递到MainActivity.java中
+                        Intent data = new Intent();
+                        data.putExtra("isLogin", true);
+                        setResult(RESULT_OK, data); //setResult为OK，关闭当前页面
+                        LoginActivity.this.finish();
+                        //登录成功跳转
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 }
+
 
             }
         }, username, pwd);

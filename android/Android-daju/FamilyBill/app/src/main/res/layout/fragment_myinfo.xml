@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/person_title"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:fadingEdge="none">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:text="我的"
+            android:textSize="17sp" />
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/person_title">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/person_for_login"
+                android:layout_width="match_parent"
+                android:layout_height="127dp"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true">
+
+
+                    <ImageView
+                        android:id="@+id/user_img_view"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="22dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/user_photo_background_corners"
+                        android:padding="3dp"
+                        android:scaleType="fitXY" />
+
+                    <RelativeLayout
+                        android:id="@+id/name_balance_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/user_img_view"
+                        android:layout_marginLeft="24dp"
+                        android:layout_toRightOf="@+id/user_img_view">
+
+                        <LinearLayout
+                            android:id="@+id/layout_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/user_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:ellipsize="end"
+                                android:gravity="center_vertical"
+                                android:lineSpacingMultiplier="1.1"
+                                android:maxWidth="100dp"
+                                android:singleLine="true"
+                                android:text="李四"
+                                android:textSize="15dp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/user_level"
+                            android:layout_width="110dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/layout_name"
+                            android:layout_marginTop="3dp"
+                            android:ellipsize="end"
+                            android:lineSpacingMultiplier="1.1"
+                            android:singleLine="true"
+                            android:textSize="15sp" />
+
+                    </RelativeLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/person_for_not_login"
+                android:layout_width="match_parent"
+                android:layout_height="127dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="-1dp"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:id="@+id/person_click_to_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/person_for_wellcome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:shadowDx="0.0"
+                        android:shadowDy="3.0"
+                        android:shadowRadius="1.0"
+                        android:text="mobileshop"
+                        android:textSize="15sp" />
+
+                    <Button
+                        android:id="@+id/person_login"
+                        android:layout_width="112dp"
+                        android:layout_height="38dp"
+                        android:layout_marginTop="7dp"
+                        android:text="登录 / 注册"
+
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/my_order_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="vertical">
+
+                    <View style="@style/line2" />
+
+                    <RelativeLayout
+                        android:id="@+id/my_account"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:clickable="true"
+                        android:padding="23dp">
+
+                        <ImageView
+                            android:id="@+id/my_account_image"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/android_my_jd_account_center"
+                            android:padding="5dp" />
+
+                        <TextView
+                            android:id="@+id/my_account_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@+id/my_account_image"
+                            android:paddingLeft="15dp"
+                            android:text="修改密码"
+                            android:textSize="15sp" />
+
+                        <ImageView
+                            android:id="@+id/my_account_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:paddingRight="20dp"
+                            app:srcCompat="@drawable/android_list_idex" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/person_logout_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:clickable="true"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:gravity="center_vertical"
+                            android:text="退出登录"
+                            android:textSize="15dp" />
+
+                    </RelativeLayout>
+
+                    <View style="@style/line2" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

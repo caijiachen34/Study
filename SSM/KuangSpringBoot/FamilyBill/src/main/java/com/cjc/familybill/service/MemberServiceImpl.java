@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -127,8 +129,96 @@ public class MemberServiceImpl implements MemberService {
         return null;
     }
 
-    @Override
+    //根据用户名/邮箱/电话号进行登录
     public Result checkLogin2(String input, String password) {
-        return null;
+        Result result=new Result();
+        //手机号的正则表达式
+        String regexMobile="\\d{11}";
+        //邮箱的正则表达式
+        String regexEmail="\\w+@\\w+(\\.[a-zA-Z]+)+";
+        if("".equals(input)){
+            result.setStatus(1);
+            result.setMsg("输入的用户名/邮箱/手机号为空");
+            return result;
+        }
+        //手机号登录
+        if(input.matches(regexMobile)){
+            Map<String,Object> map=new HashMap<String,Object>();
+            map.put("mobile", input);
+            Member member=memberDao.dynamicFind(map);
+            return check(password,member);
+        }
+        //邮箱登录
+        if(input.matches(regexEmail)){
+            Map<String,Object> map=new HashMap<String,Object>();
+            map.put("email", input);
+            Member member=memberDao.dynamicFind(map);
+            return check(password,member);
+        }
+        //用户名登录
+        Map<String,Object> map=new HashMap<String,Object>();
+        map.put("uname", input);
+        Member member=memberDao.dynamicFind(map);
+        return check(password,member);
+    }
+
+    private Result check(String password, Member member) {
+        Result result=new Result();
+        if(member==null){
+            result.setStatus(1);
+            result.setMsg("不存在此用户");
+            return result;
+        }
+        if(!MSUtil.md5(password).equals(member.getPassword())){
+            result.setStatus(1);
+            result.setMsg("密码不正确");
+            return result;
+        }
+        result.setStatus(0);
+        result.setMsg("登录成功");
+        result.setData(member);
+        return result;
+    }
+
+    @Override
+    public Result checkIsUsed(String input) {
+        Result result=new Result();
+        //手机号的正则表达式
+        String regexMobile="\\d{11}";
+        //邮箱的正则表达式
+        String regexEmail="\\w+@\\w+(\\.[a-zA-Z]+)+";
+        if("".equals(input)){
+            result.setStatus(1);
+            result.setMsg("输入的用户名/邮箱/手机号为空");
+            return result;
+        }
+        //手机号登录
+        if(input.matches(regexMobile)){
+            Map<String,Object> map=new HashMap<String,Object>();
+            map.put("mobile", input);
+            Member member=memberDao.dynamicFind(map);
+            result.setStatus(0);
+            result.setMsg("手机号存在");
+            result.setData(member);
+            return result;
+        }
+        //邮箱登录
+        if(input.matches(regexEmail)){
+            Map<String,Object> map=new HashMap<String,Object>();
+            map.put("email", input);
+            Member member=memberDao.dynamicFind(map);
+            result.setStatus(0);
+            result.setMsg("邮箱已存在");
+            result.setData(member);
+            return result;
+        }
+        //用户名登录
+        Map<String,Object> map=new HashMap<String,Object>();
+        map.put("uname", input);
+        Member member=memberDao.dynamicFind(map);
+        result.setStatus(0);
+        result.setMsg("用户名已存在");
+        result.setData(member);
+        return result;
     }
 }

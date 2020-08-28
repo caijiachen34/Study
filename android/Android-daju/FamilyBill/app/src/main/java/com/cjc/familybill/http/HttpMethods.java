@@ -13,6 +13,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import rx.Observable;
+import rx.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -64,19 +65,39 @@ public class HttpMethods {
 
     public static class HttpResultFunc<T> implements Func1<HttpResult<T>,T>{
 
+    @Override
+    public T call(HttpResult<T> httpResult) {
+        Log.i(TAG, "status:" + httpResult.getStatus());
+        Log.i(TAG, "msg:" + httpResult.getMsg());
+        Log.i(TAG, "data:" + httpResult.getData());
+        return httpResult.getData();
+    }
+}
+
+    public static class HttpResultFunc2<T> implements Func1<HttpResult<T>,HttpResult>{
         @Override
-        public T call(HttpResult<T> httpResult) {
+        public HttpResult call(HttpResult<T> httpResult) {
             Log.i(TAG, "status:" + httpResult.getStatus());
             Log.i(TAG, "msg:" + httpResult.getMsg());
             Log.i(TAG, "data:" + httpResult.getData());
-            return httpResult.getData();
+            return httpResult;
         }
     }
 
-    public static <T> void toSubscribe(Observable<T> o, Subscriber<T> s){
+    //异步订阅
+    public static <T> void toSubscribeAsync(Observable<T> o, Subscriber<T> s){
         o.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s);
     }
+
+    //同步订阅
+    public static <T> void toSubscribeSync(Observable<T> o, Subscriber<T> s){
+        o.subscribeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s);
+    }
+
 }
