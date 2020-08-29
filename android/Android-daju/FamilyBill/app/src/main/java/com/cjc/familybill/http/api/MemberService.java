@@ -1,7 +1,6 @@
 package com.cjc.familybill.http.api;
 
 
-
 import com.cjc.familybill.entity.HttpResult;
 import com.cjc.familybill.entity.MemberEntity;
 import com.cjc.familybill.http.resultentity.LoginResult;
@@ -45,6 +44,11 @@ public interface MemberService {
     @POST("member/login2")
     Observable<HttpResult<MemberEntity>> checkEmailIsUsed(@Field("input") String input, @Field("password") String password);
 
+
+    //登录接口
+    @FormUrlEncoded
+    @POST("member/changepassword2")
+    Observable<HttpResult<MemberEntity>> changePassword2(@Field("uname") String uname, @Field("oldPwd") String oldPwd, @Field("newPwd") String newPwd);
 
 
 }

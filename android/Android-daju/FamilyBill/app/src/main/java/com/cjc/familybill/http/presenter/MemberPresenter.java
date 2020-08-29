@@ -43,4 +43,10 @@ public class MemberPresenter extends HttpMethods {
         toSubscribeSync(observable, subscriber);//订阅
     }
 
+    public static void changePassword2(ProgressDialogSubscriber<HttpResult> subscriber, String uname,String oldPwd,String newPwd){
+        Observable observable = memberService.changePassword2(uname,oldPwd,newPwd)
+                .map(new HttpResultFunc2<MemberEntity>());
+        toSubscribeAsync(observable, subscriber);//订阅
+    };
+
 }

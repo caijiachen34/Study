@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
+apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion 29
@@ -60,5 +61,10 @@ dependencies {
     //retrofit的rxjava支持
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
 
+    //butterknife
+    implementation 'com.jakewharton:butterknife:10.2.3'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
 
+    //UIL
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 }

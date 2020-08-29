@@ -63,6 +63,13 @@
         where member_id=#{member_id}
     </update>
 
+    <!-- update元素，在此元素内写更新语句 -->
+    <update id="updatePwdByName" parameterType="map">
+        update fb_member
+        set password=#{password}
+        where uname=#{uname}
+    </update>
+
     <!-- delete元素，在此元素内写删除语句 -->
     <delete id="deleteById" parameterType="int">
         delete from fb_member where member_id=#{member_id}

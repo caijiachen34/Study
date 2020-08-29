@@ -17,6 +17,7 @@ public interface MemberDao {
     public int save(Member member);//insert元素
     public List<Member> findAll();//select元素
     public int updatePwdById(Map map);//update元素
+    public int updatePwdByName(Map map);//update元素
     public int deleteById(int member_id);//delete元素
     public int dynamicUpdate(Member member);
     public Member findByName(String uname);//根据uname查询

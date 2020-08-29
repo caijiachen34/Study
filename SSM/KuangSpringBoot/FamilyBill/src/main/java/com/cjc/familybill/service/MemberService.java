@@ -18,6 +18,8 @@ public interface MemberService {
     public Result updateMember(int memberId,String uname,String email,int sex,String mobile);
     //根据id修改密码
     public Result updatePwd(int memberId, String oldPwd, String newPwd);
+    //根据uname修改密码
+    public Result updatePwdByName(String uname, String oldPwd, String newPwd);
     //根据邮箱重置密码
     public Result resetPwd(String email);
     //根据id更新image（设置会员头像）

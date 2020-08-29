@@ -184,6 +184,8 @@
                             app:srcCompat="@drawable/android_list_idex" />
                     </RelativeLayout>
 
+                    <View style="@style/line2" />
+
                     <RelativeLayout
                         android:id="@+id/person_logout_layout"
                         android:layout_width="match_parent"

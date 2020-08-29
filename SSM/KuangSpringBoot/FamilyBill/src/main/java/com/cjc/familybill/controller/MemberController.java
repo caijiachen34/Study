@@ -49,4 +49,12 @@ public class MemberController {
         return result;
     }
 
+    @ResponseBody
+    @PostMapping("/changepassword2")
+    public Result changePasswordByName(String uname,String oldPwd,String newPwd){
+        Result result=memberService.updatePwdByName(uname,oldPwd,newPwd);
+        return result;
+    }
+
+
 }

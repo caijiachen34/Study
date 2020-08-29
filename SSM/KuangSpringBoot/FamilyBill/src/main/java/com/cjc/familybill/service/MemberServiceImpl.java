@@ -120,6 +120,39 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public Result updatePwdByName(String uname, String oldPwd, String newPwd) {
+        Result result=new Result();
+        Member checkMember=memberDao.findByName(uname);
+        if(checkMember==null){
+            result.setStatus(1);
+            result.setMsg("不存在此用户");
+            return result;
+        }
+        //判断输入的原密码是否正确
+        System.out.println("用户名:" + uname);
+        System.out.println("老密码:" + oldPwd);
+        System.out.println("新密码:" + newPwd);
+        String md5_oldPwd=MSUtil.md5(oldPwd);
+        String md5_newPwd=MSUtil.md5(newPwd);
+        System.out.println("原密码加密："+md5_oldPwd);
+        System.out.println("数据库中原密码："+checkMember.getPassword());
+        if(!md5_oldPwd.equals(checkMember.getPassword())){
+            result.setStatus(1);
+            result.setMsg("输入的原密码有误");
+            return result;
+        }
+        //更新密码
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("uname",uname);
+        map.put("password",md5_newPwd);
+        int i = memberDao.updatePwdByName(map);
+        System.out.println(i);
+        result.setStatus(0);
+        result.setMsg("修改密码成功");
+        return result;
+    }
+
+    @Override
     public Result resetPwd(String email) {
         return null;
     }

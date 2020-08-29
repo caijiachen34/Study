@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ import butterknife.Unbinder;
 
 
 public class PersonFragment extends BaseFragment {
+    private static final String TAG = "PersonFragment";
     @BindView(R.id.person_title)
     FrameLayout personTitle;
     @BindView(R.id.user_img_view)
@@ -175,6 +177,7 @@ public class PersonFragment extends BaseFragment {
             case R.id.my_address://收获地址
                 break;
             case R.id.my_account://修改密码
+                Log.d(TAG, "isLogin: " + mainActivity.isLogin());
                 if (mainActivity.isLogin()){
                     startActivityForResult(new Intent(mainActivity, ChangePWDActivity.class),MY_ACCOUNT_AFTER);
                     return;

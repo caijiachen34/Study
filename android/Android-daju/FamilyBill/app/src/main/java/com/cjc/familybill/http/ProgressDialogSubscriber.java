@@ -37,7 +37,7 @@ public abstract class ProgressDialogSubscriber<T> extends Subscriber<T> {
 
     @Override
     public void onError(Throwable e) {
-        Log.i(TAG, "===============onError====" + e.getMessage());
+        Log.i(TAG, "===============onError====" + e);
         if(e instanceof SocketTimeoutException){
             Toast.makeText(mContext,"网络中断，请检查你的网络状态",Toast.LENGTH_SHORT).show();
         }else if (e instanceof ConnectException){
