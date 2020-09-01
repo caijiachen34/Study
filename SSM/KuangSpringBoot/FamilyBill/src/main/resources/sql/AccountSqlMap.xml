@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cjc.familybill.dao.AccountDao">
+    <!-- 缓存配置-->
+    <cache eviction="LRU" flushInterval="30000" size="512" readOnly="true"/>
+
+    <insert id="saveAccount" parameterType="com.cjc.familybill.entity.Account"
+            useGeneratedKeys="true" keyProperty="account_id">
+        insert into family_bill.fb_account(account_id, uname, accountMoney, accountType, payType,assetsType, time, remarks)
+        values (#{account_id}, #{uname}, #{accountMoney}, #{accountType}, #{payType},#{assetsType}, #{time}, #{remarks})
+    </insert>
+
+    <select id="findAllAccount" resultType="com.cjc.familybill.entity.Account">
+        select *
+        from family_bill.fb_account
+    </select>
+
+    <select id="queryAccount" resultType="com.cjc.familybill.entity.Account" parameterType="map">
+        select * from family_bill.fb_account
+        <where>
+            <if test="account_id != null">
+                account_id = #{account_id}
+            </if>
+            <if test="uname != null">
+                AND uname=#{uname}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateAccountById" parameterType="com.cjc.familybill.entity.Account">
+        update family_bill.fb_account
+        <set>
+            <if test="uname!=null">
+                uname=#{uname},
+            </if>
+            <if test="accountMoney!=null">
+                accountMoney=#{accountMoney},
+            </if>
+            <if test="accountType!=null">
+                accountType=#{accountType},
+            </if>
+            <if test="payType!=null">
+                payType=#{payType},
+            </if>
+            <if test="time!=null">
+                time=#{time},
+            </if>
+            <if test="remarks!=null">
+                remarks=#{remarks}
+            </if>
+            where account_id=#{account_id}
+        </set>
+    </update>
+
+
+    <delete id="deleteAccountById" parameterType="map">
+        delete from family_bill.fb_account where account_id=#{account_id}
+    </delete>
+
+    <select id="queryAccSum" resultType="Double">
+        select SUM(family_bill.fb_account.accountMoney) from family_bill.fb_account
+        where payType = #{payType} and uname = #{uname}
+    </select>
+</mapper>

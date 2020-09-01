@@ -20,6 +20,7 @@ public class AccountDao {
         helper = new MySqliteHelper(context);
     }
 
+    //
     public void addAccount(double accountMoney,String accountType,String payType,String assetsName,String time,String Remarks,String username){
         String sql = "insert into tb_account(accountMoney,accountType,payType,assetsName,time,Remarks,username) values (?,?,?,?,?,?,?)";
         SQLiteDatabase db = helper.getWritableDatabase();
@@ -27,6 +28,7 @@ public class AccountDao {
         db.close();
     }
 
+    //
     public void deleteAccount(int id){
         String sql = "delete from tb_account where id = ? ";
         SQLiteDatabase db = helper.getWritableDatabase();
@@ -42,6 +44,7 @@ public class AccountDao {
         db.close();
     }
 
+    //
     // 查询所有的联系人信息
     public List<Account> findAccAll(String username) {
         ArrayList<Account> assetsList = new ArrayList<Account>();

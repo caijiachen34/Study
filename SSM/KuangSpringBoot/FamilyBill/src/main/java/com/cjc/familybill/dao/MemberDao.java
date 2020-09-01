@@ -25,4 +25,5 @@ public interface MemberDao {
     public Member findByMobile(String mobile);//根据email查询
     public Member findById(int member_id);//根据id查询
     public Member dynamicFind(Map map);
+
 }

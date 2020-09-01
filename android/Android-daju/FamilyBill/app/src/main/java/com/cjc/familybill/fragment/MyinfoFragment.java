@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class MyinfoFragment extends BaseFragment {
 
 
+    private static final String TAG = "MyinfoFragment";
     @BindView(R.id.person_title)
     FrameLayout personTitle;
     @BindView(R.id.user_img_view)
@@ -102,7 +104,7 @@ public class MyinfoFragment extends BaseFragment {
             personForLogin.setVisibility(View.VISIBLE);
             personForNotLogin.setVisibility(View.GONE);
             personLogoutLayout.setVisibility(View.VISIBLE);
-            userName.setText(username);
+            userName.setText("你好," + username);
 
         }
     }
@@ -122,7 +124,8 @@ public class MyinfoFragment extends BaseFragment {
     @OnClick({R.id.user_img_view, R.id.layout_name, R.id.name_balance_textview, R.id.person_for_login, R.id.person_login, R.id.person_click_to_login, R.id.person_for_not_login, R.id.my_account, R.id.person_logout_layout, R.id.my_order_layout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.person_for_login:
+            case R.id.person_login:
+                Log.d(TAG, "进入登录界面");
                 startActivity(new Intent(mainActivity, LoginActivity.class));
                 break;
             case R.id.my_account:
