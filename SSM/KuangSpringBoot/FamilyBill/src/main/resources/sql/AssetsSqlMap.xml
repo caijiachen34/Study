@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cjc.familybill.dao.AssetsDao">
+    <!-- 缓存配置-->
+    <cache eviction="LRU" flushInterval="30000" size="512" readOnly="true"/>
+
+    <insert id="saveAssets" parameterType="com.cjc.familybill.entity.Assets"
+            useGeneratedKeys="true" keyProperty="assets_id">
+        insert into family_bill.fb_assets(assets_id, uname, assetsType, assetsMoney, remarks)
+        VALUES (#{assets_id}, #{uname}, #{assetsType}, #{assetsMoney}, #{remarks})
+    </insert>
+
+    <select id="findAllAssets" resultType="com.cjc.familybill.entity.Assets">
+        select *
+        from family_bill.fb_assets
+    </select>
+
+    <select id="queryAssets" resultType="com.cjc.familybill.entity.Assets" parameterType="map">
+        select * from family_bill.fb_assets
+        <where>
+            <if test="assets_id != null">
+                assets_id = #{assets_id}
+            </if>
+            <if test="uname != null">
+                AND uname=#{uname}
+            </if>
+            <if test="assetsType != null">
+                AND assetsType=#{assetsType}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateAssetsById" parameterType="com.cjc.familybill.entity.Assets">
+        update family_bill.fb_assets
+        <set>
+            <if test="uname!=null">
+                uname=#{uname},
+            </if>
+            <if test="assetsType!=null">
+                assetsType=#{assetsType},
+            </if>
+            <if test="assetsMoney!=null">
+                assetsMoney=#{assetsMoney},
+            </if>
+            <if test="remarks!=null">
+                remarks=#{remarks}
+            </if>
+            where assets_id=#{assets_id}
+        </set>
+    </update>
+
+    <delete id="deleteAssetsByMap" parameterType="map">
+        delete
+        from family_bill.fb_assets
+        where assets_id = #{assets_id}
+    </delete>
+
+    <select id="queryAssSum" resultType="Double">
+        select SUM(family_bill.fb_assets.assetsMoney)
+        from family_bill.fb_assets
+        where uname = #{uname}
+    </select>
+
+</mapper>

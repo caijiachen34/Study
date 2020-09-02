@@ -18,10 +18,10 @@ public interface AccountDao {
     //根据map查询账单
     public Account queryAccount(Map map);
     //根据id修改账单
-    public int dynamicUpdate(Account account);//update元素
+    public int updateAccountByMap(Account account);//update元素
     //根据id删除账单
     public int deleteAccountById(Map map);
-    //根据查询支出/收入金额
+    //根据支出/收入查询金额
     public Double queryAccSum(@Param("payType") String payType,@Param("uname") String uname);
 
 

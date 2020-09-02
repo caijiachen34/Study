@@ -6,10 +6,8 @@ import com.cjc.familybill.util.Result;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -49,13 +47,36 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Result queryAccount(Integer id) {
-        return null;
+        Result result = new Result();
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("account_id",id);
+        Account account = accountDao.queryAccount(map);
+        if (account==null) {
+            result.setStatus(1);
+            result.setMsg("查询失败");
+            return result;
+        }
+        result.setStatus(0);
+        result.setMsg("查询成功");
+        result.setData(account);
+        return result;
     }
 
     @Override
-    public Result dynamicUpdate(Account account) {
-        return null;
+    public Result UpdateById(Integer account_id,Double accountMoney, String accountType, String assetsType, String remarks) {
+        Result result = new Result();
+        Account account = new Account();
+        account.setAccount_id(account_id);
+        account.setAccountMoney(accountMoney);
+        account.setAccountType(accountType);
+        account.setAssetsType(assetsType);
+        account.setRemarks(remarks);
+        accountDao.updateAccountByMap(account);
+        result.setStatus(0);
+        result.setMsg("修改成功");
+        return result;
     }
+
 
     @Override
     public Result deleteAccountById(Integer account_id) {

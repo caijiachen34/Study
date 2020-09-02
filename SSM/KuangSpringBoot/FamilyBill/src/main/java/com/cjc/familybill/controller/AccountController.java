@@ -37,16 +37,30 @@ public class AccountController {
     //删除收支记录
     @ResponseBody
     @PostMapping("/delete")
-    public Result deleteAccount(Integer id){
-        Result result = accountService.deleteAccountById(id);
+    public Result deleteAccount(Integer account_id){
+        Result result = accountService.deleteAccountById(account_id);
         return result;
     }
 
-    //删除收支记录
+    //根据类型查找收支记录
     @ResponseBody
-    @PostMapping("/queryAllAccount")
+    @PostMapping("/queryAccountByType")
     public Result queryAccSum(String payType, String uname){
         Result result = accountService.queryAccSum(payType, uname);
+        return result;
+    }
+
+    @ResponseBody
+    @PostMapping("/updateById")
+    public Result UpdateById(Integer account_id,Double accountMoney, String accountType, String assetsType, String remarks){
+        Result result = accountService.UpdateById(account_id, accountMoney, accountType, assetsType, remarks);
+        return result;
+    }
+
+    @ResponseBody
+    @PostMapping("/queryAccById")
+    public Result queryAccById(Integer account_id){
+        Result result = accountService.queryAccount(account_id);
         return result;
     }
 

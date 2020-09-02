@@ -20,13 +20,13 @@
     <select id="queryAccount" resultType="com.cjc.familybill.entity.Account" parameterType="map">
         select * from family_bill.fb_account
         <where>
-            <if test="account_id != null">
-                account_id = #{account_id}
-            </if>
-            <if test="uname != null">
-                AND uname=#{uname}
-            </if>
-        </where>
+        <if test="account_id != null">
+            account_id = #{account_id}
+        </if>
+        <if test="uname != null">
+            AND uname=#{uname}
+        </if>
+    </where>
     </select>
 
     <update id="updateAccountById" parameterType="com.cjc.familybill.entity.Account">
@@ -44,6 +44,9 @@
             <if test="payType!=null">
                 payType=#{payType},
             </if>
+            <if test="assetsType!=null">
+                assetsType=#{assetsType},
+            </if>
             <if test="time!=null">
                 time=#{time},
             </if>
@@ -55,7 +58,7 @@
     </update>
 
 
-    <delete id="deleteAccountById" parameterType="map">
+    <delete id="deleteAccountByMap" parameterType="map">
         delete from family_bill.fb_account where account_id=#{account_id}
     </delete>
 

@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 public class Account {
     private Integer account_id;
     private String uname;
-    private double accountMoney;
+    private Double accountMoney;
     private String accountType;
     private String payType;
     private String assetsType;
