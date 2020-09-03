@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ public class AssetsAdapter extends RecyclerView.Adapter<AssetsAdapter.InnerHolde
     private static final String TAG = "MainActivity";
     private final List<AssetsEntity> mData;
     private final Context mContext;
+    private OnItemClickListener mOnItemClickListener;
 
     public AssetsAdapter(Context context,List<AssetsEntity> data){
         this.mContext = context;
@@ -41,7 +43,7 @@ public class AssetsAdapter extends RecyclerView.Adapter<AssetsAdapter.InnerHolde
     @Override
     public void onBindViewHolder(@NonNull InnerHolder holder, int position) {
         Log.d(TAG, "进入onBindViewHolder: ");
-        holder.setData(mData.get(position));
+        holder.setData(mData.get(position),position);
     }
 
     @Override
@@ -52,22 +54,63 @@ public class AssetsAdapter extends RecyclerView.Adapter<AssetsAdapter.InnerHolde
         return 0;
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        //设置监听，其实就是设置一个接口，一个回调接口
+        this.mOnItemClickListener = listener;
+    }
+
+    /*
+     * 编写回调接口步骤
+     * 1.创建接口
+     * 2.定义接口内部方法
+     * 3.提供设置接口的方法（外部实现）
+     * 4.接口方法的调用
+     * */
+    public interface OnItemClickListener{
+        void onItemClick(int position,int assets_id);
+    }
+
     public class InnerHolder extends RecyclerView.ViewHolder {
 
         private final TextView assets_assetsType;
         private final TextView assets_assetsMoney;
+        private final ImageView assets_img;
+        private int mPosition;
+        private int mAssets_id;
 
         public InnerHolder(@NonNull View itemView) {
             super(itemView);
             Log.d(TAG, "InnerHolder: 初始化InnerHolder");
             assets_assetsType = itemView.findViewById(R.id.assets_assetsType);
             assets_assetsMoney = itemView.findViewById(R.id.assets_assetsMoney);
+            assets_img = itemView.findViewById(R.id.assets_img);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnItemClickListener != null) {
+                        mOnItemClickListener.onItemClick(mPosition,mAssets_id);
+                    }
+                }
+            });
         }
 
-        public void setData(AssetsEntity assetsEntity) {
+        public void setData(AssetsEntity assetsEntity,int position) {
+            this.mPosition = position;
             Log.d(TAG, "setData: ");
-            assets_assetsType.setText(assetsEntity.getAssetsType());
+            String assetsType = assetsEntity.getAssetsType();
+            assets_assetsType.setText(assetsType);
             assets_assetsMoney.setText(assetsEntity.getAssetsMoney()+"");
+            if (assetsType.contains("支付宝")){
+                assets_img.setImageResource(R.drawable.alipay);
+            }else if (assetsType.contains("微信")){
+                assets_img.setImageResource(R.drawable.wepay);
+            }else if (assetsType.contains("卡")){
+                assets_img.setImageResource(R.drawable.cardpay);
+            }else {
+                assets_img.setImageResource(R.drawable.defaultpay);
+            }
+            int assets_id = assetsEntity.getAssets_id();
+            this.mAssets_id = assets_id;
         }
     }
 }

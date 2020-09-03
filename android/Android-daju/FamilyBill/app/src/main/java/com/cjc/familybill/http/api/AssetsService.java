@@ -16,7 +16,41 @@ import rx.Observable;
  **/
 public interface AssetsService {
 
-    //注册接口
-    @POST("assets/findAll")
-    Observable<HttpResult<List<AssetsEntity>>> findAll();
+    //根据uname查账户
+    @FormUrlEncoded
+    @POST("assets/findAllByUname")
+    Observable<HttpResult<List<AssetsEntity>>> findAllByUname(@Field("uname") String uname);
+
+    @FormUrlEncoded
+    @POST("assets/queryAssSum")
+    Observable<HttpResult<List<AssetsEntity>>> queryAssSum(@Field("uname") String uname);
+
+
+    @FormUrlEncoded
+    @POST("assets")
+    Observable<HttpResult<List<AssetsEntity>>> saveAssets(
+            @Field("uname") String uname,
+            @Field("assetsType") String assetsType,
+            @Field("assetsMoney") Double assetsMoney,
+            @Field("remarks") String remarks);
+
+
+    @FormUrlEncoded
+    @POST("assets/updateAssById")
+    Observable<HttpResult<List<AssetsEntity>>> updateAssById(
+            @Field("assets_id") int assets_id,
+            @Field("assetsType") String assetsType,
+            @Field("assetsMoney") Double assetsMoney,
+            @Field("remarks") String remarks);
+
+
+    @FormUrlEncoded
+    @POST("assets/deleteAssById")
+    Observable<HttpResult<List<AssetsEntity>>> deleteAssById(@Field("assets_id") int assets_id);
+
+
+    @FormUrlEncoded
+    @POST("assets/queryAssById")
+    Observable<HttpResult<List<AssetsEntity>>> queryAssById(@Field("assets_id") int assets_id);
+
 }

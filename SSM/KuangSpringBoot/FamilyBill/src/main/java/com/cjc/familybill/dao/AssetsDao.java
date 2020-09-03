@@ -17,7 +17,7 @@ public interface AssetsDao {
     //查询所有资金
     public List<Assets> findAllAssets();
     //根据map查询资金信息
-    public Assets queryAssets(Map map);
+    public List<Assets> queryAssets(Map map);
     //根据id修改资金信息
     public int updateAssetsById(Assets assets);//update元素
     //根据id删除

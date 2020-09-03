@@ -19,6 +19,7 @@ import java.util.List;
 public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.InnerHolder> {
 
     private final List<ItemBean> mData;
+    private OnItemClickListener mOnItemClickListener;
 
     public ListViewAdapter(List<ItemBean> data){
         this.mData = data;
@@ -40,7 +41,7 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.InnerH
     @Override
     //操作item,设置数据
     public void onBindViewHolder(@NonNull InnerHolder holder, int position) {
-        holder.setData(mData.get(position));
+        holder.setData(mData.get(position),position);
     }
 
     @Override
@@ -52,22 +53,49 @@ public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.InnerH
         return 0;
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        //设置监听，其实就是设置一个接口，一个回调接口
+        this.mOnItemClickListener = listener;
+    }
+
+    /*
+    * 编写回调接口步骤
+    * 1.创建接口
+    * 2.定义接口内部方法
+    * 3.提供设置接口的方法（外部实现）
+    * 4.接口方法的调用
+    * */
+
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+
     //初始化控件
     public class InnerHolder extends RecyclerView.ViewHolder {
 
         private final ImageView mIcon;
         private final TextView mTitle;
+        private int mPosition;
 
         public InnerHolder(@NonNull View itemView) {
             super(itemView);
             //找到item控件
             mIcon = itemView.findViewById(R.id.list_view_icon);
             mTitle = itemView.findViewById(R.id.list_view_title);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnItemClickListener != null) {
+                        mOnItemClickListener.onItemClick(mPosition);
+                    }
+                }
+            });
         }
 
 
         //设置数据
-        public void setData(ItemBean itemBean) {
+        public void setData(ItemBean itemBean,int position) {
+            this.mPosition = position;
             mIcon.setImageResource(itemBean.icon);
             mTitle.setText(itemBean.title);
         }

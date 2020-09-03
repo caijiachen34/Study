@@ -18,8 +18,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
-                android:src="@drawable/ic_launcher_background" />
+                android:layout_marginLeft="15dp" />
 
             <TextView
                 android:id="@+id/assets_assetsType"

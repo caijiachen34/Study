@@ -1,5 +1,6 @@
 package com.cjc.familybill.fragment;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -33,5 +34,12 @@ public class BaseFragment extends Fragment {
             return true;
         }
         return false;
+    }
+
+
+    public String getUname(){
+        SharedPreferences sp = getActivity().getSharedPreferences("loginInfo", MODE_PRIVATE);
+        String uname = sp.getString("loginUserName", "");
+        return uname;
     }
 }

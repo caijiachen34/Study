@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.view.View;
+import android.widget.Toast;
 
 import com.cjc.recyclerviewtest2.adapters.ListViewAdapter;
 import com.cjc.recyclerviewtest2.beans.Datas;
@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mList;
     private List<ItemBean> mData;
+    private ListViewAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,18 @@ public class MainActivity extends AppCompatActivity {
         mList = findViewById(R.id.recycler_view);
         //2.准备数据
         initData();
+        //创建监听事件
+        initListener();
+    }
+
+    private void initListener() {
+        mAdapter.setOnItemClickListener(new ListViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Toast.makeText(MainActivity.this,"点击了第" + position +"个条目",Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void initData() {
@@ -48,9 +61,9 @@ public class MainActivity extends AppCompatActivity {
         mList.setLayoutManager(layoutManager);
 
         //创建适配器
-        ListViewAdapter adapter = new ListViewAdapter(mData);
+        mAdapter = new ListViewAdapter(mData);
         //设置到Adapter到RecyclerView里面
-        mList.setAdapter(adapter);
+        mList.setAdapter(mAdapter);
 
     }
 }

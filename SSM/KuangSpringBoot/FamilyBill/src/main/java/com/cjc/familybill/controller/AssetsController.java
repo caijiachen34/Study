@@ -30,6 +30,13 @@ public class AssetsController {
     }
 
     @ResponseBody
+    @PostMapping("findAllByUname")
+    public Result findAllAssetsByUname(String uname){
+        Result result = assetsService.findAllAssetsByUname(uname);
+        return result;
+    }
+
+    @ResponseBody
     @PostMapping("queryAssById")
     public Result queryAssetsById(Integer assets_id){
         Result result = assetsService.queryAssetsById(assets_id);

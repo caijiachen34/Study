@@ -1,6 +1,7 @@
 package com.cjc.familybill.activitys;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
@@ -19,5 +20,12 @@ public class BaseActivity extends AppCompatActivity {
     public boolean isLogin(){
         SharedPreferences sharedPreferences=getSharedPreferences("loginInfo",0);
         return !TextUtils.isEmpty(sharedPreferences.getString("loginUserName",""));
+    }
+
+
+    public String getUname(Context context){
+        SharedPreferences sp = context.getSharedPreferences("loginInfo", MODE_PRIVATE);
+        String uname = sp.getString("loginUserName", "");
+        return uname;
     }
 }

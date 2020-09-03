@@ -6,6 +6,7 @@ import com.cjc.familybill.util.Result;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,9 +27,11 @@ public class AssetsServiceImpl implements AssetsService {
         assets.setAssetsMoney(assetsMoney);
         assets.setRemarks(remarks);
         assetsDao.saveAssets(assets);
+        ArrayList<Assets> list = new ArrayList<>();
+        list.add(assets);
         result.setStatus(0);
         result.setMsg("添加成功");
-        result.setData(assets);
+        result.setData(list);
         return result;
     }
 
@@ -43,12 +46,29 @@ public class AssetsServiceImpl implements AssetsService {
     }
 
     @Override
+    public Result findAllAssetsByUname(String uname) {
+        Result result = new Result();
+        Map<Object, Object> map = new HashMap<>();
+        map.put("uname",uname);
+        List<Assets> assets = assetsDao.queryAssets(map);
+        if (assets.size()==0) {
+            result.setStatus(1);
+            result.setMsg("查询失败");
+            return result;
+        }
+        result.setStatus(0);
+        result.setMsg("查询成功");
+        result.setData(assets);
+        return result;
+    }
+
+    @Override
     public Result queryAssetsById(Integer assets_id) {
         Result result = new Result();
         Map<Object, Object> map = new HashMap<>();
         map.put("assets_id",assets_id);
-        Assets assets = assetsDao.queryAssets(map);
-        if (assets == null) {
+        List<Assets> assets = assetsDao.queryAssets(map);
+        if (assets.size()==0) {
             result.setStatus(1);
             result.setMsg("查询失败");
             return result;
@@ -106,9 +126,11 @@ public class AssetsServiceImpl implements AssetsService {
             return result;
         }
         assets.setSum(sum);
+        ArrayList<Assets> list = new ArrayList<>();
+        list.add(assets);
         result.setStatus(0);
         result.setMsg("查询成功");
-        result.setData(assets);
+        result.setData(list);
         return result;
     }
 
@@ -117,7 +139,7 @@ public class AssetsServiceImpl implements AssetsService {
         Result result = new Result();
         Map<Object, Object> map = new HashMap<>();
         map.put("assetsType",assetsType);
-        Assets assets = assetsDao.queryAssets(map);
+        List<Assets> assets = assetsDao.queryAssets(map);
         if (assets == null) {
             result.setStatus(1);
             result.setMsg("查询失败");

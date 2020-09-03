@@ -8,6 +8,8 @@ public interface AssetsService {
 
     public Result findAllAssets();
 
+    public Result findAllAssetsByUname(String uname);
+
     public Result queryAssetsById(Integer assets_id);
 
     public Result updateAssetsById(Integer assets_id,String assetsType,Double assetsMoney,String remarks);
