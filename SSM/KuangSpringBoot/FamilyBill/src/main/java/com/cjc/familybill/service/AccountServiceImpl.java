@@ -6,6 +6,7 @@ import com.cjc.familybill.util.Result;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,7 +29,9 @@ public class AccountServiceImpl implements AccountService {
         account.setAssetsType(assetsType);
         account.setRemarks(remarks);
         accountDao.saveAccount(account);
-        result.setData(account);
+        ArrayList<Account> list = new ArrayList<>();
+        list.add(account);
+        result.setData(list);
         result.setStatus(0);
         result.setMsg("收支记录添加成功");
         return result;
@@ -56,9 +59,11 @@ public class AccountServiceImpl implements AccountService {
             result.setMsg("查询失败");
             return result;
         }
+        ArrayList<Account> list = new ArrayList<>();
+        list.add(account);
         result.setStatus(0);
         result.setMsg("查询成功");
-        result.setData(account);
+        result.setData(list);
         return result;
     }
 
@@ -95,9 +100,11 @@ public class AccountServiceImpl implements AccountService {
         Account account = new Account();
         Double accountsum = accountDao.queryAccSum(payType, uname);
         account.setSum(accountsum);
+        ArrayList<Account> list = new ArrayList<>();
+        list.add(account);
         result.setStatus(0);
         result.setMsg("查询收支总额成功");
-        result.setData(account);
+        result.setData(list);
         return result;
     }
 
