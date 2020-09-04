@@ -14,6 +14,10 @@ public interface AccountService {
 
     //根据id查询账单
     public Result queryAccount(Integer id);
+
+    //根据uname查询账单
+    public Result queryAccountByUname(String  uname);
+
     //根据id修改账单
     public Result UpdateById(Integer account_id,Double accountMoney,String accountType,String assetsType,String remarks);//update元素
     //根据id删除账单

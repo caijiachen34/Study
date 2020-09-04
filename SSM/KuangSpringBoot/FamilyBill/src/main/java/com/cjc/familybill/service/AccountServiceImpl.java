@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -49,21 +50,36 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Result queryAccount(Integer id) {
+    public Result queryAccount(Integer account_id) {
         Result result = new Result();
         HashMap<String, Integer> map = new HashMap<>();
-        map.put("account_id",id);
-        Account account = accountDao.queryAccount(map);
-        if (account==null) {
+        map.put("account_id",account_id);
+        List<Account> account = accountDao.queryAccount(map);
+        if (account.size()==0) {
             result.setStatus(1);
             result.setMsg("查询失败");
             return result;
         }
-        ArrayList<Account> list = new ArrayList<>();
-        list.add(account);
         result.setStatus(0);
         result.setMsg("查询成功");
-        result.setData(list);
+        result.setData(account);
+        return result;
+    }
+
+    @Override
+    public Result queryAccountByUname(String uname) {
+        Result result = new Result();
+        Map<Object, Object> map = new HashMap<>();
+        map.put("uname",uname);
+        List<Account> account = accountDao.queryAccount(map);
+        if (account.size()==0) {
+            result.setStatus(1);
+            result.setMsg("查询失败");
+            return result;
+        }
+        result.setStatus(0);
+        result.setMsg("查询成功");
+        result.setData(account);
         return result;
     }
 
@@ -99,6 +115,11 @@ public class AccountServiceImpl implements AccountService {
         Result result = new Result();
         Account account = new Account();
         Double accountsum = accountDao.queryAccSum(payType, uname);
+        if (accountsum==null) {
+            result.setStatus(1);
+            result.setMsg("查询收支总额失败");
+            return result;
+        }
         account.setSum(accountsum);
         ArrayList<Account> list = new ArrayList<>();
         list.add(account);

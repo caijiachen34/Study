@@ -1,5 +1,7 @@
 package com.cjc.familybill.entity;
 
+import com.google.gson.annotations.JsonAdapter;
+
 import java.sql.Timestamp;
 
 /**
@@ -25,7 +27,7 @@ public class AccountEntity {
     private String accountType;
     private String payType;
     private String assetsType;
-    private Timestamp time;
+    private String time;
     private String remarks;
     private Double sum;
 
@@ -43,6 +45,7 @@ public class AccountEntity {
                 ", sum=" + sum +
                 '}';
     }
+
 
     public int getAccount_id() {
         return account_id;
@@ -92,11 +95,11 @@ public class AccountEntity {
         this.assetsType = assetsType;
     }
 
-    public Timestamp getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Timestamp time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

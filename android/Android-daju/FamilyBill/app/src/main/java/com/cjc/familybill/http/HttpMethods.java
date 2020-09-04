@@ -3,6 +3,7 @@ package com.cjc.familybill.http;
 import android.util.Log;
 
 import com.cjc.familybill.entity.HttpResult;
+import com.cjc.familybill.http.api.AccountService;
 import com.cjc.familybill.http.api.AssetsService;
 import com.cjc.familybill.http.api.MemberService;
 import com.cjc.familybill.http.resultentity.LoginResult;
@@ -34,6 +35,7 @@ public class HttpMethods {
     //用户信息接口
     protected static MemberService memberService;
     protected static AssetsService assetsService;
+    protected static AccountService accountService;
 
     public HttpMethods(){
         if (mInstance == null) {
@@ -52,6 +54,7 @@ public class HttpMethods {
 
             memberService=retrofit.create(MemberService.class);
             assetsService = retrofit.create(AssetsService.class);
+            accountService = retrofit.create(AccountService.class);
         }
     }
 

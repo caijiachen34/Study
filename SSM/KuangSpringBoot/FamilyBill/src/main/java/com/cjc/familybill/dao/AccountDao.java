@@ -16,7 +16,7 @@ public interface AccountDao {
     //查询所有消费
     public List<Account> findAllAccount();
     //根据map查询账单
-    public Account queryAccount(Map map);
+    public List<Account> queryAccount(Map map);
     //根据id修改账单
     public int updateAccountByMap(Account account);//update元素
     //根据id删除账单

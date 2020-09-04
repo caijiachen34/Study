@@ -36,7 +36,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.InnerHol
     @Override
     public InnerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d(TAG, "进入onCreateViewHolder: ");
-        View view = View.inflate(mContext, R.layout.item_list_assets, null);
+        View view = View.inflate(mContext, R.layout.item_list_account, null);
         InnerHolder innerHolder = new InnerHolder(view);
         return innerHolder;
     }
@@ -76,6 +76,8 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.InnerHol
         private final TextView account_accountType;
         private final TextView account_accountMoney;
         private final ImageView account_img;
+        private final TextView account_accountRemark;
+        private final TextView account_accountTime;
         private int mPosition;
         private int mAccount_id;
 
@@ -85,6 +87,8 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.InnerHol
             account_accountType = itemView.findViewById(R.id.account_accountType);
             account_accountMoney = itemView.findViewById(R.id.account_accountMoney);
             account_img = itemView.findViewById(R.id.account_img);
+            account_accountRemark = itemView.findViewById(R.id.account_accountRemark);
+            account_accountTime = itemView.findViewById(R.id.account_accountTime);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -98,20 +102,41 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.InnerHol
         public void setData(AccountEntity accountEntity,int position) {
             this.mPosition = position;
             Log.d(TAG, "setData: ");
-            String assetsType = accountEntity.getAssetsType();
-            account_accountType.setText(assetsType);
-            account_accountMoney.setText(accountEntity.getAccountMoney()+"");// TODO: 2020/9/3  
-            if (assetsType.contains("支付宝")){
-                account_img.setImageResource(R.drawable.alipay);
-            }else if (assetsType.contains("微信")){
-                account_img.setImageResource(R.drawable.wepay);
-            }else if (assetsType.contains("卡")){
-                account_img.setImageResource(R.drawable.cardpay);
-            }else {
-                account_img.setImageResource(R.drawable.defaultpay);
+            String accountType = accountEntity.getAccountType();
+            account_accountType.setText(accountType);
+            String payType = accountEntity.getPayType();
+            if (payType!=null){
+                if (payType.contains("支出")) {
+                    account_accountMoney.setText("-"+accountEntity.getAccountMoney());
+                }else if (payType.contains("收入")){
+                    account_accountMoney.setText("+"+accountEntity.getAccountMoney());
+                }
             }
-            int assets_id = accountEntity.getAccount_id();
-            this.mAccount_id = assets_id;
+            account_accountRemark.setText(accountEntity.getRemarks());
+            account_accountTime.setText(accountEntity.getTime());
+            if (accountType != null) {
+                if (accountType.contains("购物")){
+                    account_img.setImageResource(R.drawable.shopping);
+                }else if (accountType.contains("资")){
+                    account_img.setImageResource(R.drawable.wages);
+                }else if (accountType.contains("房")){
+                    account_img.setImageResource(R.drawable.rent);
+                }else if (accountType.contains("学习")){
+                    account_img.setImageResource(R.drawable.study);
+                }else if (accountType.contains("旅游")){
+                    account_img.setImageResource(R.drawable.tour);
+                }else if (accountType.contains("交通")){
+                    account_img.setImageResource(R.drawable.traffic);
+                }else if (accountType.contains("饮食")){
+                    account_img.setImageResource(R.drawable.eat);
+                }else if (accountType.contains("医疗")){
+                    account_img.setImageResource(R.drawable.medical);
+                }else {
+                    account_img.setImageResource(R.drawable.otherpay);
+                }
+            }
+            int account_id = accountEntity.getAccount_id();
+            this.mAccount_id = account_id;
         }
     }
 }

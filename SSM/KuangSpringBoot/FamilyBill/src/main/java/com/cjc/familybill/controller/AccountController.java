@@ -44,7 +44,7 @@ public class AccountController {
 
     //根据类型查找收支记录
     @ResponseBody
-    @PostMapping("/queryAccountByType")
+    @PostMapping("/queryAccByType")
     public Result queryAccSum(String payType, String uname){
         Result result = accountService.queryAccSum(payType, uname);
         return result;
@@ -61,6 +61,13 @@ public class AccountController {
     @PostMapping("/queryAccById")
     public Result queryAccById(Integer account_id){
         Result result = accountService.queryAccount(account_id);
+        return result;
+    }
+
+    @ResponseBody
+    @PostMapping("/queryAccByUname")
+    public Result queryAccountByUname(String uname){
+        Result result = accountService.queryAccountByUname(uname);
         return result;
     }
 
