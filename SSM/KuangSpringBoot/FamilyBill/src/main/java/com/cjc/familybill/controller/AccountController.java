@@ -52,8 +52,8 @@ public class AccountController {
 
     @ResponseBody
     @PostMapping("/updateById")
-    public Result UpdateById(Integer account_id,Double accountMoney, String accountType, String assetsType, String remarks){
-        Result result = accountService.UpdateById(account_id, accountMoney, accountType, assetsType, remarks);
+    public Result UpdateById(Integer account_id,Double accountMoney, String accountType, String payType,String assetsType, String remarks){
+        Result result = accountService.UpdateById(account_id, accountMoney, accountType,payType, assetsType, remarks);
         return result;
     }
 

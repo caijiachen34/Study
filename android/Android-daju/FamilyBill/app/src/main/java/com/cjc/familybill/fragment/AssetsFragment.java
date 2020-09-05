@@ -40,6 +40,7 @@ public class AssetsFragment extends BaseFragment {
     ImageView addAssetsIv;
     @BindView(R.id.assets_sum)
     TextView assetsSum;
+
     private List<AssetsEntity> mData = new ArrayList<>();
 
     private AssetsAdapter assetsAdapter;
@@ -64,6 +65,7 @@ public class AssetsFragment extends BaseFragment {
         super.onResume();
         initData();
         initListener();
+        assetsAdapter.notifyDataSetChanged();
     }
 
     private void initListener() {

@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cjc.familybill.R;
 import com.cjc.familybill.entity.AccountEntity;
-import com.cjc.familybill.entity.AssetsEntity;
 
 import java.util.List;
 
@@ -67,8 +66,8 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.InnerHol
      * 3.提供设置接口的方法（外部实现）
      * 4.接口方法的调用
      * */
-    public interface OnItemClickListener{
-        void onItemClick(int position, int assets_id);
+    public interface OnItemClickListener {
+        void onItemClick(int position, int account_id);
     }
 
     public class InnerHolder extends RecyclerView.ViewHolder {
@@ -78,6 +77,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.InnerHol
         private final ImageView account_img;
         private final TextView account_accountRemark;
         private final TextView account_accountTime;
+        private final ImageView account_account_assetsType_img;
         private int mPosition;
         private int mAccount_id;
 
@@ -89,9 +89,12 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.InnerHol
             account_img = itemView.findViewById(R.id.account_img);
             account_accountRemark = itemView.findViewById(R.id.account_accountRemark);
             account_accountTime = itemView.findViewById(R.id.account_accountTime);
+            account_account_assetsType_img = itemView.findViewById(R.id.account_account_assetsType_img);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Log.d(TAG, "onClick: " + mOnItemClickListener);
                     if (mOnItemClickListener != null) {
                         mOnItemClickListener.onItemClick(mPosition, mAccount_id);
                     }
@@ -103,6 +106,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.InnerHol
             this.mPosition = position;
             Log.d(TAG, "setData: ");
             String accountType = accountEntity.getAccountType();
+            String assetsType = accountEntity.getAssetsType();
             account_accountType.setText(accountType);
             String payType = accountEntity.getPayType();
             if (payType!=null){
@@ -133,6 +137,18 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.InnerHol
                     account_img.setImageResource(R.drawable.medical);
                 }else {
                     account_img.setImageResource(R.drawable.otherpay);
+                }
+            }
+
+            if (assetsType != null) {
+                if (assetsType.contains("支付宝")){
+                    account_account_assetsType_img.setImageResource(R.drawable.alipay);
+                }else if (assetsType.contains("微信")){
+                    account_account_assetsType_img.setImageResource(R.drawable.wepay);
+                }else if (assetsType.contains("卡")){
+                    account_account_assetsType_img.setImageResource(R.drawable.cardpay);
+                }else {
+                    account_account_assetsType_img.setImageResource(R.drawable.defaultpay);
                 }
             }
             int account_id = accountEntity.getAccount_id();

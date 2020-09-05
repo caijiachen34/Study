@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initListener() {
+
         mAdapter.setOnItemClickListener(new ListViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {

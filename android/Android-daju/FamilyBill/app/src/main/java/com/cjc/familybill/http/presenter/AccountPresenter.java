@@ -31,4 +31,24 @@ public class AccountPresenter extends HttpMethods {
         toSubscribeAsync(observable, subscriber);
     }
 
+    public static void deleteAccount(Subscriber<List<AccountEntity>> subscriber,int account_id) {
+        Observable<List<AccountEntity>> observable = accountService.deleteAccount(account_id)
+                .map(new HttpResultFunc<List<AccountEntity>>());
+        toSubscribeAsync(observable, subscriber);
+    }
+
+
+    public static void updateById(Subscriber<List<AccountEntity>> subscriber,int account_id, Double accountMoney, String accountType, String payType, String assetsType,  String remarks) {
+        Observable<List<AccountEntity>> observable = accountService.updateById(account_id, accountMoney, accountType, payType, assetsType, remarks)
+                .map(new HttpResultFunc<List<AccountEntity>>());
+        toSubscribeAsync(observable, subscriber);
+    }
+
+
+    public static void queryAccById(Subscriber<List<AccountEntity>> subscriber,int account_id) {
+        Observable<List<AccountEntity>> observable = accountService.queryAccById(account_id)
+                .map(new HttpResultFunc<List<AccountEntity>>());
+        toSubscribeAsync(observable, subscriber);
+    }
+
 }

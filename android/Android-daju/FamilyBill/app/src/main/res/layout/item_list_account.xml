@@ -41,6 +41,16 @@
                 android:text="黄焖鸡"
                 android:textSize="17sp" />
 
+            <ImageView
+                android:id="@+id/account_account_assetsType_img"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/defaultpay"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="13dp"
+                android:layout_marginRight="110dp"/>
+
+
             <TextView
                 android:id="@+id/account_accountMoney"
                 android:layout_width="wrap_content"

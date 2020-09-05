@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cjc.familybill.R;
 import com.cjc.familybill.account.AccountAdapter;
 import com.cjc.familybill.account.AccountAddActivity;
-import com.cjc.familybill.assets.AssetsAddActivity;
+import com.cjc.familybill.account.AccountChangeActivity;
 import com.cjc.familybill.entity.AccountEntity;
 import com.cjc.familybill.http.presenter.AccountPresenter;
 
@@ -37,7 +38,7 @@ public class AccountFragment extends BaseFragment {
     @BindView(R.id.account_sum)
     TextView accountSum;
     @BindView(R.id.recycler_account)
-    RecyclerView recyclerAccount;
+    RecyclerView recycler_account;
 
     private List<AccountEntity> mData = new ArrayList<>();
     AccountAdapter accountAdapter;
@@ -59,7 +60,28 @@ public class AccountFragment extends BaseFragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("AccountFragment", "onResume: ");
+        initData();
+        initListener();
+        accountAdapter.notifyDataSetChanged();
+    }
+
     private void initListener() {
+
+        accountAdapter.setOnItemClickListener(new AccountAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position, int account_id) {
+                //Toast.makeText(getActivity(),"点击了第 " + position + " 个条目",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), AccountChangeActivity.class);
+                intent.putExtra("account_id",account_id);
+                startActivity(intent);
+            }
+        });
+
+
         addAccountIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,13 +91,10 @@ public class AccountFragment extends BaseFragment {
         });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        initData();
-    }
+
 
     private void initData() {
+
 
         //支出总额
         AccountPresenter.queryAccByType(new Subscriber<List<AccountEntity>>() {
@@ -149,19 +168,13 @@ public class AccountFragment extends BaseFragment {
         },uname);
 
 
-
-
-
-
-
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerAccount.setLayoutManager(layoutManager);
+        recycler_account.setLayoutManager(layoutManager);
         accountAdapter = new AccountAdapter(getActivity(), mData);
         int i = System.identityHashCode(mData);
         Log.d("AccountFragment", "identityHashCode: " + i);
         Log.d("AccountFragment", "initData: 设置适配器");
-        recyclerAccount.setAdapter(accountAdapter);
+        recycler_account.setAdapter(accountAdapter);
     }
 }

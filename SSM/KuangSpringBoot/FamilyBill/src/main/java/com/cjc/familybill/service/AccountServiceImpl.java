@@ -84,15 +84,16 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Result UpdateById(Integer account_id,Double accountMoney, String accountType, String assetsType, String remarks) {
+    public Result UpdateById(Integer account_id,Double accountMoney, String accountType,String payType, String assetsType, String remarks) {
         Result result = new Result();
         Account account = new Account();
         account.setAccount_id(account_id);
         account.setAccountMoney(accountMoney);
         account.setAccountType(accountType);
+        account.setPayType(payType);
         account.setAssetsType(assetsType);
         account.setRemarks(remarks);
-        accountDao.updateAccountByMap(account);
+        accountDao.updateAccountById(account);
         result.setStatus(0);
         result.setMsg("修改成功");
         return result;
@@ -104,7 +105,7 @@ public class AccountServiceImpl implements AccountService {
         Result result = new Result();
         HashMap<String, Integer> map = new HashMap<>();
         map.put("account_id",account_id);
-        accountDao.deleteAccountById(map);
+        accountDao.deleteAccountByMap(map);
         result.setStatus(0);
         result.setMsg("删除成功");
         return result;

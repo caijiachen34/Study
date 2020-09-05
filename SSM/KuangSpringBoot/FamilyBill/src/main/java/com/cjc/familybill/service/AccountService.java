@@ -19,7 +19,7 @@ public interface AccountService {
     public Result queryAccountByUname(String  uname);
 
     //根据id修改账单
-    public Result UpdateById(Integer account_id,Double accountMoney,String accountType,String assetsType,String remarks);//update元素
+    public Result UpdateById(Integer account_id,Double accountMoney,String accountType,String payType,String assetsType,String remarks);//update元素
     //根据id删除账单
     public Result deleteAccountById(Integer account_id);
     //根据查询支出/收入金额

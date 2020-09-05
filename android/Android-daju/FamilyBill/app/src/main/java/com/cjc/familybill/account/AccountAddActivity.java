@@ -56,9 +56,9 @@ public class AccountAddActivity extends BaseActivity {
     private String assetsType;
     private String remarks;
 
-    private List<AssetsEntity> mData = new ArrayList<>();
-    private String[] accountTypes = {"购物","工资","租房","学习","旅游","交通","饮食","医疗","其他消费"};
-    private String[] payTypes = {"支出","收入"};
+    //private List<AssetsEntity> mData = new ArrayList<>();
+    private String[] accountTypes = {"购物", "工资", "租房", "学习", "旅游", "交通", "饮食", "医疗", "其他消费"};
+    private String[] payTypes = {"支出", "收入"};
     private String[] assetTypes;
 
     @Override
@@ -89,7 +89,7 @@ public class AccountAddActivity extends BaseActivity {
         etAddAccountPayType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                payType= (String) etAddAccountPayType.getSelectedItem();
+                payType = (String) etAddAccountPayType.getSelectedItem();
             }
 
             @Override
@@ -99,17 +99,17 @@ public class AccountAddActivity extends BaseActivity {
         });
 
 
-            etAddAccountType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    accountType= (String) etAddAccountType.getSelectedItem();
-                }
+        etAddAccountType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                accountType = (String) etAddAccountType.getSelectedItem();
+            }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
-                }
-            });
+            }
+        });
 
 
         AssetsPresenter.findAllByUname(new Subscriber<List<AssetsEntity>>() {
@@ -129,14 +129,14 @@ public class AccountAddActivity extends BaseActivity {
                 if (assetsEntities.size() > 0) {
                     int size = assetsEntities.size();
                     Set<Object> objects = new HashSet<>();
-                    assetTypes=new String[size];
+                    assetTypes = new String[size];
                     String[] assetTypestemp = new String[size];
                     for (int i = 0; i < assetsEntities.size(); i++) {
-                        assetTypestemp[i]=assetsEntities.get(i).getAssetsType();
+                        assetTypestemp[i] = assetsEntities.get(i).getAssetsType();
                     }
                     List<String> templist = Arrays.asList(assetTypestemp);
                     Set tempset = new HashSet(templist);
-                    assetTypes= (String[]) tempset.toArray(new String[0]);
+                    assetTypes = (String[]) tempset.toArray(new String[0]);
                 }
                 Log.d("AccountAddActivity", "assetTypes: " + Arrays.toString(assetTypes));
                 ArrayAdapter<String> AccountAssetsTypeAdapter = new ArrayAdapter<String>(AccountAddActivity.this, android.R.layout.simple_list_item_1, assetTypes);
@@ -160,7 +160,6 @@ public class AccountAddActivity extends BaseActivity {
         });
 
 
-
         btnAddAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -179,10 +178,10 @@ public class AccountAddActivity extends BaseActivity {
 
                     @Override
                     public void onNext(List<AccountEntity> accountEntities) {
-                        Toast.makeText(AccountAddActivity.this,"添加成功",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AccountAddActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
                         finish();
                     }
-                },uname,accountMoney,accountType,payType,assetsType,remarks);
+                }, uname, accountMoney, accountType, payType, assetsType, remarks);
             }
         });
     }

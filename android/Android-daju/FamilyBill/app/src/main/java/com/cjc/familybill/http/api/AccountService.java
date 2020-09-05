@@ -35,4 +35,26 @@ public interface AccountService {
     Observable<HttpResult<List<AccountEntity>>> queryAccByUname(@Field("uname") String uname);
 
 
+
+    @FormUrlEncoded
+    @POST("account/delete")
+    Observable<HttpResult<List<AccountEntity>>> deleteAccount(@Field("account_id") int account_id);
+
+
+    @FormUrlEncoded
+    @POST("account/updateById")
+    Observable<HttpResult<List<AccountEntity>>> updateById(
+            @Field("account_id") int account_id,
+            @Field("accountMoney") Double accountMoney,
+            @Field("accountType") String accountType,
+            @Field("payType") String payType,
+            @Field("assetsType") String assetsType,
+            @Field("remarks") String remarks);
+
+
+    @FormUrlEncoded
+    @POST("account/queryAccById")
+    Observable<HttpResult<List<AccountEntity>>> queryAccById(@Field("account_id") int account_id);
+
+
 }
