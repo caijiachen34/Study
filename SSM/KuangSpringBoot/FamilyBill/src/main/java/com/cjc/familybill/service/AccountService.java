@@ -24,5 +24,9 @@ public interface AccountService {
     public Result deleteAccountById(Integer account_id);
     //根据查询支出/收入金额
     public Result queryAccSum(String payType,String uname);
+    //根据查询支出/收入金额
+    public Result queryAccUnamePayType(String payType,String uname);
+
+
 
 }

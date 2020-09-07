@@ -16,7 +16,7 @@
         <activity android:name=".activitys.MainActivity1">
 
         </activity>
-        <activity android:name=".login.ChangePWDActivity"/>
+        <activity android:name=".login.ChangePWDActivity" android:launchMode="singleTop"/>
         <activity android:name=".login.SplashActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
@@ -26,12 +26,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".login.LoginActivity"/>
-        <activity android:name=".login.RegisterActivity"/>
-        <activity android:name=".assets.AssetsAddActivity"/>
-        <activity android:name=".assets.AssetsChangeActivity"/>
-        <activity android:name=".account.AccountAddActivity"/>
-        <activity android:name=".account.AccountChangeActivity"/>
+        <activity android:name=".login.LoginActivity" android:launchMode="singleTop"/>
+        <activity android:name=".login.RegisterActivity" android:launchMode="singleTop"/>
+        <activity android:name=".assets.AssetsAddActivity" android:launchMode="singleTop"/>
+        <activity android:name=".assets.AssetsChangeActivity" android:launchMode="singleTop"/>
+        <activity android:name=".account.AccountAddActivity" android:launchMode="singleTop"/>
+        <activity android:name=".account.AccountChangeActivity" android:launchMode="singleTop"/>
 
     </application>
 

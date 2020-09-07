@@ -66,4 +66,9 @@
         select SUM(family_bill.fb_account.accountMoney) from family_bill.fb_account
         where payType = #{payType} and uname = #{uname}
     </select>
+
+    <select id="queryAccUnamePayType" resultType="com.cjc.familybill.entity.Account">
+        select * from family_bill.fb_account
+        where payType = #{payType} and uname = #{uname}
+    </select>
 </mapper>
