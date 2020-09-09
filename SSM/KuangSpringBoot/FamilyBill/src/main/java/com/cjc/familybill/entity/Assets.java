@@ -13,5 +13,6 @@ public class Assets {
     private String assetsType; //现金，银行卡
     private Double assetsMoney;
     private String remarks;
+    private Double moneyRemain;
     private Double sum;
 }

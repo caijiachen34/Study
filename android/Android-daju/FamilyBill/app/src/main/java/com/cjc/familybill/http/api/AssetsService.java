@@ -53,4 +53,8 @@ public interface AssetsService {
     @POST("assets/queryAssById")
     Observable<HttpResult<List<AssetsEntity>>> queryAssById(@Field("assets_id") int assets_id);
 
+    @FormUrlEncoded
+    @POST("assets/queryAssRemain")
+    Observable<HttpResult<List<AssetsEntity>>> queryAssRemain(@Field("uname") String uname,@Field("assetsType") String assetsType);
+
 }

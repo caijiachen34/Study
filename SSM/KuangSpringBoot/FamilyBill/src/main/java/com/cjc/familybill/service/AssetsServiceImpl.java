@@ -150,4 +150,25 @@ public class AssetsServiceImpl implements AssetsService {
         result.setData(assets);
         return result;
     }
+
+    //查询各资金余额
+    @Override
+    public Result queryAssRemain(String uname1, String assetsType1) {
+        Result result = new Result();
+        Map<Object, Object> map = new HashMap<>();
+        map.put("uname1",uname1);
+        map.put("assetsType1",assetsType1);
+        Double remain = assetsDao.queryAssRemain(map);
+        Assets assets = new Assets();
+        assets.setMoneyRemain(remain);
+        if (remain == null) {
+            result.setStatus(1);
+            result.setMsg("查询失败");
+            return result;
+        }
+        result.setStatus(0);
+        result.setMsg("查询成功");
+        result.setData(assets);
+        return result;
+    }
 }

@@ -21,6 +21,7 @@ import com.cjc.familybill.assets.AssetsAddActivity;
 import com.cjc.familybill.assets.AssetsChangeActivity;
 import com.cjc.familybill.entity.AssetsEntity;
 import com.cjc.familybill.http.presenter.AssetsPresenter;
+import com.cjc.familybill.utils.InsertRemain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +91,8 @@ public class AssetsFragment extends BaseFragment {
 
 
     private void initData() {
+        Double remain = InsertRemain.InsertRemain(uname, "银行卡");
+        Log.d("AssetsFragment", "remain: " + remain);
         AssetsPresenter.queryAssSum(new Subscriber<List<AssetsEntity>>() {
 
             private double sum;

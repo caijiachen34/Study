@@ -71,4 +71,12 @@ public class AssetsController {
         return result;
     }
 
+    //查询各资金余额
+    @ResponseBody
+    @PostMapping("/queryAssRemain")
+    public Result queryAssRemain(String uname, String assetsType){
+        Result result = assetsService.queryAssRemain(uname, assetsType);
+        return result;
+    }
+
 }

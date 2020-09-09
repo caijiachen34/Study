@@ -63,4 +63,8 @@
         where uname = #{uname}
     </select>
 
+    <select id="queryAssRemain" resultType="Double" parameterType="map">
+        select family_bill.assetsRemain(#{uname1},#{assetsType1})
+    </select>
+
 </mapper>

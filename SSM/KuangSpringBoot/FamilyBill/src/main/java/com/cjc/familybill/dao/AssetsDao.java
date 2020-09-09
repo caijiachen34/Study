@@ -24,5 +24,7 @@ public interface AssetsDao {
     public int deleteAssetsByMap(Map map);
     //查询所有资金账户总额
     public Double queryAssSum(@Param("uname") String uname);
+    //查询各资金余额
+    public Double queryAssRemain(Map map);
 
 }

@@ -5,6 +5,7 @@ import com.cjc.familybill.http.HttpMethods;
 
 import java.util.List;
 
+import retrofit2.http.Field;
 import rx.Observable;
 import rx.Subscriber;
 
@@ -49,4 +50,9 @@ public class AssetsPresenter extends HttpMethods {
         toSubscribeAsync(observable, subscriber);
     }
 
+    public static void queryAssRemain(Subscriber<List<AssetsEntity>> subscriber, String uname, String assetsType) {
+        Observable<List<AssetsEntity>> observable = assetsService.queryAssRemain(uname,assetsType)
+                .map(new HttpResultFunc<List<AssetsEntity>>());
+        toSubscribeAsync(observable, subscriber);
+    }
 }

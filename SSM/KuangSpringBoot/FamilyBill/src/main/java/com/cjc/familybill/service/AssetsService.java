@@ -1,6 +1,9 @@
 package com.cjc.familybill.service;
 
 import com.cjc.familybill.util.Result;
+import com.sun.org.apache.regexp.internal.RE;
+
+import java.util.Map;
 
 public interface AssetsService {
 
@@ -19,4 +22,6 @@ public interface AssetsService {
     public Result queryAssSum(String uname);
 
     public Result queryByAssType(String assetsType);
+
+    public Result queryAssRemain(String uname1,String assetsType1);
 }

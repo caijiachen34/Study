@@ -20,6 +20,7 @@ public class AssetsEntity {
     private String assetsType;
     private double assetsMoney;
     private String remarks;
+    private Double moneyRemain;
     private double sum;
 
     @Override
@@ -30,6 +31,7 @@ public class AssetsEntity {
                 ", assetsType='" + assetsType + '\'' +
                 ", assetsMoney=" + assetsMoney +
                 ", remarks='" + remarks + '\'' +
+                ", moneyRemain=" + moneyRemain +
                 ", sum=" + sum +
                 '}';
     }
@@ -72,6 +74,14 @@ public class AssetsEntity {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public Double getMoneyRemain() {
+        return moneyRemain;
+    }
+
+    public void setMoneyRemain(Double moneyRemain) {
+        this.moneyRemain = moneyRemain;
     }
 
     public double getSum() {

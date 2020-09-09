@@ -104,7 +104,7 @@ public class MyinfoFragment extends BaseFragment {
             personForLogin.setVisibility(View.VISIBLE);
             personForNotLogin.setVisibility(View.GONE);
             personLogoutLayout.setVisibility(View.VISIBLE);
-            userName.setText("你好," + username);
+            userName.setText(username);
 
         }
     }
