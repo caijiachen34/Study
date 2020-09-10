@@ -3,8 +3,11 @@ package com.cjc.familybill.service;
 import com.cjc.familybill.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 
 public interface MemberService {
@@ -28,5 +31,7 @@ public interface MemberService {
     public Result checkLogin2(String input,String password);
     //查询用户名/邮箱/手机号是否已注册
     public Result checkIsUsed(String input);
+    //上传头像
+    public Result addImage(String uname,MultipartFile file, HttpServletRequest request) throws IOException;
 
 }

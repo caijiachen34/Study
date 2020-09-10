@@ -102,5 +102,8 @@
         where member_id=#{member_id}
     </update>
 
+    <update id="addImage" parameterType="String">
+        update family_bill.fb_member set image = #{image} where uname = #{uname}
+    </update>
 
 </mapper>

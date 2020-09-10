@@ -2,6 +2,7 @@ package com.cjc.familybill.dao;
 
 import com.cjc.familybill.entity.Member;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -25,5 +26,6 @@ public interface MemberDao {
     public Member findByMobile(String mobile);//根据email查询
     public Member findById(int member_id);//根据id查询
     public Member dynamicFind(Map map);
+    public int addImage(@Param("image") String image, @Param("uname") String uname);
 
 }

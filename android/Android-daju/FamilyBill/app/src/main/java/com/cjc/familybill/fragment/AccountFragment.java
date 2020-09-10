@@ -94,8 +94,7 @@ public class AccountFragment extends BaseFragment {
 
 
     private void initData() {
-
-
+        Log.d("AccountFragment", "initData: ");
         //支出总额
         AccountPresenter.queryAccByType(new Subscriber<List<AccountEntity>>() {
             @Override
@@ -169,7 +168,7 @@ public class AccountFragment extends BaseFragment {
                     accountAdapter.notifyDataSetChanged();
                     int i = System.identityHashCode(mData);
 
-                    Log.d("AccountFragment", "onNext: " + mData);
+                    Log.d("AccountFragment", "onNext: " + mData+" =================");
                     //Log.d("MainActivity", "onNext: " + b);
                     Log.d("AccountFragment", "identityHashCode OnNext: " + i);
                 }
@@ -186,4 +185,5 @@ public class AccountFragment extends BaseFragment {
         Log.d("AccountFragment", "initData: 设置适配器");
         recycler_account.setAdapter(accountAdapter);
     }
+
 }

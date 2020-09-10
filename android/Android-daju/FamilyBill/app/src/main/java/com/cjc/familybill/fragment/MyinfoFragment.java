@@ -5,7 +5,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,11 +32,17 @@ import com.cjc.familybill.login.ChangePWDActivity;
 import com.cjc.familybill.login.LoginActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
 /**
@@ -152,8 +162,61 @@ public class MyinfoFragment extends BaseFragment {
                             }
                         }).create().show();
                 break;
+            case R.id.user_img_view:
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent,1);
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case 1:
+                if(resultCode == RESULT_OK){
+                    Uri uri = data.getData();
+                    //通过uri的方式返回，部分手机uri可能为空
+                    if(uri != null){
+                        try {
+                            //通过uri获取到bitmap对象
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+                            //创建路径
+                            String path = Environment.getExternalStorageDirectory()
+                                    .getPath() + "/Pictures";
+                            //获取外部储存目录
+                            File file = new File(path);
+                            Log.e("file", file.getPath());
+                            //创建新目录
+                            file.mkdirs();
+                            //以当前时间重新命名文件
+                            long i = System.currentTimeMillis();
+                            //生成新的文件
+                            file = new File(file.toString() + "/" + i + ".png");
+                            Log.e("fileNew", file.getPath());
+                            //创建输出流
+                            OutputStream out = new FileOutputStream(file.getPath());
+                            //压缩文件，返回结果
+                            boolean flag = bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                            userImgView.setImageBitmap(bitmap);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }else {
+                        //部分手机可能直接存放在bundle中
+                        Bundle bundleExtras = data.getExtras();
+                        if(bundleExtras != null){
+                            Bitmap  bitmaps = bundleExtras.getParcelable("data");
+                            userImgView.setImageBitmap(bitmaps);
+                        }
+                    }
+
+                }
+                break;
+
+        }
+    }
+
     /**
      * 退出登录时，需要将部分信息从presharedpreference数据文件中移除，防止二次进入读取到错误信息
      */

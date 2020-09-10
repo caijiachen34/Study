@@ -6,11 +6,16 @@ import com.cjc.familybill.util.MSUtil;
 import com.cjc.familybill.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -252,6 +257,35 @@ public class MemberServiceImpl implements MemberService {
         result.setStatus(0);
         result.setMsg("用户名已存在");
         result.setData(member);
+        return result;
+    }
+
+    @Override
+    public Result addImage(String uname,MultipartFile file, HttpServletRequest request) throws IOException {
+        //1.确定保存的文件夹
+        String dirPath = request.getServletContext().getRealPath("upload");
+        System.out.println("dirPath="+dirPath);
+        File dir = new File(dirPath);
+        if(!dir.exists()) {
+            dir.mkdirs();
+        }
+        //2.确定保存的文件名
+        String orginalFilename = file.getOriginalFilename();
+        int beginIndex = orginalFilename.lastIndexOf(".");
+        String suffix ="";
+        if(beginIndex!=-1) {
+            suffix = orginalFilename.substring(beginIndex);
+        }
+        String filename = UUID.randomUUID().toString()+suffix;
+        //创建文件对象，表示要保存的头像文件,第一个参数表示存储的文件夹，第二个参数表示存储的文件
+        File dest = new File(dir,filename);
+        //执行保存
+        file.transferTo(dest);
+        String image = "/upload/"+filename;
+        memberDao.addImage(image,uname);
+        Result result = new Result();
+        result.setStatus(0);
+        result.setMsg("上传成功");
         return result;
     }
 }
