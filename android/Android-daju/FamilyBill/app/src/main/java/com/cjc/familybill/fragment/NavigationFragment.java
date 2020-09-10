@@ -96,7 +96,7 @@ public class NavigationFragment extends BaseFragment implements View.OnClickList
         }
 
         switch (id){
-            case R.id.bottom_bar_account_btn:// TODO: 2020/8/30
+            case R.id.bottom_bar_account_btn:
                 if (checkIsLogin()) {
                     tabItemAccountBtn.setImageResource(R.drawable.index_1_lan);
                     if (accountFragment == null){

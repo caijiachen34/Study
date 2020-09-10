@@ -55,6 +55,12 @@ public class AssetsChangeActivity extends BaseActivity {
         initListener();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initData();
+    }
+
     private void initListener() {
         ivAssetsChangeTitleBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +119,7 @@ public class AssetsChangeActivity extends BaseActivity {
 
             @Override
             public void onNext(List<AssetsEntity> assetsEntities) {
-
+                finish();
             }
         },assets_id);
     }

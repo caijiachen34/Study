@@ -20,15 +20,28 @@ import com.cjc.familybill.assets.AssetsAdapter;
 import com.cjc.familybill.assets.AssetsAddActivity;
 import com.cjc.familybill.assets.AssetsChangeActivity;
 import com.cjc.familybill.entity.AssetsEntity;
+import com.cjc.familybill.entity.HttpResult;
+import com.cjc.familybill.http.HttpMethods;
+import com.cjc.familybill.http.api.AssetsService;
 import com.cjc.familybill.http.presenter.AssetsPresenter;
 import com.cjc.familybill.utils.InsertRemain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Func1;
+import rx.functions.Function;
+
+import static com.cjc.familybill.utils.Constants.BASE_URL;
 
 /**
  * Created by CC
@@ -57,13 +70,14 @@ public class AssetsFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         initData();
         initListener();
-        Log.d("MainActivity", "uname: " + uname);
+        Log.d("AssetsFragment", "uname: " + uname);
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("AssetsFragment", "onResume: ");
         initData();
         initListener();
         assetsAdapter.notifyDataSetChanged();
@@ -90,9 +104,11 @@ public class AssetsFragment extends BaseFragment {
     }
 
 
+
+
     private void initData() {
-        Double remain = InsertRemain.InsertRemain(uname, "银行卡");
-        Log.d("AssetsFragment", "remain: " + remain);
+        //Double remain = InsertRemain.InsertRemain(uname, "银行卡");
+        //Log.d("AssetsFragment", "remain: " + remain);
         AssetsPresenter.queryAssSum(new Subscriber<List<AssetsEntity>>() {
 
             private double sum;
@@ -104,7 +120,8 @@ public class AssetsFragment extends BaseFragment {
 
             @Override
             public void onError(Throwable e) {
-
+                sum=0.0;
+                assetsSum.setText(sum + "");
             }
 
             @Override
@@ -126,7 +143,8 @@ public class AssetsFragment extends BaseFragment {
 
             @Override
             public void onError(Throwable e) {
-
+                mData.clear();
+                assetsAdapter.notifyDataSetChanged();
             }
 
             @Override

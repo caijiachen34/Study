@@ -16,10 +16,14 @@ import rx.Subscriber;
  **/
 public class InsertRemain {
 
-    private static Double remain;
 
     public static Double InsertRemain(String uname, String assetsType) {
+        final Double[] remain = new Double[1];
+
         AssetsPresenter.queryAssRemain(new Subscriber<List<AssetsEntity>>() {
+
+
+
             @Override
             public void onCompleted() {
 
@@ -32,9 +36,9 @@ public class InsertRemain {
 
             @Override
             public void onNext(List<AssetsEntity> assetsEntities) {
-                remain = assetsEntities.get(0).getMoneyRemain();
+                remain[0] = assetsEntities.get(0).getMoneyRemain();
             }
         }, uname, assetsType);
-        return remain;
+        return remain[0];
     }
 }

@@ -105,14 +105,20 @@ public class AccountFragment extends BaseFragment {
 
             @Override
             public void onError(Throwable e) {
-
+                Log.d("AccountFragment", "onError: ");
+                sumout=0.0;
+                sumin=0.0;
+                accountSum.setText((sumin-sumout)+"");
             }
 
             @Override
             public void onNext(List<AccountEntity> accountEntities) {
                 Log.d("AccountFragment", "sumout: " + "进入支出");
-                sumout = accountEntities.get(0).getSum();
-                accountSum.setText((sumin-sumout)+"");
+                if (accountEntities.size()>0) {
+                    sumout = accountEntities.get(0).getSum();
+                    accountSum.setText((sumin-sumout)+"");
+                }
+
             }
 
         },"支出",uname);
@@ -142,12 +148,15 @@ public class AccountFragment extends BaseFragment {
         AccountPresenter.queryAccByUname(new Subscriber<List<AccountEntity>>() {
             @Override
             public void onCompleted() {
+                Log.d("AccountFragment", "onCompleted: ");
 
             }
 
             @Override
             public void onError(Throwable e) {
                 Log.d("AccountFragment", "onError: " + e.getCause());
+                mData.clear();
+                accountAdapter.notifyDataSetChanged();
             }
 
             @Override
