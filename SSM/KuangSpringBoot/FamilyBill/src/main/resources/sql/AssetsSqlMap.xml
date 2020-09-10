@@ -64,7 +64,22 @@
     </select>
 
     <select id="queryAssRemain" resultType="Double" parameterType="map">
-        select family_bill.assetsRemain(#{uname1},#{assetsType1})
+        select family_bill.assetsRemain(#{uname1}, #{assetsType1})
+    </select>
+
+    <select id="queryRemainByMap" resultType="com.cjc.familybill.entity.AssetsRemian" parameterType="map">
+        select * from family_bill.fb_remain
+        <where>
+            <if test="remain_id!=null">
+                remain_id = #{remain_id}
+            </if>
+            <if test="uname!=null">
+                AND uname = #{uname}
+            </if>
+            <if test="assets_type!=null">
+                AND assets_type = #{assets_type}
+            </if>
+        </where>
     </select>
 
 </mapper>

@@ -95,7 +95,7 @@
                 android:src="@mipmap/persontype" />
 
             <EditText
-                android:id="@+id/et_select"
+                android:id="@+id/et_select_guest"
                 android:layout_toRightOf="@id/iv_select"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

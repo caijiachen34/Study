@@ -1,6 +1,7 @@
 package com.cjc.familybill.account;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -164,25 +165,37 @@ public class AccountAddActivity extends BaseActivity {
         btnAddAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                accountMoney = Double.parseDouble(etAddAccountMoney.getText().toString());
-                remarks = etAddAccountRemarks.getText().toString();
-                AccountPresenter.saveAccount(new Subscriber<List<AccountEntity>>() {
-                    @Override
-                    public void onCompleted() {
+                String money = etAddAccountMoney.getText().toString();
+                if (!TextUtils.isEmpty(money)) {
+                    accountMoney = Double.parseDouble(etAddAccountMoney.getText().toString());
+                    remarks = etAddAccountRemarks.getText().toString();
+                }else {
+                    Toast.makeText(AccountAddActivity.this, "请输入相关内容", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-                    }
+                if (TextUtils.isEmpty(assetsType)||TextUtils.isEmpty(remarks)||TextUtils.isEmpty(payType)) {
+                    Toast.makeText(AccountAddActivity.this, "请输入相关内容", Toast.LENGTH_SHORT).show();
+                    return;
+                }else {
+                    AccountPresenter.saveAccount(new Subscriber<List<AccountEntity>>() {
+                        @Override
+                        public void onCompleted() {
 
-                    @Override
-                    public void onError(Throwable e) {
+                        }
 
-                    }
+                        @Override
+                        public void onError(Throwable e) {
 
-                    @Override
-                    public void onNext(List<AccountEntity> accountEntities) {
-                        Toast.makeText(AccountAddActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                }, uname, accountMoney, accountType, payType, assetsType, remarks);
+                        }
+
+                        @Override
+                        public void onNext(List<AccountEntity> accountEntities) {
+                            Toast.makeText(AccountAddActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }, uname, accountMoney, accountType, payType, assetsType, remarks);
+                }
             }
         });
     }

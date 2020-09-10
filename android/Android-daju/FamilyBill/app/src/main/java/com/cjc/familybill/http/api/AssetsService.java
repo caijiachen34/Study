@@ -1,6 +1,7 @@
 package com.cjc.familybill.http.api;
 
 import com.cjc.familybill.entity.AssetsEntity;
+import com.cjc.familybill.entity.AssetsRemain;
 import com.cjc.familybill.entity.HttpResult;
 import com.cjc.familybill.entity.MemberEntity;
 
@@ -56,5 +57,11 @@ public interface AssetsService {
     @FormUrlEncoded
     @POST("assets/queryAssRemain")
     Observable<HttpResult<List<AssetsEntity>>> queryAssRemain(@Field("uname") String uname,@Field("assetsType") String assetsType);
+
+    @FormUrlEncoded
+    @POST("assets/queryAssRemainByUname")
+    Observable<HttpResult<List<AssetsRemain>>> queryAssRemainByUname(@Field("uname") String uname);
+
+
 
 }

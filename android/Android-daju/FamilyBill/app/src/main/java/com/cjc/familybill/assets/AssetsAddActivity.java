@@ -1,6 +1,7 @@
 package com.cjc.familybill.assets;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.cjc.familybill.R;
+import com.cjc.familybill.account.AccountAddActivity;
 import com.cjc.familybill.activitys.BaseActivity;
 import com.cjc.familybill.entity.AssetsEntity;
 import com.cjc.familybill.http.presenter.AssetsPresenter;
@@ -61,26 +63,38 @@ public class AssetsAddActivity extends BaseActivity {
         btnAddAssets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                assets_type = etAddAssetsType.getText().toString().trim();
-                assets_money = Double.parseDouble(etAddAssetsMoney.getText().toString().trim());
+                String money = etAddAssetsMoney.getText().toString().trim();
+                if (TextUtils.isEmpty(money)) {
+                    Toast.makeText(AssetsAddActivity.this, "请输入相关内容", Toast.LENGTH_SHORT).show();
+                    return;
+                }else {
+                    assets_type = etAddAssetsType.getText().toString().trim();
+                    assets_money = Double.parseDouble(money);
+                }
                 assets_remarks = etAddAssetsRemarks.getText().toString().trim();
-                AssetsPresenter.saveAssets(new Subscriber<List<AssetsEntity>>() {
-                    @Override
-                    public void onCompleted() {
+                if (TextUtils.isEmpty(assets_type)||TextUtils.isEmpty(assets_remarks)) {
+                    Toast.makeText(AssetsAddActivity.this, "请输入相关内容", Toast.LENGTH_SHORT).show();
+                    return;
+                }else {
+                    AssetsPresenter.saveAssets(new Subscriber<List<AssetsEntity>>() {
+                        @Override
+                        public void onCompleted() {
 
-                    }
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
+                        @Override
+                        public void onError(Throwable e) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onNext(List<AssetsEntity> assetsEntities) {
-                        Toast.makeText(getApplicationContext(),"添加账户成功",Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                },uname,assets_type,assets_money,assets_remarks);
+                        @Override
+                        public void onNext(List<AssetsEntity> assetsEntities) {
+                            Toast.makeText(getApplicationContext(),"添加账户成功",Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    },uname,assets_type,assets_money,assets_remarks);
+                }
+
             }
         });
 

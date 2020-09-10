@@ -24,4 +24,6 @@ public interface AssetsService {
     public Result queryByAssType(String assetsType);
 
     public Result queryAssRemain(String uname1,String assetsType1);
+
+    public Result queryRemainByUname(String uname);
 }

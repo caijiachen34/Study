@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +17,7 @@ import com.cjc.familybill.R;
 import com.cjc.familybill.activitys.BaseActivity;
 import com.cjc.familybill.entity.AssetsEntity;
 import com.cjc.familybill.http.presenter.AssetsPresenter;
+import com.cjc.familybill.login.LoginActivity;
 
 import java.util.List;
 
@@ -72,10 +74,20 @@ public class AssetsChangeActivity extends BaseActivity {
         btnChangeAssets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String money = etChangeAssetsMoney.getText().toString().trim();
+                if (TextUtils.isEmpty(money)) {
+                    Toast.makeText(AssetsChangeActivity.this, "请输入相关内容", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 assets_type = etChangeAssetsType.getText().toString().trim();
-                assets_money = Double.parseDouble(etChangeAssetsMoney.getText().toString().trim());
+                assets_money = Double.parseDouble(money);
                 assets_remarks = etChangeAssetsRemarks.getText().toString().trim();
-                handlerChange();
+                if (TextUtils.isEmpty(assets_type) || TextUtils.isEmpty(assets_remarks)) {
+                    Toast.makeText(AssetsChangeActivity.this, "请输入相关内容", Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    handlerChange();
+                }
             }
         });
 
@@ -121,7 +133,7 @@ public class AssetsChangeActivity extends BaseActivity {
             public void onNext(List<AssetsEntity> assetsEntities) {
                 finish();
             }
-        },assets_id);
+        }, assets_id);
     }
 
 
@@ -168,6 +180,6 @@ public class AssetsChangeActivity extends BaseActivity {
                 etChangeAssetsMoney.setText(String.valueOf(assetsEntity.getAssetsMoney()));
                 etChangeAssetsRemarks.setText(assetsEntity.getRemarks());
             }
-        },assets_id);
+        }, assets_id);
     }
 }

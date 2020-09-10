@@ -62,7 +62,7 @@
                 android:layout_marginTop="35dp"
                 android:layout_marginRight="35dp"
                 android:background="@drawable/shape_white_frame"
-                android:hint="请输入添加的金额"
+                android:hint="请输入原有资产的修改值"
                 android:inputType="numberDecimal"
                 android:paddingLeft="10dp" />
 

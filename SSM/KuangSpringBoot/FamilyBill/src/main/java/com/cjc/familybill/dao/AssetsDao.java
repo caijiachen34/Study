@@ -2,6 +2,7 @@ package com.cjc.familybill.dao;
 
 import com.cjc.familybill.entity.Account;
 import com.cjc.familybill.entity.Assets;
+import com.cjc.familybill.entity.AssetsRemian;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -26,5 +27,7 @@ public interface AssetsDao {
     public Double queryAssSum(@Param("uname") String uname);
     //查询各资金余额
     public Double queryAssRemain(Map map);
+    //查询剩余余额
+    public List<AssetsRemian> queryRemainByMap(Map map);
 
 }

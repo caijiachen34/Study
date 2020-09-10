@@ -1,6 +1,7 @@
 package com.cjc.familybill.http.presenter;
 
 import com.cjc.familybill.entity.AssetsEntity;
+import com.cjc.familybill.entity.AssetsRemain;
 import com.cjc.familybill.http.HttpMethods;
 
 import java.util.List;
@@ -55,4 +56,11 @@ public class AssetsPresenter extends HttpMethods {
                 .map(new HttpResultFunc<List<AssetsEntity>>());
         toSubscribeAsync(observable, subscriber);
     }
+
+    public static void queryAssRemainByUname(Subscriber<List<AssetsRemain>> subscriber, String uname) {
+        Observable<List<AssetsRemain>> observable = assetsService.queryAssRemainByUname(uname)
+                .map(new HttpResultFunc<List<AssetsRemain>>());
+        toSubscribeAsync(observable, subscriber);
+    }
+
 }

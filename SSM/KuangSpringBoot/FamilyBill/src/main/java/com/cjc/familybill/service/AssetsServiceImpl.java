@@ -2,6 +2,7 @@ package com.cjc.familybill.service;
 
 import com.cjc.familybill.dao.AssetsDao;
 import com.cjc.familybill.entity.Assets;
+import com.cjc.familybill.entity.AssetsRemian;
 import com.cjc.familybill.util.Result;
 import org.springframework.stereotype.Service;
 
@@ -169,6 +170,23 @@ public class AssetsServiceImpl implements AssetsService {
         result.setStatus(0);
         result.setMsg("查询成功");
         result.setData(assets);
+        return result;
+    }
+
+    @Override
+    public Result queryRemainByUname(String uname) {
+        Result result = new Result();
+        HashMap<Object, Object> map = new HashMap<>();
+        map.put("uname",uname);
+        List<AssetsRemian> assetsRemians = assetsDao.queryRemainByMap(map);
+        if (assetsRemians.size()==0) {
+            result.setStatus(1);
+            result.setMsg("查询失败");
+            return result;
+        }
+        result.setStatus(0);
+        result.setMsg("查询成功");
+        result.setData(assetsRemians);
         return result;
     }
 }

@@ -1,6 +1,7 @@
 package com.cjc.familybill.account;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +17,7 @@ import androidx.annotation.Nullable;
 
 import com.cjc.familybill.R;
 import com.cjc.familybill.activitys.BaseActivity;
+import com.cjc.familybill.assets.AssetsAddActivity;
 import com.cjc.familybill.entity.AccountEntity;
 import com.cjc.familybill.entity.AssetsEntity;
 import com.cjc.familybill.http.presenter.AccountPresenter;
@@ -228,27 +230,37 @@ public class AccountChangeActivity extends BaseActivity {
         btnChangeAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                accountMoney = Double.parseDouble(etChangeAccountMoney.getText().toString());
+                String money = etChangeAccountMoney.getText().toString();
+                if (TextUtils.isEmpty(money)) {
+                    Toast.makeText(AccountChangeActivity.this, "请输入相关内容", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                accountMoney = Double.parseDouble(money);
                 remarks = etChangeAccountRemarks.getText().toString();
-                AccountPresenter.updateById(new Subscriber<List<AccountEntity>>() {
-                    @Override
-                    public void onCompleted() {
+                if (TextUtils.isEmpty(assetsType)||TextUtils.isEmpty(remarks)) {
+                    Toast.makeText(AccountChangeActivity.this, "请输入相关内容", Toast.LENGTH_SHORT).show();
+                    return;
+                }else {
+                    AccountPresenter.updateById(new Subscriber<List<AccountEntity>>() {
+                        @Override
+                        public void onCompleted() {
 
-                    }
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
+                        @Override
+                        public void onError(Throwable e) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onNext(List<AccountEntity> accountEntities) {
-                        Log.d("AccountChangeActivity", "onNext: update");
-                        Toast.makeText(getApplicationContext(), "修改成功", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                }, account_id, accountMoney, accountType, payType, assetsType, remarks);
+                        @Override
+                        public void onNext(List<AccountEntity> accountEntities) {
+                            Log.d("AccountChangeActivity", "onNext: update");
+                            Toast.makeText(getApplicationContext(), "修改成功", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }, account_id, accountMoney, accountType, payType, assetsType, remarks);
+                }
+
             }
         });
 

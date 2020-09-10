@@ -19,7 +19,9 @@ import com.cjc.familybill.R;
 import com.cjc.familybill.assets.AssetsAdapter;
 import com.cjc.familybill.assets.AssetsAddActivity;
 import com.cjc.familybill.assets.AssetsChangeActivity;
+import com.cjc.familybill.assets.AssetsRemainAdapter;
 import com.cjc.familybill.entity.AssetsEntity;
+import com.cjc.familybill.entity.AssetsRemain;
 import com.cjc.familybill.entity.HttpResult;
 import com.cjc.familybill.http.HttpMethods;
 import com.cjc.familybill.http.api.AssetsService;
@@ -56,8 +58,10 @@ public class AssetsFragment extends BaseFragment {
     TextView assetsSum;
 
     private List<AssetsEntity> mData = new ArrayList<>();
+    private List<AssetsRemain> mDataRemain = new ArrayList<>();
 
     private AssetsAdapter assetsAdapter;
+    private AssetsRemainAdapter assetsRemainAdapter;
 
     private String uname;
 
@@ -80,16 +84,16 @@ public class AssetsFragment extends BaseFragment {
         Log.d("AssetsFragment", "onResume: ");
         initData();
         initListener();
-        assetsAdapter.notifyDataSetChanged();
+        assetsRemainAdapter.notifyDataSetChanged();
     }
 
     private void initListener() {
-        assetsAdapter.setOnItemClickListener(new AssetsAdapter.OnItemClickListener() {
+        assetsRemainAdapter.setOnItemClickListener(new AssetsRemainAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int position,int assets_id) {
+            public void onItemClick(int position,int assets_id1,int assets_id2) {
                 //Toast.makeText(getActivity(), "点击了第" + position + "个条目", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), AssetsChangeActivity.class);
-                intent.putExtra("assets_id",assets_id);
+                intent.putExtra("assets_id", assets_id2);
                 startActivity(intent);
             }
         });
@@ -144,7 +148,7 @@ public class AssetsFragment extends BaseFragment {
             @Override
             public void onError(Throwable e) {
                 mData.clear();
-                assetsAdapter.notifyDataSetChanged();
+                //assetsAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -154,7 +158,7 @@ public class AssetsFragment extends BaseFragment {
                     mData.clear();
                     mData.addAll(assetsEntities);
                     //boolean b = mData.addAll(assetsEntities);
-                    assetsAdapter.notifyDataSetChanged();
+                    //assetsAdapter.notifyDataSetChanged();
                     int i = System.identityHashCode(mData);
                     Log.d("MainActivity", "onNext: " + assetsEntities);
                     Log.d("MainActivity", "onNext: " + mData);
@@ -164,14 +168,36 @@ public class AssetsFragment extends BaseFragment {
             }
         }, uname);
 
+        AssetsPresenter.queryAssRemainByUname(new Subscriber<List<AssetsRemain>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                mDataRemain.clear();
+                assetsRemainAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNext(List<AssetsRemain> assetsRemains) {
+                if (assetsRemains.size()>0) {
+                    mDataRemain.clear();
+                    mDataRemain.addAll(assetsRemains);
+                    assetsRemainAdapter.notifyDataSetChanged();
+                }
+            }
+        },uname);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recycler_assets.setLayoutManager(layoutManager);
-        assetsAdapter = new AssetsAdapter(getActivity(), mData);
+        assetsRemainAdapter = new AssetsRemainAdapter(getActivity(), mDataRemain,mData);
         int i = System.identityHashCode(mData);
         Log.d("MainActivity", "identityHashCode: " + i);
         Log.d("MainActivity", "initData: 设置适配器");
-        recycler_assets.setAdapter(assetsAdapter);
+        recycler_assets.setAdapter(assetsRemainAdapter);
     }
 
 

@@ -79,4 +79,11 @@ public class AssetsController {
         return result;
     }
 
+    @ResponseBody
+    @PostMapping("/queryAssRemainByUname")
+    public Result queryRemainByUname(String uname){
+        Result result = assetsService.queryRemainByUname(uname);
+        return result;
+    }
+
 }

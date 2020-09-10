@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion 29
@@ -20,6 +21,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -33,5 +38,28 @@ dependencies {
     implementation ('com.github.gzu-liyujiang.AndroidPicker:WheelPicker:1.5.6.20181018') {
         exclude group: 'com.android.support'
     }
+
+    //retrofit+rxjava
+    implementation 'com.squareup.retrofit2:retrofit:2.0.2'
+    implementation 'com.squareup.retrofit2:converter-gson:2.0.2'
+
+    //RxJava
+    implementation 'io.reactivex:rxandroid:1.2.1'
+    implementation 'io.reactivex:rxjava:1.1.6'
+
+
+    //retrofit的rxjava支持
+    implementation 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+
+    //butterknife
+    implementation 'com.jakewharton:butterknife:10.2.3'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
+
+    //UIL
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+
+    //recyclerview
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
 
 }
