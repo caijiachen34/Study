@@ -59,9 +59,16 @@ public class MemberController {
 
 
     @ResponseBody
-    @RequestMapping("/addImage")
+    @PostMapping("/addImage")
     public Result addImage(@RequestParam("uname") String uname, @RequestParam("file") MultipartFile file, HttpServletRequest request) throws IOException {
         Result result=memberService.addImage(uname,file,request);
+        return result;
+    }
+
+    @ResponseBody
+    @PostMapping("/findByname")
+    public Result findByName(String uname){
+        Result result=memberService.findByName(uname);
         return result;
     }
 

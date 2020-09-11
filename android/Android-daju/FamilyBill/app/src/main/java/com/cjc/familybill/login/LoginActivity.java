@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -24,6 +25,7 @@ import com.cjc.familybill.R;
 import com.cjc.familybill.activitys.MainActivity;
 import com.cjc.familybill.activitys.MainActivity1;
 import com.cjc.familybill.entity.HttpResult;
+import com.cjc.familybill.entity.MemberEntity;
 import com.cjc.familybill.http.ProgressDialogSubscriber;
 import com.cjc.familybill.http.loginutils.LoginUtils;
 import com.cjc.familybill.http.presenter.MemberPresenter;
@@ -308,11 +310,16 @@ public class LoginActivity extends Activity {
                         LoginActivity.this.finish();
                         //登录成功跳转
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        handlerImage();
                 }
 
 
             }
         }, username, pwd);
+
+
+
+
 
 
 //        if (md5Pwd.equals(spPwd)){
@@ -335,4 +342,35 @@ public class LoginActivity extends Activity {
 //        }
     }
 
+    private void handlerImage() {
+        MemberPresenter.findByname(new ProgressDialogSubscriber<MemberEntity>(this) {
+            @Override
+            public void onNext(MemberEntity memberEntity) {
+                super.onNext(memberEntity);
+                String image = memberEntity.getImage();
+                Log.d(TAG, "getImage: " + image);
+                SharedPreferences sp = getSharedPreferences("loginInfo", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("image", image);
+                editor.commit();
+            }
+
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                Log.d(TAG, "onError: " + e.toString());
+            }
+        },mUsername);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
 }

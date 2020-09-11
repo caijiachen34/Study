@@ -281,11 +281,26 @@ public class MemberServiceImpl implements MemberService {
         File dest = new File(dir,filename);
         //执行保存
         file.transferTo(dest);
-        String image = "/upload/"+filename;
+        String image = "upload/"+filename;
         memberDao.addImage(image,uname);
         Result result = new Result();
         result.setStatus(0);
         result.setMsg("上传成功");
+        return result;
+    }
+
+    @Override
+    public Result findByName(String uname) {
+        Result result = new Result();
+        Member member = memberDao.findByName(uname);
+        if (member == null) {
+            result.setStatus(1);
+            result.setMsg("查询失败");
+            return result;
+        }
+        result.setData(0);
+        result.setMsg("查询成功");
+        result.setData(member);
         return result;
     }
 }

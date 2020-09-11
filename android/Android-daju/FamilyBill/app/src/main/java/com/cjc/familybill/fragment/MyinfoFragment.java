@@ -1,6 +1,5 @@
 package com.cjc.familybill.fragment;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,7 +7,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -28,19 +26,31 @@ import androidx.annotation.Nullable;
 
 import com.cjc.familybill.R;
 import com.cjc.familybill.activitys.MainActivity;
+import com.cjc.familybill.entity.HttpResult;
+import com.cjc.familybill.entity.MemberEntity;
+import com.cjc.familybill.http.ProgressDialogSubscriber;
+import com.cjc.familybill.http.presenter.MemberPresenter;
 import com.cjc.familybill.login.ChangePWDActivity;
 import com.cjc.familybill.login.LoginActivity;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.cjc.familybill.utils.Constants;
+import com.cjc.familybill.utils.SaveImageUtils;
+import com.facebook.drawee.backends.pipeline.Fresco;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.http.Url;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
@@ -92,6 +102,14 @@ public class MyinfoFragment extends BaseFragment {
 
     private final int MY_ACCOUNT_BEFORE = 4;
     private final int MY_ACCOUNT_AFTER = 5;
+    private String uname;
+    private String mImage;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Fresco.initialize(getContext());
+    }
 
     @Nullable
     @Override
@@ -99,11 +117,14 @@ public class MyinfoFragment extends BaseFragment {
 
         View view = inflater.inflate(R.layout.fragment_myinfo, container, false);
         unbinder = ButterKnife.bind(this, view);
+
+        uname = getUname();
         mainActivity = (MainActivity) getActivity();
         return view;
     }
 
-    private void init() {
+    private void init()  {
+        Log.d(TAG, "init: 开始Init==========");
         SharedPreferences sp = getActivity().getSharedPreferences("loginInfo", MODE_PRIVATE);
         String username = sp.getString("loginUserName", "");
         if (TextUtils.isEmpty(username)) {
@@ -117,7 +138,13 @@ public class MyinfoFragment extends BaseFragment {
             userName.setText(username);
 
         }
+
+        String url = Constants.BASE_URL + mImage;
+        Uri uri = SaveImageUtils.saveImage(url, getContext());
+        Log.d(TAG, "url: " + uri);
+
     }
+
 
     @Override
     public void onResume() {
@@ -181,7 +208,7 @@ public class MyinfoFragment extends BaseFragment {
                             //通过uri获取到bitmap对象
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
                             //创建路径
-                            String path = Environment.getExternalStorageDirectory()
+                            String path = getActivity().getFilesDir()
                                     .getPath() + "/Pictures";
                             //获取外部储存目录
                             File file = new File(path);
@@ -191,13 +218,25 @@ public class MyinfoFragment extends BaseFragment {
                             //以当前时间重新命名文件
                             long i = System.currentTimeMillis();
                             //生成新的文件
-                            file = new File(file.toString() + "/" + i + ".png");
+                            file = new File(file.toString() + "/" + i + ".jpg");
                             Log.e("fileNew", file.getPath());
                             //创建输出流
                             OutputStream out = new FileOutputStream(file.getPath());
                             //压缩文件，返回结果
                             boolean flag = bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
                             userImgView.setImageBitmap(bitmap);
+                            RequestBody body = RequestBody.create(MediaType.parse("image/jpeg"),file);
+                            //createFormData参数: 传入File类的名字，file文件的名字,RequestBody类
+                            MultipartBody.Part part = MultipartBody.Part.createFormData("file",file.getName(),body);
+                            MemberPresenter.addImage(new ProgressDialogSubscriber<HttpResult>(getContext()) {
+                                @Override
+                                public void onNext(HttpResult httpResult) {
+                                    super.onNext(httpResult);
+                                    if (httpResult.getMsg().contains("成功")) {
+                                        Toast.makeText(getContext(),"头像上传成功",Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            },uname,part);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

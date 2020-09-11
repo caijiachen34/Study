@@ -5,6 +5,9 @@ import com.cjc.familybill.entity.MemberEntity;
 import com.cjc.familybill.http.HttpMethods;
 import com.cjc.familybill.http.ProgressDialogSubscriber;
 
+import java.io.File;
+
+import okhttp3.MultipartBody;
 import rx.Observable;
 import rx.Subscriber;
 
@@ -43,10 +46,22 @@ public class MemberPresenter extends HttpMethods {
         toSubscribeSync(observable, subscriber);//订阅
     }
 
+    public static void findByname(Subscriber<MemberEntity> subscriber, String uname) {
+        Observable observable = memberService.findByname(uname)
+                .map(new HttpResultFunc<MemberEntity>());
+        toSubscribeAsync(observable, subscriber);//订阅
+    }
+
     public static void changePassword2(ProgressDialogSubscriber<HttpResult> subscriber, String uname,String oldPwd,String newPwd){
         Observable observable = memberService.changePassword2(uname,oldPwd,newPwd)
                 .map(new HttpResultFunc2<MemberEntity>());
         toSubscribeAsync(observable, subscriber);//订阅
-    };
+    }
+
+    public static void addImage(ProgressDialogSubscriber<HttpResult> subscriber, String uname, MultipartBody.Part part){
+        Observable observable = memberService.addImage(uname,part)
+                .map(new HttpResultFunc2<MemberEntity>());
+        toSubscribeAsync(observable, subscriber);//订阅
+    }
 
 }

@@ -33,5 +33,7 @@ public interface MemberService {
     public Result checkIsUsed(String input);
     //上传头像
     public Result addImage(String uname,MultipartFile file, HttpServletRequest request) throws IOException;
+    //uname查询
+    public Result findByName(String uname);
 
 }

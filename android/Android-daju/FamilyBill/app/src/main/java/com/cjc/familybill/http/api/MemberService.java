@@ -5,12 +5,18 @@ import com.cjc.familybill.entity.HttpResult;
 import com.cjc.familybill.entity.MemberEntity;
 import com.cjc.familybill.http.resultentity.LoginResult;
 
+import java.io.File;
+
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.Query;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 import rx.Observable;
@@ -41,6 +47,11 @@ public interface MemberService {
     @POST("member/check")
     Observable<HttpResult<MemberEntity>> check(@Field("input") String input);
 
+
+    @FormUrlEncoded
+    @POST("member/findByname")
+    Observable<HttpResult<MemberEntity>> findByname(@Field("uname") String uname);
+
     @FormUrlEncoded
     @POST("member/login2")
     Observable<HttpResult<MemberEntity>> checkEmailIsUsed(@Field("input") String input, @Field("password") String password);
@@ -50,6 +61,12 @@ public interface MemberService {
     @FormUrlEncoded
     @POST("member/changepassword2")
     Observable<HttpResult<MemberEntity>> changePassword2(@Field("uname") String uname, @Field("oldPwd") String oldPwd, @Field("newPwd") String newPwd);
+
+    //登录接口
+    @Multipart
+    @POST("member/addImage")
+    Observable<HttpResult<MemberEntity>> addImage(@Query("uname") String uname, @Part MultipartBody.Part part);
+
 
 
 }
