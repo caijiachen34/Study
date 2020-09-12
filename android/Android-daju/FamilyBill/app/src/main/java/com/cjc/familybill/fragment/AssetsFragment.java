@@ -51,6 +51,7 @@ public class AssetsFragment extends BaseFragment {
     private AssetsRemainAdapter assetsRemainAdapter;
 
     private String uname;
+    private Double remain_money;
 
     @Nullable
     @Override
@@ -115,31 +116,31 @@ public class AssetsFragment extends BaseFragment {
     private void initData() {
         //Double remain = InsertRemain.InsertRemain(uname, "银行卡");
         //Log.d("AssetsFragment", "remain: " + remain);
-        AssetsPresenter.queryAssSum(new Subscriber<List<AssetsEntity>>() {
-
-            private double sum;
-
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                sum = 0.0;
-                assetsSum.setText(sum + "");
-            }
-
-            @Override
-            public void onNext(List<AssetsEntity> assetsEntities) {
-                Log.d("AssetsFragment", "onNext: SUM List " + assetsEntities);
-                if (assetsEntities.size() > 0) {
-                    sum = assetsEntities.get(0).getSum();
-                }
-                Log.d("AssetsFragment", "onNext: SUM " + sum);
-                assetsSum.setText(sum + "");
-            }
-        }, uname);
+//        AssetsPresenter.queryAssSum(new Subscriber<List<AssetsEntity>>() {
+//
+//            private double sum;
+//
+//            @Override
+//            public void onCompleted() {
+//
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                remain_money = 0.0;
+//                assetsSum.setText(remain_money + "");
+//            }
+//
+//            @Override
+//            public void onNext(List<AssetsEntity> assetsEntities) {
+//                Log.d("AssetsFragment", "onNext: SUM List " + assetsEntities);
+//                if (assetsEntities.size() > 0) {
+//                    sum = assetsEntities.get(0).getSum();
+//                }
+//                Log.d("AssetsFragment", "onNext: SUM " + sum);
+//                assetsSum.setText(remain_money + "");
+//            }
+//        }, uname);
 
         AssetsPresenter.findAllByUname(new Subscriber<List<AssetsEntity>>() {
             @Override
@@ -173,7 +174,7 @@ public class AssetsFragment extends BaseFragment {
         AssetsPresenter.queryAssRemainByUname(new Subscriber<List<AssetsRemain>>() {
             @Override
             public void onCompleted() {
-
+                assetsSum.setText(remain_money + "");
             }
 
             @Override
@@ -189,6 +190,10 @@ public class AssetsFragment extends BaseFragment {
                     mDataRemain.clear();
                     mDataRemain.addAll(assetsRemains);
                     assetsRemainAdapter.notifyDataSetChanged();
+                    remain_money =0.0;
+                    for (AssetsRemain assetsRemain : assetsRemains) {
+                        remain_money = assetsRemain.getRemain_money()+remain_money;
+                    }
                 }
             }
         }, uname);

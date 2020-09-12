@@ -4,30 +4,22 @@ package com.cjc.ouxun.entity;
  * Created by CC
  **/
 public class HttpResult<T> {
-
-    /**
-     * flag : true
-     * apiUrl : http://39.106.173.47/filemgt/api/
-     * aesKey : PerdvawlumfDdCesaLAbant
-     * user : {"csrq":"2017-10-03","create_time":null,"modify_time":"2018-06-25 14:38:31","mobile":"18796919236","modify_by":1,"dept_bm":"03","is_delete":"N","create_by":null,"is_dept_manager":"N","xb_dm":"02","nickname":"系统管理员","tel":"0858-2345768","id":1,"sfzjhm":"520202xxxxxxxxx","dept_id":4,"qtbz_dm":"Y","order_id":1,"email":"chenli@sohu.com","username":"admin","status":"01"}
-     */
-
     private boolean flag;
     private String apiUrl;
     private String aesKey;
-    private T data;
     private String cust;
     private String errorMsg;
+    private T user;
 
     @Override
     public String toString() {
-        return "ResultEntity{" +
+        return "HttpResult{" +
                 "flag=" + flag +
                 ", apiUrl='" + apiUrl + '\'' +
                 ", aesKey='" + aesKey + '\'' +
-                ", data=" + data +
                 ", cust='" + cust + '\'' +
                 ", errorMsg='" + errorMsg + '\'' +
+                ", user=" + user +
                 '}';
     }
 
@@ -55,14 +47,6 @@ public class HttpResult<T> {
         this.aesKey = aesKey;
     }
 
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
-
     public String getCust() {
         return cust;
     }
@@ -77,5 +61,13 @@ public class HttpResult<T> {
 
     public void setErrorMsg(String errorMsg) {
         this.errorMsg = errorMsg;
+    }
+
+    public T getUser() {
+        return user;
+    }
+
+    public void setUser(T user) {
+        this.user = user;
     }
 }

@@ -68,24 +68,24 @@ public class HttpMethods {
 
         @Override
         public T call(HttpResult<T> httpResult) {
-            Log.i(TAG, "status:" + httpResult.isFlag());
-            Log.i(TAG, "msg:" + httpResult.getApiUrl());
-            Log.i(TAG, "msg:" + httpResult.getAesKey());
-            Log.i(TAG, "data:" + httpResult.getData());
-            return httpResult.getData();
-        }
-    }
-
-    public static class HttpResultFunc2<T> implements Func1<HttpResult<T>, HttpResult> {
-        @Override
-        public HttpResult call(HttpResult<T> httpResult) {
             Log.i(TAG, "flag:" + httpResult.isFlag());
             Log.i(TAG, "url:" + httpResult.getApiUrl());
             Log.i(TAG, "key:" + httpResult.getAesKey());
-            Log.i(TAG, "data:" + httpResult.getData());
-            return httpResult;
+            Log.i(TAG, "data:" + httpResult.getUser());
+            return httpResult.getUser();
         }
     }
+
+//    public static class HttpResultFunc2<T> implements Func1<HttpResult<T>, HttpResult> {
+//        @Override
+//        public HttpResult call(HttpResult<T> httpResult) {
+//            Log.i(TAG, "flag:" + httpResult.isFlag());
+//            Log.i(TAG, "url:" + httpResult.getApiUrl());
+//            Log.i(TAG, "key:" + httpResult.getAesKey());
+//            Log.i(TAG, "data:" + httpResult.getData());
+//            return httpResult;
+//        }
+//    }
 
     //异步订阅
     public static <T> void toSubscribeAsync(Observable<T> o, Subscriber<T> s) {
@@ -95,12 +95,5 @@ public class HttpMethods {
                 .subscribe(s);
     }
 
-    //同步订阅
-    public static <T> void toSubscribeSync(Observable<T> o, Subscriber<T> s) {
-        o.subscribeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(s);
-    }
 
 }

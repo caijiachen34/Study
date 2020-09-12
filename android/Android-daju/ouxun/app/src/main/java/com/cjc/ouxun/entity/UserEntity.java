@@ -5,29 +5,6 @@ package com.cjc.ouxun.entity;
  **/
 public class UserEntity {
 
-    /**
-     * csrq : 2017-10-03
-     * create_time : null
-     * modify_time : 2018-06-25 14:38:31
-     * mobile : 18796919236
-     * modify_by : 1
-     * dept_bm : 03
-     * is_delete : N
-     * create_by : null
-     * is_dept_manager : N
-     * xb_dm : 02
-     * nickname : 系统管理员
-     * tel : 0858-2345768
-     * id : 1
-     * sfzjhm : 520202xxxxxxxxx
-     * dept_id : 4
-     * qtbz_dm : Y
-     * order_id : 1
-     * email : chenli@sohu.com
-     * username : admin
-     * status : 01
-     */
-
     private String csrq;
     private Object create_time;
     private String modify_time;
@@ -48,6 +25,32 @@ public class UserEntity {
     private String email;
     private String username;
     private String status;
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "csrq='" + csrq + '\'' +
+                ", create_time=" + create_time +
+                ", modify_time='" + modify_time + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", modify_by=" + modify_by +
+                ", dept_bm='" + dept_bm + '\'' +
+                ", is_delete='" + is_delete + '\'' +
+                ", create_by=" + create_by +
+                ", is_dept_manager='" + is_dept_manager + '\'' +
+                ", xb_dm='" + xb_dm + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", tel='" + tel + '\'' +
+                ", id=" + id +
+                ", sfzjhm='" + sfzjhm + '\'' +
+                ", dept_id=" + dept_id +
+                ", qtbz_dm='" + qtbz_dm + '\'' +
+                ", order_id=" + order_id +
+                ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                ", status='" + status + '\'' +
+                '}';
+    }
 
     public String getCsrq() {
         return csrq;

@@ -50,11 +50,12 @@ public class MemberServiceImpl implements MemberService {
         member.setUname(uname);
         //密码加密
         String md5_pwd = MSUtil.md5(password);
+        Timestamp now = new Timestamp(System.currentTimeMillis());
         member.setPassword(md5_pwd);
         member.setEmail(email);
         member.setSex(1); //默认为男
         member.setMobile(mobile);
-        member.setRegtime(null);
+        member.setRegtime(now);
         member.setLastlogin(null);
         member.setImage("");
         //调用memberDao的save方法将数据存入数据库

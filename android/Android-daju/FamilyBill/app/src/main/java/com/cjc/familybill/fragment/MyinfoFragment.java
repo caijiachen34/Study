@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -24,24 +25,22 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.ViewTarget;
 import com.cjc.familybill.R;
 import com.cjc.familybill.activitys.MainActivity;
 import com.cjc.familybill.entity.HttpResult;
-import com.cjc.familybill.entity.MemberEntity;
 import com.cjc.familybill.http.ProgressDialogSubscriber;
 import com.cjc.familybill.http.presenter.MemberPresenter;
 import com.cjc.familybill.login.ChangePWDActivity;
 import com.cjc.familybill.login.LoginActivity;
 import com.cjc.familybill.utils.Constants;
 import com.cjc.familybill.utils.SaveImageUtils;
-import com.facebook.drawee.backends.pipeline.Fresco;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,7 +49,6 @@ import butterknife.Unbinder;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import retrofit2.http.Url;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
@@ -103,27 +101,37 @@ public class MyinfoFragment extends BaseFragment {
     private final int MY_ACCOUNT_BEFORE = 4;
     private final int MY_ACCOUNT_AFTER = 5;
     private String uname;
-    private String mImage;
+    private String mImageUrl;
+    private View view;
+    private String url;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fresco.initialize(getContext());
+        SharedPreferences sp = getActivity().getSharedPreferences("loginInfo", MODE_PRIVATE);
+        String imageUrl = sp.getString("image", "");
+        mImageUrl = imageUrl;
+        //Fresco.initialize(getContext());
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_myinfo, container, false);
+        view = inflater.inflate(R.layout.fragment_myinfo, container, false);
         unbinder = ButterKnife.bind(this, view);
 
         uname = getUname();
         mainActivity = (MainActivity) getActivity();
+        init();
         return view;
     }
 
     private void init()  {
+        url = Constants.BASE_URL+mImageUrl;
+        Log.d(TAG, "url: " + url);
+        ViewTarget<ImageView, Drawable> into = Glide.with(view).load(url).error(R.mipmap.ic_launcher).into(userImgView);
+        Log.d(TAG, "into: " + into);
         Log.d(TAG, "init: 开始Init==========");
         SharedPreferences sp = getActivity().getSharedPreferences("loginInfo", MODE_PRIVATE);
         String username = sp.getString("loginUserName", "");
@@ -139,9 +147,9 @@ public class MyinfoFragment extends BaseFragment {
 
         }
 
-        String url = Constants.BASE_URL + mImage;
-        Uri uri = SaveImageUtils.saveImage(url, getContext());
-        Log.d(TAG, "url: " + uri);
+//        String url = Constants.BASE_URL + mImageUrl;
+//        Uri uri = SaveImageUtils.saveImage(url, getContext());
+//        Log.d(TAG, "url: " + uri);
 
     }
 
@@ -220,11 +228,12 @@ public class MyinfoFragment extends BaseFragment {
                             //生成新的文件
                             file = new File(file.toString() + "/" + i + ".jpg");
                             Log.e("fileNew", file.getPath());
+                            Glide.with(getContext()).load(file).error(R.mipmap.ic_launcher).into(userImgView);
                             //创建输出流
                             OutputStream out = new FileOutputStream(file.getPath());
+
                             //压缩文件，返回结果
                             boolean flag = bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                            userImgView.setImageBitmap(bitmap);
                             RequestBody body = RequestBody.create(MediaType.parse("image/jpeg"),file);
                             //createFormData参数: 传入File类的名字，file文件的名字,RequestBody类
                             MultipartBody.Part part = MultipartBody.Part.createFormData("file",file.getName(),body);
@@ -233,6 +242,7 @@ public class MyinfoFragment extends BaseFragment {
                                 public void onNext(HttpResult httpResult) {
                                     super.onNext(httpResult);
                                     if (httpResult.getMsg().contains("成功")) {
+                                        Glide.with(getContext()).load(bitmap).error(R.mipmap.ic_launcher).into(userImgView);
                                         Toast.makeText(getContext(),"头像上传成功",Toast.LENGTH_SHORT).show();
                                     }
                                 }

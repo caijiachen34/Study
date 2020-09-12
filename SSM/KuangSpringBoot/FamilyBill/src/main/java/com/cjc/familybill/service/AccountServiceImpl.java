@@ -6,6 +6,7 @@ import com.cjc.familybill.util.Result;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,13 +21,14 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Result saveAccount(String uname, Double accountMoney, String accountType, String payType,String assetsType, String remarks) {
         Result result = new Result();
-
+        Timestamp now = new Timestamp(System.currentTimeMillis());
         Account account = new Account();
         account.setAccount_id(null);
         account.setUname(uname);
         account.setAccountMoney(accountMoney);
         account.setAccountType(accountType);
         account.setPayType(payType);
+        account.setTime(now);
         account.setAssetsType(assetsType);
         account.setRemarks(remarks);
         accountDao.saveAccount(account);

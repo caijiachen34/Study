@@ -3,6 +3,7 @@ package com.cjc.ouxun.http.api;
 
 
 import com.cjc.ouxun.entity.HttpResult;
+import com.cjc.ouxun.entity.MemberEntity;
 import com.cjc.ouxun.entity.UserEntity;
 
 import retrofit2.http.Field;
@@ -21,6 +22,9 @@ public interface UserService {
     @GET("user/checklogin")
     Observable<HttpResult<UserEntity>> login(@Query("username") String username, @Query("password") String password);
 
-
+    //登录接口
+    @FormUrlEncoded
+    @POST("member/login")
+    Observable<HttpResult<MemberEntity>> login1(@Field("uname") String username, @Field("password") String password);
 
 }

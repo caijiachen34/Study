@@ -2,13 +2,18 @@ package com.cjc.ouxun;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,12 +21,12 @@ import androidx.annotation.Nullable;
 
 import com.cjc.ouxun.entity.HttpResult;
 import com.cjc.ouxun.entity.UserEntity;
-import com.cjc.ouxun.http.ProgressDialogSubscriber;
 import com.cjc.ouxun.http.presenter.UserPresenter;
 import com.cjc.ouxun.utils.Constants;
 
 import cn.qqtheme.framework.picker.OptionPicker;
 import cn.qqtheme.framework.widget.WheelView;
+import rx.Subscriber;
 
 /**
  * Created by CC
@@ -38,6 +43,8 @@ public class LoginActivity extends Activity {
 
     private String username;
     private String password;
+    private ImageView iv_visible;
+    private ImageView iv_gone;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +60,8 @@ public class LoginActivity extends Activity {
         et_password = findViewById(R.id.et_password);
         select_guest = findViewById(R.id.et_select_guest);
         btn_login = findViewById(R.id.btn_login);
+        iv_visible = findViewById(R.id.iv_visible);
+        iv_gone = findViewById(R.id.iv_gone);
     }
 
     private void initListener() {
@@ -70,6 +79,24 @@ public class LoginActivity extends Activity {
                 Log.d(TAG, "onClick: ");
             }
         });
+
+        iv_gone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                iv_gone.setVisibility(View.GONE);
+                iv_visible.setVisibility(View.VISIBLE);
+                et_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            }
+        });
+
+        iv_visible.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                iv_visible.setVisibility(View.GONE);
+                iv_gone.setVisibility(View.VISIBLE);
+                et_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            }
+        });
     }
 
     private void handlerLogin() {
@@ -79,21 +106,31 @@ public class LoginActivity extends Activity {
         if (TextUtils.isEmpty(username)) {
             Toast.makeText(getApplicationContext(), "请输入账号", Toast.LENGTH_SHORT).show();
             return;
-        }else if (TextUtils.isEmpty(password)){
+        } else if (TextUtils.isEmpty(password)) {
             Toast.makeText(getApplicationContext(), "请输入密码", Toast.LENGTH_SHORT).show();
             return;
-        }else {
-            UserPresenter.login(new ProgressDialogSubscriber<UserEntity>(this) {
+        } else {
+            UserPresenter.login(new Subscriber<UserEntity>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    Log.d(TAG, "onError: ");
+                }
+
                 @Override
                 public void onNext(UserEntity userEntity) {
-                    userEntity.getCreate_time();
-//                    if (userEntity.getUsername()!=null) {
-//                        Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
-//                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//                        startActivity(intent);
-//                    }else if (userEntity.getUsername()==null){
-//                        Toast.makeText(getApplicationContext(), "账号或密码有误", Toast.LENGTH_SHORT).show();
-//                    }
+                    String username = userEntity.getUsername();
+                    Log.d(TAG, "userEntity: " + username);
+                    int id = userEntity.getId();
+                    SharedPreferences loginInfo = getSharedPreferences("LoginInfo", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = loginInfo.edit();
+                    editor.putString("username",username);
+                    editor.putInt("id",id);
+                    editor.commit();
                 }
             }, username, password);
         }
