@@ -51,8 +51,8 @@ public class AccountPresenter extends HttpMethods {
         toSubscribeAsync(observable, subscriber);
     }
 
-    public static void queryAccUnamePayType(Subscriber<List<AccountEntity>> subscriber, String payType, String uname) {
-        Observable<List<AccountEntity>> observable = accountService.queryAccUnamePayType(payType,uname)
+    public static void queryAccUnamePayType(Subscriber<List<AccountEntity>> subscriber, String payType, String uname,String time) {
+        Observable<List<AccountEntity>> observable = accountService.queryAccUnamePayType(payType,uname,time)
                 .map(new HttpResultFunc<List<AccountEntity>>());
         toSubscribeAsync(observable, subscriber);
     }

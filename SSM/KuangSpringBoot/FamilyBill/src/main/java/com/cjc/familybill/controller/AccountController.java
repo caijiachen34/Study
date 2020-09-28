@@ -74,8 +74,8 @@ public class AccountController {
     //根据类型查找账单
     @ResponseBody
     @PostMapping("/queryAccUnamePayType")
-    public Result queryAccUnamePayType(String payType, String uname){
-        Result result = accountService.queryAccUnamePayType(payType, uname);
+    public Result queryAccUnamePayType(String payType, String uname,String time){
+        Result result = accountService.queryAccUnamePayType(payType, uname,time);
         return result;
     }
 

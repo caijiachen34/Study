@@ -69,6 +69,15 @@ public class AccountFragment extends BaseFragment {
         accountAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("AccountFragment", "onResume: ");
+        initData();
+        initListener();
+        accountAdapter.notifyDataSetChanged();
+    }
+
     private void initListener() {
 
         accountAdapter.setOnItemClickListener(new AccountAdapter.OnItemClickListener() {

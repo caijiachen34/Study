@@ -133,9 +133,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Result queryAccUnamePayType(String payType, String uname) {
+    public Result queryAccUnamePayType(String payType, String uname,String time) {
         Result result = new Result();
-        List<Account> accounts = accountDao.queryAccUnamePayType(payType, uname);
+        List<Account> accounts = accountDao.queryAccUnamePayType(payType, uname,time);
         if (accounts.size()==0) {
             result.setStatus(1);
             result.setMsg("查询失败");

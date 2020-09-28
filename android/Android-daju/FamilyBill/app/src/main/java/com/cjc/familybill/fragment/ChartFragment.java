@@ -12,6 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.view.TimePickerView;
 import com.cjc.familybill.R;
 import com.cjc.familybill.entity.AccountEntity;
 import com.cjc.familybill.http.presenter.AccountPresenter;
@@ -24,7 +27,10 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -43,20 +49,32 @@ public class ChartFragment extends BaseFragment {
     PieChart piechartOut;
     @BindView(R.id.piechart_in)
     PieChart piechartIn;
+    @BindView(R.id.tv_select_time)
+    TextView tvSelectTime;
 
 
     private String uname;
+    private TimePickerView pvTime;
+    private View view;
+    private String time;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_chart, null);
+        view = inflater.inflate(R.layout.fragment_chart, null);
         ButterKnife.bind(this, view);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM");//设置日期格式
+        String inittime = df.format(new Date());
+        time=inittime;
+        tvSelectTime.setText(inittime);
+        initPieIn();
+        initPieOut();
         uname = getUname();
         initChart();
         initData();
         initListener();
+        initTimePicker1();
         return view;
     }
 
@@ -66,11 +84,17 @@ public class ChartFragment extends BaseFragment {
         initChart();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        initChart();
+    }
+
     private void initChart() {
         if (uname == null) {
             piechartOut.setVisibility(View.GONE);
             piechartIn.setVisibility(View.GONE);
-        }else{
+        } else {
             piechartOut.setVisibility(View.VISIBLE);
             initPieOut();
             chartOut.setTextColor(Color.parseColor("#FF9900"));
@@ -88,7 +112,7 @@ public class ChartFragment extends BaseFragment {
         piechartIn.animateY(1400, Easing.EaseInOutQuad); // 设置pieChart图表展示动画效果
         piechartIn.setUsePercentValues(true);
         Legend l = piechartIn.getLegend();
-        l.setEnabled(true); //是否启用图列 true：下面属性才有意义
+        l.setEnabled(false); //是否启用图列 true：下面属性才有意义
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
@@ -102,7 +126,6 @@ public class ChartFragment extends BaseFragment {
         l.setYOffset(0f); //设置比例块Y轴偏移量
         l.setTextSize(14f); //设置图例标签文本的大小
         l.setTextColor(Color.parseColor("#333333")); //设置图例标签文本的颜色
-
 
 
         entriesout = new ArrayList<>();
@@ -119,15 +142,92 @@ public class ChartFragment extends BaseFragment {
 
             @Override
             public void onNext(List<AccountEntity> accountEntities) {
+                float sumgouwu = 0;
+                float sumgongzi = 0;
+                float sumzufang = 0;
+                float sumxuexi = 0;
+                float sumlvyou = 0;
+                float sumjiaotong = 0;
+                float sumyingshi = 0;
+                float sumyiliao = 0;
+                float sumqita = 0;
                 entriesout.clear();
                 Log.d("ChartFragment", "" + accountEntities);
                 for (AccountEntity accountEntity : accountEntities) {
-                    String accountMoney = (accountEntity.getAccountMoney()).toString();
-                    entriesout.add(new PieEntry(Float.parseFloat(accountMoney),accountEntity.getAccountType()));
+//                    float accountMoney = Float.parseFloat((accountEntity.getAccountMoney()).toString());
+////                    entriesout.add(new PieEntry(accountMoney,accountEntity.getAccountType()));
+////                    piechartOut.notifyDataSetChanged();
+                    if (accountEntity.getAccountType().equals("购物")) {
+                        sumgouwu += accountEntity.getAccountMoney();
+                        float accountMoney = Float.parseFloat((accountEntity.getAccountMoney()).toString());
+
+
+                    } else if (accountEntity.getAccountType().equals("工资")) {
+                        sumgongzi += accountEntity.getAccountMoney();
+
+
+                    } else if (accountEntity.getAccountType().equals("租房")) {
+                        sumzufang += accountEntity.getAccountMoney();
+
+
+                    } else if (accountEntity.getAccountType().equals("学习")) {
+                        sumxuexi += accountEntity.getAccountMoney();
+
+
+                    } else if (accountEntity.getAccountType().equals("旅游")) {
+                        sumlvyou += accountEntity.getAccountMoney();
+
+
+                    } else if (accountEntity.getAccountType().equals("交通")) {
+                        sumjiaotong += accountEntity.getAccountMoney();
+
+
+                    } else if (accountEntity.getAccountType().equals("饮食")) {
+                        sumyingshi += accountEntity.getAccountMoney();
+
+
+                    } else if (accountEntity.getAccountType().equals("医疗")) {
+                        sumyiliao += accountEntity.getAccountMoney();
+
+
+                    } else if (accountEntity.getAccountType().equals("其他消费")) {
+                        sumqita += accountEntity.getAccountMoney();
+
+
+                    }
+                    entriesout.clear();
+                    if (sumgouwu != 0.0f) {
+                        entriesout.add(new PieEntry(sumgouwu, "购物"));
+                    }
+                    if (sumgongzi != 0.0f) {
+                        entriesout.add(new PieEntry(sumgongzi, "工资"));
+                    }
+                    if (sumzufang != 0.0f) {
+                        entriesout.add(new PieEntry(sumzufang, "租房"));
+                    }
+                    if (sumxuexi != 0.0f) {
+                        entriesout.add(new PieEntry(sumxuexi, "学习"));
+                    }
+                    if (sumlvyou != 0.0f) {
+                        entriesout.add(new PieEntry(sumlvyou, "旅游"));
+                    }
+                    if (sumjiaotong != 0.0f) {
+                        entriesout.add(new PieEntry(sumjiaotong, "交通"));
+                    }
+                    if (sumyingshi != 0.0f) {
+                        entriesout.add(new PieEntry(sumyingshi, "饮食"));
+                    }
+                    if (sumyiliao != 0.0f) {
+                        entriesout.add(new PieEntry(sumyiliao, "医疗"));
+                    }
+                    if (sumqita != 0.0f) {
+                        entriesout.add(new PieEntry(sumqita, "其他消费"));
+                    }
+
                     piechartIn.notifyDataSetChanged();
                 }
             }
-        },"收入",uname);
+        }, "收入", uname,time);
 
         PieDataSet dataSet = new PieDataSet(entriesout, "数据说明");
         dataSet.setDrawIcons(false);
@@ -180,7 +280,7 @@ public class ChartFragment extends BaseFragment {
         piechartOut.animateY(1400, Easing.EaseInOutQuad); // 设置pieChart图表展示动画效果
         piechartOut.setUsePercentValues(true);
         Legend l = piechartOut.getLegend();
-        l.setEnabled(true); //是否启用图列 true：下面属性才有意义
+        l.setEnabled(false); //是否启用图列 true：下面属性才有意义
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
@@ -194,7 +294,6 @@ public class ChartFragment extends BaseFragment {
         l.setYOffset(0f); //设置比例块Y轴偏移量
         l.setTextSize(14f); //设置图例标签文本的大小
         l.setTextColor(Color.parseColor("#333333")); //设置图例标签文本的颜色
-
 
 
         entriesout = new ArrayList<>();
@@ -211,15 +310,92 @@ public class ChartFragment extends BaseFragment {
 
             @Override
             public void onNext(List<AccountEntity> accountEntities) {
+                float sumgouwu = 0;
+                float sumgongzi = 0;
+                float sumzufang = 0;
+                float sumxuexi = 0;
+                float sumlvyou = 0;
+                float sumjiaotong = 0;
+                float sumyingshi = 0;
+                float sumyiliao = 0;
+                float sumqita = 0;
                 entriesout.clear();
                 Log.d("ChartFragment", "" + accountEntities);
                 for (AccountEntity accountEntity : accountEntities) {
-                    String accountMoney = (accountEntity.getAccountMoney()).toString();
-                    entriesout.add(new PieEntry(Float.parseFloat(accountMoney),accountEntity.getAccountType()));
+//                    float accountMoney = Float.parseFloat((accountEntity.getAccountMoney()).toString());
+////                    entriesout.add(new PieEntry(accountMoney,accountEntity.getAccountType()));
+////                    piechartOut.notifyDataSetChanged();
+                    if (accountEntity.getAccountType().equals("购物")) {
+                        sumgouwu += accountEntity.getAccountMoney();
+                        float accountMoney = Float.parseFloat((accountEntity.getAccountMoney()).toString());
+
+
+                    } else if (accountEntity.getAccountType().equals("工资")) {
+                        sumgongzi += accountEntity.getAccountMoney();
+
+
+                    } else if (accountEntity.getAccountType().equals("租房")) {
+                        sumzufang += accountEntity.getAccountMoney();
+
+
+                    } else if (accountEntity.getAccountType().equals("学习")) {
+                        sumxuexi += accountEntity.getAccountMoney();
+
+
+                    } else if (accountEntity.getAccountType().equals("旅游")) {
+                        sumlvyou += accountEntity.getAccountMoney();
+
+
+                    } else if (accountEntity.getAccountType().equals("交通")) {
+                        sumjiaotong += accountEntity.getAccountMoney();
+
+
+                    } else if (accountEntity.getAccountType().equals("饮食")) {
+                        sumyingshi += accountEntity.getAccountMoney();
+
+
+                    } else if (accountEntity.getAccountType().equals("医疗")) {
+                        sumyiliao += accountEntity.getAccountMoney();
+
+
+                    } else if (accountEntity.getAccountType().equals("其他消费")) {
+                        sumqita += accountEntity.getAccountMoney();
+
+
+                    }
+                    entriesout.clear();
+                    if (sumgouwu != 0.0f) {
+                        entriesout.add(new PieEntry(sumgouwu, "购物"));
+                    }
+                    if (sumgongzi != 0.0f) {
+                        entriesout.add(new PieEntry(sumgongzi, "工资"));
+                    }
+                    if (sumzufang != 0.0f) {
+                        entriesout.add(new PieEntry(sumzufang, "租房"));
+                    }
+                    if (sumxuexi != 0.0f) {
+                        entriesout.add(new PieEntry(sumxuexi, "学习"));
+                    }
+                    if (sumlvyou != 0.0f) {
+                        entriesout.add(new PieEntry(sumlvyou, "旅游"));
+                    }
+                    if (sumjiaotong != 0.0f) {
+                        entriesout.add(new PieEntry(sumjiaotong, "交通"));
+                    }
+                    if (sumyingshi != 0.0f) {
+                        entriesout.add(new PieEntry(sumyingshi, "饮食"));
+                    }
+                    if (sumyiliao != 0.0f) {
+                        entriesout.add(new PieEntry(sumyiliao, "医疗"));
+                    }
+                    if (sumqita != 0.0f) {
+                        entriesout.add(new PieEntry(sumqita, "其他消费"));
+                    }
+
                     piechartOut.notifyDataSetChanged();
                 }
             }
-        },"支出",uname);
+        }, "支出", uname,time);
 
         PieDataSet dataSet = new PieDataSet(entriesout, "数据说明");
         dataSet.setDrawIcons(false);
@@ -267,6 +443,13 @@ public class ChartFragment extends BaseFragment {
     }
 
     private void initListener() {
+        tvSelectTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pvTime.show();
+            }
+        });
+
         chartOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -289,5 +472,49 @@ public class ChartFragment extends BaseFragment {
 
             }
         });
+    }
+
+    private void initTimePicker1() {//选择出生年月日
+
+
+        Calendar selectedDate = Calendar.getInstance();
+        Calendar startDate = Calendar.getInstance();
+        //startDate.set(2013,1,1);
+        Calendar endDate = Calendar.getInstance();
+        //endDate.set(2020,1,1);
+
+        //正确设置方式 原因：注意事项有说明
+        startDate.set(2013, 0, 1);
+        endDate.set(2021, 11, 31);
+
+        pvTime = new TimePickerBuilder(getContext(), new OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date, View v) {//选中事件回调
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
+                time = simpleDateFormat.format(date);
+                tvSelectTime.setText(time);
+                initPieIn();
+                initPieOut();
+            }
+        })
+                .setType(new boolean[]{true, true, false, false, false, false})// 默认全部显示
+                .setCancelText("取消")//取消按钮文字
+                .setSubmitText("确认")//确认按钮文字
+                .setTitleSize(20)//标题文字大小
+                .setTitleText("")//标题文字
+                .setOutSideCancelable(true)//点击屏幕，点在控件外部范围时，是否取消显示
+                .isCyclic(true)//是否循环滚动
+                .setTitleColor(Color.BLACK)//标题文字颜色
+                .setSubmitColor(getResources().getColor(R.color.colorOrange))//确定按钮文字颜色
+                .setCancelColor(getResources().getColor(R.color.colorOrange))//取消按钮文字颜色
+                .setTitleBgColor(Color.WHITE)//标题背景颜色 Night mode
+                .setBgColor(Color.WHITE)//滚轮背景颜色 Night mode
+                .setDate(selectedDate)// 如果不设置的话，默认是系统时间*/
+                .setRangDate(startDate, endDate)//起始终止年月日设定
+                .setLabel("年", "月", "日", "时", "分", "秒")//默认设置为年月日时分秒
+                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                .isDialog(true)//是否显示为对话框样式
+                .build();
+
     }
 }

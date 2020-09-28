@@ -161,6 +161,12 @@ public class MyinfoFragment extends BaseFragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        init();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();

@@ -24,7 +24,7 @@ public interface AccountDao {
     //根据支出/收入查询金额
     public Double queryAccSum(@Param("payType") String payType,@Param("uname") String uname);
     //根据支出/收入查询账单
-    public List<Account> queryAccUnamePayType(@Param("payType") String payType,@Param("uname") String uname);
+    public List<Account> queryAccUnamePayType(@Param("payType") String payType,@Param("uname") String uname,@Param("time") String time);
 
 
 }

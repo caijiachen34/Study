@@ -805,7 +805,7 @@ public class MainActivity extends AppCompatActivity {
                 //充值失败
                 resultContent = data.getStringExtra("resultContent");
             }
-            tv_pay_result.setText(resultContent);
+            tv_pay_result.setText(resultContent);       
         }
     }
 }

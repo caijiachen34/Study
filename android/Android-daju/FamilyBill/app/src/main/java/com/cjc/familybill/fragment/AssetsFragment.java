@@ -76,6 +76,15 @@ public class AssetsFragment extends BaseFragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("AssetsFragment", "onResume: ");
+        initData();
+        initListener();
+        assetsRemainAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         Log.d("AssetsFragment", "onPause: ");

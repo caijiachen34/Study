@@ -46,21 +46,37 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/piechart_out"
-        android:layout_below="@id/assets_title"
-        android:visibility="visible"
-        android:layout_width="500dp"
-        android:layout_height="500dp"
-        android:layout_centerHorizontal="true"/>
+    <TextView
+        android:id="@+id/tv_select_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/assets_title"
+        android:layout_centerHorizontal="true"
+        android:text="0000-00" />
 
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/piechart_in"
-        android:layout_below="@id/assets_title"
-        android:visibility="gone"
-        android:layout_width="500dp"
-        android:layout_height="500dp"
-        android:layout_centerHorizontal="true"/>
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_select_time">
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/piechart_out"
+                android:layout_width="500dp"
+                android:layout_height="600dp"
+                android:layout_centerHorizontal="false"
+                android:visibility="visible" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/piechart_in"
+                android:layout_width="500dp"
+                android:layout_height="600dp"
+                android:layout_centerHorizontal="false"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
 
 
 </RelativeLayout>

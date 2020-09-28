@@ -59,7 +59,7 @@ public interface AccountService {
 
     @FormUrlEncoded
     @POST("account/queryAccUnamePayType")
-    Observable<HttpResult<List<AccountEntity>>> queryAccUnamePayType(@Field("payType") String payType, @Field("uname") String uname);
+    Observable<HttpResult<List<AccountEntity>>> queryAccUnamePayType(@Field("payType") String payType, @Field("uname") String uname,@Field("time") String time);
 
 
 }

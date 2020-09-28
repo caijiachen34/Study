@@ -69,6 +69,6 @@
 
     <select id="queryAccUnamePayType" resultType="com.cjc.familybill.entity.Account">
         select * from family_bill.fb_account
-        where payType = #{payType} and uname = #{uname}
+        where payType = #{payType} and uname = #{uname} and DATE_FORMAT(time,'%Y-%m') = #{time}
     </select>
 </mapper>
