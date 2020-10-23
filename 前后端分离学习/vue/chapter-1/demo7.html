@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <!-- 解决闪烁 -->
+    <style>
+      [v-clock]{
+        display: none;
+      }
+    </style>
+
+  </head>
+  <body>
+    <div id="vue">
+      <div>{{info.name}}</div>
+      <div>{{info.address.street}}</div>
+      <a v-bind:href="info.url">点击</a>
+    </div>
+  </body>
+
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.5.21/vue.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.20.0/axios.min.js"></script>
+  
+  <script type="text/javascript">
+    var vm = new Vue({
+      el: "#vue",
+      data() {
+        return {
+          info:{
+            name: null,
+            address: {
+              street :null,
+              city:null,
+              country:null
+            },
+            url:null,
+          }
+        }
+      },
+      mounted() { //钩子函数
+        axios.get('http://127.0.0.1:5500/data.json').then(response=>(this.info=response.data))
+      },
+    });
+  </script>
+</html>

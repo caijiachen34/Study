@@ -195,4 +195,8 @@ public class AccountFragment extends BaseFragment {
         recycler_account.setAdapter(accountAdapter);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
 }

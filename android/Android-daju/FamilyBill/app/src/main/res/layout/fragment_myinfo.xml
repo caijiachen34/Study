@@ -122,11 +122,11 @@
                     <TextView
                         android:id="@+id/person_for_wellcome"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="20dp"
                         android:shadowDx="0.0"
                         android:shadowDy="3.0"
                         android:shadowRadius="1.0"
-                        android:text="mobileshop"
+                        android:text="CCBILL"
                         android:textSize="15sp" />
 
                     <Button
